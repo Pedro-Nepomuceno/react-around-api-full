@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const AdmSchema = new moongose.Schema({
+const AdmSchema = new Schema({
 	email: {
 		type: String,
 		required: true,

@@ -15,7 +15,7 @@ const registerAdmin = (req, res) => {
       if (admin) {
         return res.status(418).send({ message: `user already exist` });
       }
-      return Admin.createOne({ ...req.body, password: hash })
+      return Admin.create({ ...req.body, password: hash })
         .then((admin) => {
           return res.status(200).send(admin);
         })
@@ -37,7 +37,13 @@ const authAdmin = (req, res) => {
     if (!admin) {
       return res.status(403).send({ message: `user does not exist` });
     }
+    bcrypt.compare(password, admin.password, (err, isValidPassword) => {
+      if (!isValidPassword) {
+        return res.status(401).send({ message: "Invalid Password" });
+      }
+      return res.status(200).send(admin);
+    });
   });
 };
 
-model.exports = { registerAdmin, authAdmin };
+module.exports = { registerAdmin, authAdmin };

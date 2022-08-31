@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { urlRegExp } = require('../utils/regex');
+const mongoose = require("mongoose");
+const { urlRegExp } = require("../utils/regex");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -22,6 +22,16 @@ const userSchema = new mongoose.Schema({
       message: 'The "avatar" must be a valid url',
     },
   },
+  email: {
+    type: String,
+    required: true,
+    minLength: 4,
+  },
+  password: {
+    type: String,
+    required: true,
+    minLength: 6,
+  },
 });
 
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model("user", userSchema);

@@ -1,10 +1,43 @@
-const User = require('../models/user');
+const User = require("../models/user");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+const ConflictError = require("../error/conflict-error");
+
+const notFoundError = require("../error/not-found-error");
+
+const badRequestError = require("../error/bad-request-error");
+
+const unAuthorizedError = require("../error/unauthorized-error");
+
+const SALT_ROUNDS = 10;
+
 const {
   HTTP_SUCCESS_OK,
   HTTP_CLIENT_ERROR_BAD_REQUEST,
   HTTP_CLIENT_ERROR_NOT_FOUND,
   HTTP_INTERNAL_SERVER_ERROR,
-} = require('../utils/status');
+} = require("../utils/status");
+
+const { NODE_ENV, JWT_SECRET } = process.env;
+
+const login = (req, res, next) => {
+  const { email, password } = req.body;
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
+        {
+          expiresIn: "7d",
+        }
+      );
+      res.send({ data: user.toJSON(), token });
+    })
+    .catch(() => {
+      next(new unAuthorizedError("Incorrect email or password"));
+    });
+};
 
 const getUsers = (req, res) => {
   User.find({})
@@ -13,7 +46,7 @@ const getUsers = (req, res) => {
     .catch(() =>
       res
         .status(HTTP_INTERNAL_SERVER_ERROR)
-        .send({ message: 'An error has occurred on the server' })
+        .send({ message: "An error has occurred on the server" })
     );
 };
 
@@ -27,7 +60,7 @@ const getUserbyId = (req, res) => {
       if (!user) {
         res
           .status(HTTP_CLIENT_ERROR_NOT_FOUND)
-          .send({ message: 'User ID not found' });
+          .send({ message: "User ID not found" });
         return;
       }
       res.status(HTTP_SUCCESS_OK).send(user);
@@ -35,18 +68,33 @@ const getUserbyId = (req, res) => {
     .catch(() =>
       res
         .status(HTTP_INTERNAL_SERVER_ERROR)
-        .send({ message: 'An error has occurred on the server' })
+        .send({ message: "An error has occurred on the server" })
     );
 };
 
 const createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
+  const { name, about, avatar, email, password } = req.body;
 
-  User.create({ name, about, avatar })
-    .then((user) => res.send({ data: user }))
-    .catch(() =>
-      res.status(HTTP_INTERNAL_SERVER_ERROR).send({ message: 'Error' })
-    );
+  if (!email || !password) {
+    return res.status(418).send({ message: "OpS SomEtHiNg wENt WRoNg" });
+  }
+
+  return bcrypt.hash(password, SALT_ROUNDS, (error, hash) => {
+    User.findOne({ email }).then((admin) => {
+      if (admin) {
+        throw new ConflictError(
+          "The user with the provided email already exists"
+        );
+      }
+      return User.create({ ...req.body, password: hash })
+        .then((admin) => {
+          return res.status(200).send({ admin });
+        })
+        .catch(() => {
+          res.status(HTTP_INTERNAL_SERVER_ERROR).send({ message: "Error" });
+        });
+    });
+  });
 };
 
 const updateUserProfile = (req, res) => {
@@ -64,23 +112,23 @@ const updateUserProfile = (req, res) => {
     .orFail()
     .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
     .catch((err) => {
-      if (err.name === 'DocumentNotFoundError') {
+      if (err.name === "DocumentNotFoundError") {
         res
           .status(HTTP_CLIENT_ERROR_NOT_FOUND)
-          .send({ message: ' User not found' });
-      } else if (err.name === 'ValidationError') {
+          .send({ message: " User not found" });
+      } else if (err.name === "ValidationError") {
         res.status(HTTP_CLIENT_ERROR_BAD_REQUEST).send({
           message: `${Object.values(err.errors)
             .map((error) => error.message)
-            .join(', ')}`,
+            .join(", ")}`,
         });
-      } else if (err.name === 'CastError') {
+      } else if (err.name === "CastError") {
         res.status(HTTP_CLIENT_ERROR_BAD_REQUEST).send({
-          message: 'Invalid User ID passed for updation',
+          message: "Invalid User ID passed for updation",
         });
       } else {
         res.status(HTTP_INTERNAL_SERVER_ERROR).send({
-          message: 'An error has occurred on the server',
+          message: "An error has occurred on the server",
         });
       }
     });
@@ -101,29 +149,30 @@ const updateAvatar = (req, res) => {
     .orFail()
     .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
     .catch((err) => {
-      if (err.name === 'DocumentNotFoundError') {
+      if (err.name === "DocumentNotFoundError") {
         res
           .status(HTTP_CLIENT_ERROR_NOT_FOUND)
-          .send({ message: 'User not found' });
-      } else if (err.name === 'ValidationError') {
+          .send({ message: "User not found" });
+      } else if (err.name === "ValidationError") {
         res.status(HTTP_CLIENT_ERROR_BAD_REQUEST).send({
           message: `${Object.values(err.errors)
             .map((error) => error.message)
-            .join(', ')}`,
+            .join(", ")}`,
         });
-      } else if (err.name === 'CastError') {
+      } else if (err.name === "CastError") {
         res.status(HTTP_CLIENT_ERROR_BAD_REQUEST).send({
-          message: 'Invalid avatar link passed for updation',
+          message: "Invalid avatar link passed for updation",
         });
       } else {
         res.status(HTTP_INTERNAL_SERVER_ERROR).send({
-          message: 'An error has occurred on the server',
+          message: "An error has occurred on the server",
         });
       }
     });
 };
 
 module.exports = {
+  login,
   getUsers,
   getUserbyId,
   createUser,

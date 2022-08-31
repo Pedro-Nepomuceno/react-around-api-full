@@ -1,4 +1,3 @@
-const Admin = require("../models/admin");
 const bcrypt = require("bcrypt");
 const { model } = require("mongoose");
 

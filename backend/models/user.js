@@ -1,10 +1,8 @@
 const mongoose = require("mongoose");
 
-const { urlRegExp } = require("../utils/regex");
-
 const validator = require("validator");
 
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -25,19 +23,21 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "https://pictures.s3.yandex.net/resources/avatar_1604080799.jpg",
     validate: {
-      validator: (v) => urlRegExp.test(v),
+      validator: validator.isURL,
       message: 'The "avatar" must be a valid url',
     },
   },
   email: {
     type: String,
     required: true,
-    minLength: 4,
+    validate: {
+      validator: (v) => validator.isEmail(v),
+      message: 'The "email" must be a valid email address',
+    },
   },
   password: {
     type: String,
     required: true,
-    minLength: 6,
   },
 });
 

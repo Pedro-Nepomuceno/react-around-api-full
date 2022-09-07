@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const ConflictError = require("../error/conflict-error");
@@ -9,8 +9,6 @@ const notFoundError = require("../error/not-found-error");
 const badRequestError = require("../error/bad-request-error");
 
 const unAuthorizedError = require("../error/unauthorized-error");
-
-const SALT_ROUNDS = 10;
 
 const {
   HTTP_SUCCESS_OK,
@@ -78,24 +76,44 @@ const createUser = (req, res) => {
   if (!email || !password) {
     return res.status(418).send({ message: "OpS SomEtHiNg wENt WRoNg" });
   }
-
-  return bcrypt.hash(password, SALT_ROUNDS, (error, hash) => {
-    User.findOne({ email }).then((admin) => {
-      if (admin) {
+  User.findOne({ email })
+    .then((user) => {
+      if (user) {
         throw new ConflictError(
           "The user with the provided email already exists"
         );
+      } else {
+        return bcrypt.hash(password, 10);
       }
-      return User.create({ ...req.body, password: hash })
-        .then((admin) => {
-          return res.status(200).send({ admin });
-        })
-        .catch(() => {
-          res.status(HTTP_INTERNAL_SERVER_ERROR).send({ message: "Error" });
-        });
+    })
+    .then((hash) => {
+      User.create({ name, about, avatar, email, password: hash });
+    })
+    .then((admin) => {
+      res.status(201).send({ admin });
+    })
+    .catch(() => {
+      res.status(HTTP_INTERNAL_SERVER_ERROR).send({ message: "why why why" });
     });
-  });
 };
+// return bcrypt.hash(password, SALT_ROUNDS, (error, hash) => {
+//   User.findOne({ email }).then((admin) => {
+//     if (admin) {
+//       throw new ConflictError(
+//         "The user with the provided email already exists"
+//       );
+//     }
+//     return User.create({ name, about, avatar, password: hash })
+//       .then((admin) => {
+//         return res.status(200).send({ admin });
+//       })
+//       .catch(() => {
+//         res
+//           .status(HTTP_INTERNAL_SERVER_ERROR)
+//           .send({ message: "Idk what happened" });
+//       });
+//   });
+// });
 
 const updateUserProfile = (req, res) => {
   const currentUser = req.user._id;

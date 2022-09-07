@@ -8,8 +8,6 @@ const app = express();
 
 const routes = require("./backend/routes/index");
 
-const auth = require("./backend/middleware/auth");
-
 app.use(helmet());
 
 mongoose.connect("mongodb://localhost:27017/react-around-api-full", {
@@ -19,7 +17,6 @@ mongoose.connect("mongodb://localhost:27017/react-around-api-full", {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(auth);
 app.use(routes);
 app.use((req, res, next) => {
   req.user = {

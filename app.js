@@ -1,5 +1,7 @@
 const express = require("express");
 
+require("dotenv").config();
+
 const helmet = require("helmet");
 
 const mongoose = require("mongoose");
@@ -18,16 +20,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(routes);
-app.use((req, res, next) => {
-  req.user = {
-    _id: "6309393aa3874c93a2ab2b11",
-  };
-
-  next();
-});
 
 const { PORT = 3000 } = process.env;
 
 app.listen(PORT, () => {
   console.log(`app is listening`);
 });
+
+const crypto = require("crypto");
+
+const randomString = crypto.randomBytes(16).toString("hex");

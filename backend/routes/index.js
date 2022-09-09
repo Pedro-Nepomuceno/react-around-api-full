@@ -1,13 +1,13 @@
 const router = require("express").Router();
 const auth = require("../middleware/auth");
-const { createUser } = require("../controllers/users");
+const { createUser, login } = require("../controllers/users");
 
 const userRouter = require("./users");
 const cardRouter = require("./cards");
 // const adminRouter = require("./admin");
 
 router.post("/signup", createUser);
-
+router.post("/signin", login);
 router.use(auth);
 router.use("/users", userRouter);
 router.use("/cards", cardRouter);

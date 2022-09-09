@@ -16,6 +16,7 @@ const {
   HTTP_CLIENT_ERROR_NOT_FOUND,
   HTTP_INTERNAL_SERVER_ERROR,
 } = require("../utils/status");
+const UnauthorizedError = require("../error/unauthorized-error");
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -23,17 +24,30 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign(
-        { _id: user._id },
-        NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
-        {
-          expiresIn: "7d",
-        }
-      );
-      res.send({ data: user.toJSON(), token });
+      if (!user) {
+        return Promise.reject(new notFoundError("user not found"));
+      } else {
+        return bcrypt.compare(password, user.password);
+      }
     })
-    .catch(() => {
-      next(new unAuthorizedError("Incorrect email or password"));
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(
+          new UnauthorizedError("credentials doesnt match")
+        );
+      } else {
+        const token = jwt.sign(
+          { _id: user._id },
+          NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
+          {
+            expiresIn: "7d",
+          }
+        );
+        return res.send({ data: user, token });
+      }
+    })
+    .catch((error) => {
+      next(error);
     });
 };
 
@@ -87,33 +101,15 @@ const createUser = (req, res) => {
       }
     })
     .then((hash) => {
-      User.create({ name, about, avatar, email, password: hash });
+      return User.create({ name, about, avatar, email, password: hash });
     })
     .then((admin) => {
       res.status(201).send({ admin });
     })
-    .catch(() => {
-      res.status(HTTP_INTERNAL_SERVER_ERROR).send({ message: "why why why" });
+    .catch((error) => {
+      res.status(HTTP_INTERNAL_SERVER_ERROR).send({ message: error.message });
     });
 };
-// return bcrypt.hash(password, SALT_ROUNDS, (error, hash) => {
-//   User.findOne({ email }).then((admin) => {
-//     if (admin) {
-//       throw new ConflictError(
-//         "The user with the provided email already exists"
-//       );
-//     }
-//     return User.create({ name, about, avatar, password: hash })
-//       .then((admin) => {
-//         return res.status(200).send({ admin });
-//       })
-//       .catch(() => {
-//         res
-//           .status(HTTP_INTERNAL_SERVER_ERROR)
-//           .send({ message: "Idk what happened" });
-//       });
-//   });
-// });
 
 const updateUserProfile = (req, res) => {
   const currentUser = req.user._id;

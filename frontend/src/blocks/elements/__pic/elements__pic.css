@@ -1,9 +1,10 @@
 .elements__pic {
-  display: block;
-  width: 100%;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  margin: 0;
-  padding: 0;
-  height: 282px;
+	display: block;
+	width: 100%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	margin: 0;
+	padding: 0;
+	height: 282px;
+	object-fit: cover;
 }

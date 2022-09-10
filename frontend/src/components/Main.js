@@ -1,26 +1,18 @@
 import React from "react";
-import api from "../utils/api.js";
 import Card from "./Card.js";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 function Main({
 	onEditAvatarClick,
 	onEditProfileClick,
 	onAddPlaceClick,
 	onCardClick,
+	handleCardDelete,
+	handleCardLike,
+	cards,
 }) {
-	const [userName, setUserName] = React.useState("");
-	const [userDescription, setUserDescription] = React.useState("");
-	const [userAvatar, setUserAvatar] = React.useState("");
-	const [cards, setCards] = React.useState([]);
+	const currentuserData = React.useContext(CurrentUserContext);
 
-	React.useEffect(() => {
-		api.getAppInfo().then(([cardData, userData]) => {
-			setCards(cardData);
-			setUserName(userData.name);
-			setUserDescription(userData.about);
-			setUserAvatar(userData.avatar);
-		});
-	}, []);
 	return (
 		<main>
 			<section className="profile">
@@ -29,34 +21,45 @@ function Main({
 						<button
 							type="button"
 							onClick={onEditAvatarClick}
-							className="profile__change-photo"></button>
+							className="profile__change-photo"
+						/>
 					</div>
-					<img
-						className="profile__avatar-pic"
-						src={userAvatar}
-						alt="profile picture"
-					/>
+					{currentuserData.avatar && (
+						<img
+							className="profile__avatar-pic"
+							src={currentuserData.avatar}
+							alt="avatar"
+						/>
+					)}
 				</div>
 				<div className="profile__info">
-					<h1 className="profile__name">{userName}</h1>
-					<p className="profile__text">{userDescription}</p>
+					<h1 className="profile__name">{currentuserData.name}</h1>
+					<p className="profile__text">{currentuserData.about}</p>
 
 					<button
 						onClick={onEditProfileClick}
 						aria-label="Edit"
 						type="button"
-						className="profile__edit"></button>
+						className="profile__edit"
+					/>
 				</div>
 
 				<button
 					onClick={onAddPlaceClick}
 					aria-label="Add"
 					type="button"
-					className="profile__plus"></button>
+					className="profile__plus"
+				/>
 			</section>
 			<section className="elements">
 				{cards.map((card) => (
-					<Card key={card._id} card={card} onCardClick={onCardClick} />
+					<Card
+						key={card._id}
+						card={card}
+						onCardClick={onCardClick}
+						onCardLike={handleCardLike}
+						onCardDelete={handleCardDelete}
+					/>
 				))}
 			</section>
 		</main>

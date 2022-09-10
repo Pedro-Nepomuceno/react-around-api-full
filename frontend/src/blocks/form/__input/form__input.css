@@ -1,0 +1,10 @@
+.form__input {
+	background: transparent;
+	border-bottom: 2px solid #cccccc;
+	border-top-style: hidden;
+	border-right-style: hidden;
+	border-left-style: hidden;
+	margin-top: 30px;
+	color: #ffffff;
+	width: 358px;
+}

@@ -1,0 +1,8 @@
+.form__content {
+	margin: 60px auto 80px;
+	height: calc(100% - 140px);
+	display: flex;
+	flex-direction: column;
+	max-width: 358px;
+	align-items: center;
+}

@@ -1,0 +1,15 @@
+.popup__content_type_image {
+  background: none;
+  padding: 0;
+  max-height: 75vh;
+  max-width: 75vw;
+  width: auto;
+  height: auto;
+  display: flex;
+}
+@media screen and (max-width: 544px) {
+  .popup__content_type_image {
+    width: 240px;
+    height: 299px;
+  }
+}

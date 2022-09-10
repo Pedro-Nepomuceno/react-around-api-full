@@ -1,0 +1,7 @@
+.elements__photo {
+	position: relative;
+	max-width: 282px;
+	border-radius: 10px;
+	height: 361px;
+	cursor: pointer;
+}

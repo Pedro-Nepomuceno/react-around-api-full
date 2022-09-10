@@ -1,0 +1,16 @@
+.elements__info-button {
+	background-color: transparent;
+	background: url(../../../images/heart.svg) no-repeat;
+	display: flex;
+	justify-content: center;
+	align-self: center;
+	border: none;
+	padding: 0;
+	padding-right: 30px;
+	height: 19px;
+	width: 21px;
+}
+.elements__info-button:hover {
+	cursor: pointer;
+	opacity: 0.5;
+}

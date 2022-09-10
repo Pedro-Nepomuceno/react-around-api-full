@@ -1,0 +1,15 @@
+.elements__delete {
+  position: absolute;
+  width: 21px;
+  height: 19px;
+  background: transparent url(../../../images/trash-bin.svg) no-repeat center;
+  background-size: contain;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  top: 16px;
+  right: 16px;
+}
+.elements__delete:hover {
+  opacity: 0.6;
+}

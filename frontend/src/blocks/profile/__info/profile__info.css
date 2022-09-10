@@ -1,0 +1,13 @@
+.profile__info {
+	display: grid;
+	justify-content: flex-start;
+	align-content: flex-start;
+	grid-template-areas:
+		"title button"
+		"subtext subtext";
+}
+@media screen and (max-width: 544px) {
+	.profile__info {
+		padding-left: 0;
+	}
+}

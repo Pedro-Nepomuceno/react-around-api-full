@@ -23,6 +23,10 @@ app.use(routes);
 
 const { PORT = 3000 } = process.env;
 
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: "An error occurred on the server" });
+});
+
 app.listen(PORT, () => {
   console.log(`app is listening`);
 });

@@ -28,7 +28,6 @@ function App() {
   const [loggedIn, setIsLogged] = useState(false);
   const [status, setStatus] = useState(false);
   const [email, setEmail] = React.useState("");
-  const [token, setToken] = useState();
 
   const history = useHistory();
 

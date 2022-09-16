@@ -16,6 +16,8 @@ mongoose.connect("mongodb://localhost:27017/react-around-api-full", {
   useNewUrlParser: true,
 });
 
+const { errors } = require("celebrate");
+
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 app.use(express.json());
@@ -25,6 +27,8 @@ app.use(requestLogger);
 app.use(routes);
 
 app.use(errorLogger);
+
+app.use(errors());
 
 const { PORT = 3000 } = process.env;
 

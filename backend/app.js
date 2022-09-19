@@ -18,7 +18,7 @@ mongoose.connect("mongodb://localhost:27017/react-around-api-full", {
 
 const { errors } = require("celebrate");
 
-const { requestLogger, errorLogger } = require("./middlewares/logger");
+const { requestLogger, errorLogger } = require("./middleware/logger");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

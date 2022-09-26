@@ -12,6 +12,8 @@ const routes = require("./routes/index");
 
 app.use(helmet());
 
+const cors = require("cors");
+
 mongoose.connect("mongodb://localhost:27017/react-around-api-full", {
   useNewUrlParser: true,
 });
@@ -19,6 +21,13 @@ mongoose.connect("mongodb://localhost:27017/react-around-api-full", {
 const { errors } = require("celebrate");
 
 const { requestLogger, errorLogger } = require("./middleware/logger");
+
+const allowedOrigins = [
+  "https://www.pedronepomuceno.students.nomoredomainssbs.ru/",
+  "https://pedronepomuceno.students.nomoredomainssbs.ru/",
+  "http://localhost:3000", // Use the port your frontend is served on
+];
+app.use(cors({ origin: allowedOrigins }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

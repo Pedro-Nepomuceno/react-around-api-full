@@ -25,9 +25,16 @@ const { requestLogger, errorLogger } = require("./middleware/logger");
 const allowedOrigins = [
   "https://www.pedronepomuceno.students.nomoredomainssbs.ru/",
   "https://pedronepomuceno.students.nomoredomainssbs.ru/",
-  "http://localhost:3000", // Use the port your frontend is served on
+  "http://localhost:3001", // Use the port your frontend is served on
 ];
 app.use(cors({ origin: allowedOrigins }));
+app.options("*", cors());
+
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("Server will crash now");
+  }, 0);
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

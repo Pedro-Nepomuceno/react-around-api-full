@@ -71,11 +71,11 @@ class Api {
 
 const BASE_URL =
   process.env.NODE_ENV === "production"
-    ? "https://api.pedronepomuceno.students.nomoredomainssbs.ru/"
+    ? "https://around.nomoreparties.co/v1/group-12"
     : "http://localhost:3000";
 
 const api = new Api({
-  baseUrl: BASE_URL,
+  baseUrl: "https://around.nomoreparties.co/v1/group-12",
   headers: {
     authorization: "b240a05b-bedc-4219-9e26-b0942ecb0fb0",
     "Content-Type": "application/json",

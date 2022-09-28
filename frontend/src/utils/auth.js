@@ -37,8 +37,14 @@ class Auth {
     }).then(this._handleServerResponse);
   }
 }
+
+const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://around.nomoreparties.co/v1/group-12"
+    : "http://localhost:3000";
+
 const auth = new Auth({
-  baseUrl: "https://api.pedronepomuceno.students.nomoredomainssbs.ru/",
+  baseUrl: BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },

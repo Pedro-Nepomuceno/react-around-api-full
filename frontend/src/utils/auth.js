@@ -40,13 +40,14 @@ class Auth {
 
 const BASE_URL =
   process.env.NODE_ENV === "production"
-    ? "https://around.nomoreparties.co/v1/group-12"
+    ? "https://api.pedronepomuceno.students.nomoredomainssbs.ru"
     : "http://localhost:3000";
 
 const auth = new Auth({
   baseUrl: BASE_URL,
   headers: {
     "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": BASE_URL,
   },
 });
 export default auth;

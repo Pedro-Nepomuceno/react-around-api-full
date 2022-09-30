@@ -23,8 +23,8 @@ const { errors } = require("celebrate");
 const { requestLogger, errorLogger } = require("./middleware/logger");
 
 const allowedOrigins = [
-  "https://www.pedronepomuceno.students.nomoredomainssbs.ru/",
-  "https://pedronepomuceno.students.nomoredomainssbs.ru/",
+  "https://www.pedronepomuceno.students.nomoredomainssbs.ru",
+  "https://pedronepomuceno.students.nomoredomainssbs.ru",
   "https://api.pedronepomuceno.students.nomoredomainssbs.ru", // Use the port your frontend is served on
 ];
 app.use(cors({ origin: allowedOrigins }));

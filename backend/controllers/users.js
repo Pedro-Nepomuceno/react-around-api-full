@@ -51,37 +51,26 @@ const login = (req, res, next) => {
     });
 };
 
-const getUsers = (req, res) => {
+const getUsers = (req, res, next) => {
   User.find({})
-    .orFail()
+    .orFail(new notFoundError("User not found"))
     .then((users) => res.status(HTTP_SUCCESS_OK).send(users))
-    .catch(() =>
-      res
-        .status(HTTP_INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occurred on the server" })
-    );
+    .catch(next);
 };
 
-const getUserbyId = (req, res) => {
+const getUserbyId = (req, res, next) => {
   const { userId } = req.params;
 
   User.findById(userId)
-    .orFail()
+    .orFail(new notFoundError("User ID not found"))
     .then((users) => users.find((user) => user._id === req.params.id))
     .then((user) => {
       if (!user) {
-        res
-          .status(HTTP_CLIENT_ERROR_NOT_FOUND)
-          .send({ message: "User ID not found" });
-        return;
+        throw new notFoundError("User ID not found");
       }
       res.status(HTTP_SUCCESS_OK).send(user);
     })
-    .catch(() =>
-      res
-        .status(HTTP_INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occurred on the server" })
-    );
+    .catch(next);
 };
 
 const createUser = (req, res) => {

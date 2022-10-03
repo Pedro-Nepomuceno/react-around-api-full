@@ -151,9 +151,9 @@ function App() {
       .register(email, password)
       .then((res) => {
         if (res.data._id) {
-          history.push("/signin");
           setInfoToolTip(true);
           setStatus(true);
+          history.push("/signin");
           setTimeout(() => {
             handleClosePopup();
           }, 3000);
@@ -215,6 +215,9 @@ function App() {
           </Route>
           <Route path="/signin">
             <Login onSign={onLogin} />
+          </Route>
+          <Route>
+            {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
           </Route>
         </Switch>
         <InfoTooltip

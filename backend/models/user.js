@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "https://pictures.s3.yandex.net/resources/avatar_1604080799.jpg",
     validate: {
-      validator: (v) => urlRegExp.test(v),
+      validator: validator.isURL,
       message: 'The "avatar" must be a valid url',
     },
   },

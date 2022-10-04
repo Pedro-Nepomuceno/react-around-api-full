@@ -78,7 +78,6 @@ const api = new Api({
   baseUrl: BASE_URL,
   headers: {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": BASE_URL,
   },
 });
 export default api;

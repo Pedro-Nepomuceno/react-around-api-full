@@ -1,18 +1,19 @@
-const Card = require('../models/card');
+const Card = require("../models/card");
 const {
   HTTP_SUCCESS_OK,
   HTTP_CLIENT_ERROR_BAD_REQUEST,
   HTTP_CLIENT_ERROR_NOT_FOUND,
   HTTP_INTERNAL_SERVER_ERROR,
-} = require('../utils/status');
+} = require("../utils/status");
 
 const getCards = (req, res) => {
   Card.find({})
+    .orFail(new NotFoundError("Cards are not found"))
     .then((cards) => res.status(HTTP_SUCCESS_OK).send(cards))
     .catch(() => {
       res
         .status(HTTP_INTERNAL_SERVER_ERROR)
-        .send({ messaage: 'An error has occured on the server' });
+        .send({ messaage: "An error has occured on the server" });
     });
 };
 
@@ -22,16 +23,16 @@ const createCard = (req, res) => {
   Card.create({ name, link, owner })
     .then((card) => res.status(HTTP_SUCCESS_OK).send(card))
     .catch((err) => {
-      if (err.name === 'ValidatorError') {
+      if (err.name === "ValidatorError") {
         res.status(HTTP_CLIENT_ERROR_BAD_REQUEST).send({
           message: `${Object.values(err.errors)
             .map((error) => error.message)
-            .join(', ')}`,
+            .join(", ")}`,
         });
       } else {
         res
           .status(HTTP_INTERNAL_SERVER_ERROR)
-          .send({ message: 'An error has occured on the server' });
+          .send({ message: "An error has occured on the server" });
       }
     });
 };
@@ -42,18 +43,18 @@ const deleteCard = (req, res) => {
     .orFail()
     .then((card) => res.status(HTTP_SUCCESS_OK).send(card))
     .catch((err) => {
-      if (err.name === 'CardNotFoundError') {
+      if (err.name === "CardNotFoundError") {
         res
           .status(HTTP_CLIENT_ERROR_NOT_FOUND)
-          .send({ message: 'Card not found' });
-      } else if (err.name === 'CastError') {
+          .send({ message: "Card not found" });
+      } else if (err.name === "CastError") {
         res
           .status(HTTP_CLIENT_ERROR_BAD_REQUEST)
-          .send({ message: 'Invalid Card ID passed for deleting a card' });
+          .send({ message: "Invalid Card ID passed for deleting a card" });
       } else {
         res
           .status(HTTP_INTERNAL_SERVER_ERROR)
-          .send({ message: 'An error has occured on the server' });
+          .send({ message: "An error has occured on the server" });
       }
     });
 };
@@ -70,17 +71,17 @@ const likeCard = (req, res) => {
     .orFail()
     .then((card) => res.status(HTTP_SUCCESS_OK).send({ data: card }))
     .catch((err) => {
-      if (err.name === 'DocumentNotFoundError') {
+      if (err.name === "DocumentNotFoundError") {
         res
           .status(HTTP_CLIENT_ERROR_NOT_FOUND)
-          .send({ message: ' Card not found' });
-      } else if (err.name === 'CastError') {
+          .send({ message: " Card not found" });
+      } else if (err.name === "CastError") {
         res.status(HTTP_CLIENT_ERROR_BAD_REQUEST).send({
-          message: 'Invalid Card ID passed for liking a card',
+          message: "Invalid Card ID passed for liking a card",
         });
       } else {
         res.status(HTTP_INTERNAL_SERVER_ERROR).send({
-          message: ' An error has occurred on the server',
+          message: " An error has occurred on the server",
         });
       }
     });
@@ -98,17 +99,17 @@ const dislikeCard = (req, res) => {
     .orFail()
     .then((card) => res.status(HTTP_SUCCESS_OK).send({ data: card }))
     .catch((err) => {
-      if (err.name === 'DocumentNotFoundError') {
+      if (err.name === "DocumentNotFoundError") {
         res
           .status(HTTP_CLIENT_ERROR_NOT_FOUND)
-          .send({ message: 'Card not found' });
-      } else if (err.name === 'CastError') {
+          .send({ message: "Card not found" });
+      } else if (err.name === "CastError") {
         res.status(HTTP_CLIENT_ERROR_BAD_REQUEST).send({
-          message: 'Invalid Card ID passed for disliking a card',
+          message: "Invalid Card ID passed for disliking a card",
         });
       } else {
         res.status(HTTP_INTERNAL_SERVER_ERROR).send({
-          message: 'An error has occurred on the server',
+          message: "An error has occurred on the server",
         });
       }
     });

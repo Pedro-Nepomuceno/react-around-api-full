@@ -58,6 +58,13 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
+const getCurrentUser = (req, res, next) => {
+  User.findById(req.user._id)
+    .orFail(new NotFoundError("User ID not found"))
+    .then((user) => res.status(HTTP_SUCCESS_OK).send(user))
+    .catch(next);
+};
+
 const getUserbyId = (req, res, next) => {
   const { userId } = req.params;
 
@@ -177,6 +184,7 @@ const updateAvatar = (req, res) => {
 module.exports = {
   login,
   getUsers,
+  getCurrentUser,
   getUserbyId,
   createUser,
   updateUserProfile,

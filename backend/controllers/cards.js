@@ -6,15 +6,11 @@ const {
   HTTP_INTERNAL_SERVER_ERROR,
 } = require("../utils/status");
 
-const getCards = (req, res) => {
-  Card.find({})
+const getCards = (req, res, next) => {
+  Card.find()
     .orFail(new NotFoundError("Cards are not found"))
     .then((cards) => res.status(HTTP_SUCCESS_OK).send(cards))
-    .catch(() => {
-      res
-        .status(HTTP_INTERNAL_SERVER_ERROR)
-        .send({ messaage: "An error has occured on the server" });
-    });
+    .catch(next);
 };
 
 const createCard = (req, res) => {

@@ -21,6 +21,8 @@ mongoose.connect("mongodb://localhost:27017/react-around-api-full", {
 const { errors } = require("celebrate");
 
 const { requestLogger, errorLogger } = require("./middleware/logger");
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const allowedOrigins = [
   "https://www.pedronepomuceno.students.nomoredomainssbs.ru",
@@ -30,15 +32,13 @@ const allowedOrigins = [
 app.use(cors({ origin: allowedOrigins }));
 app.options("*", cors());
 
+app.use(requestLogger);
+
 app.get("/crash-test", () => {
   setTimeout(() => {
     throw new Error("Server will crash now");
   }, 0);
 });
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(requestLogger);
 
 app.use(routes);
 
@@ -49,6 +49,7 @@ app.use(errors());
 const { PORT = 3000 } = process.env;
 
 app.use((err, req, res, next) => {
+  console.log(err);
   res.status(500).send({ message: "An error occurred on the server" });
 });
 

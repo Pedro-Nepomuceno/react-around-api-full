@@ -77,7 +77,6 @@ const BASE_URL =
 const api = new Api({
   baseUrl: BASE_URL,
   headers: {
-    authorization: "b240a05b-bedc-4219-9e26-b0942ecb0fb0",
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": BASE_URL,
   },

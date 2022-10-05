@@ -1,3 +1,5 @@
+const NotFoundError = require("../error/not-found-error");
+
 const Card = require("../models/card");
 const {
   HTTP_SUCCESS_OK,

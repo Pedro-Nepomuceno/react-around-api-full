@@ -24,48 +24,17 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      console.log("bcrypt", bcrypt.compare(password, user.password));
-      if (!user) {
-        return Promise.reject(new notFoundError("user not found"));
-      } else {
-        return bcrypt.compare(password, user.password);
-      }
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
+        {
+          expiresIn: "7d",
+        }
+      );
+
+      return res.send({ data: user.toJSON(), token });
     })
-    .then((isCorrect) => {
-      if (isCorrect) {
-        return user;
-      } else {
-        return new UnauthorizedError("credentials doesnt match");
-      }
-    })
-    .then((user) => {
-      console.log({ user });
-      if (!user) {
-        return Promise.reject(
-          new UnauthorizedError("credentials doesnt match")
-        );
-      } else {
-        const token = jwt.sign(
-          { _id: user._id },
-          NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
-          {
-            expiresIn: "7d",
-          }
-        );
-        console.log(
-          "try",
-          { _id: user._id },
-          NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
-          {
-            expiresIn: "7d",
-          }
-        );
-        return res.send({ data: user, token });
-      }
-    })
-    .catch((error) => {
-      next(error);
-    });
+    .catch(next);
 };
 
 const getUsers = (req, res, next) => {

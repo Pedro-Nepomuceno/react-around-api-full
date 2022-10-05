@@ -37,7 +37,7 @@ const login = (req, res, next) => {
       }
     })
     .then((user) => {
-      console.log(user);
+      console.log({ user });
       if (!user) {
         return Promise.reject(
           new UnauthorizedError("credentials doesnt match")
@@ -51,6 +51,7 @@ const login = (req, res, next) => {
           }
         );
         console.log(
+          "try",
           { _id: user._id },
           NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
           {

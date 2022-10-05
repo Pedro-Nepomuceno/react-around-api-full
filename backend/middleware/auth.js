@@ -14,6 +14,8 @@ const auth = (req, res, next) => {
 
   const token = authorization.replace("Bearer ", "");
   let payload;
+  console.log(token);
+  console.log(JWT_SECRET);
 
   try {
     payload = jwt.verify(token, JWT_SECRET);

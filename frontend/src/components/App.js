@@ -4,7 +4,7 @@ import Main from "./Main.js";
 import Footer from "./Footer.js";
 import ImagePopup from "./ImagePopup.js";
 import React from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, Redirect } from "react-router-dom";
 import api from "../utils/api";
 import auth from "../utils/auth.js";
 import { Register } from "./Register.js";

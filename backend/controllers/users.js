@@ -32,10 +32,7 @@ const login = (req, res, next) => {
           expiresIn: "7d",
         }
       );
-      console.log(
-        "firstjwt",
-        NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
-      );
+      console.log("firstjwt", NODE_ENV);
       return res.send({ data: user.toJSON(), token });
     })
     .catch(next);

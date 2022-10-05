@@ -24,7 +24,7 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      console.log(bcrypt.compare(password, user.password));
+      console.log("bcrypt", bcrypt.compare(password, user.password));
       if (!user) {
         return Promise.reject(new notFoundError("user not found"));
       } else {

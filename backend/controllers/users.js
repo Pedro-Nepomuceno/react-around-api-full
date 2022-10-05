@@ -24,6 +24,7 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
+      console.log({ user });
       const token = jwt.sign(
         { _id: user._id },
         NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
@@ -31,7 +32,10 @@ const login = (req, res, next) => {
           expiresIn: "7d",
         }
       );
-
+      console.log(
+        "firstjwt",
+        NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
+      );
       return res.send({ data: user.toJSON(), token });
     })
     .catch(next);

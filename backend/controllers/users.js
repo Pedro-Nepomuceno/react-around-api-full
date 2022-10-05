@@ -43,7 +43,6 @@ const login = (req, res, next) => {
 
 const getUsers = (req, res, next) => {
   User.find({})
-    .orFail(new notFoundError("User not found"))
     .then((users) => res.status(HTTP_SUCCESS_OK).send(users))
     .catch(next);
 };

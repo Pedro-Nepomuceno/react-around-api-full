@@ -28,12 +28,14 @@ const login = (req, res, next) => {
       if (!user) {
         return Promise.reject(new notFoundError("user not found"));
       } else {
-        bcrypt.compare(password, user.password);
-        if (bcrypt.compare(password, user.password)) {
-          return user;
-        } else {
-          return new UnauthorizedError("credentials doesnt match");
-        }
+        return bcrypt.compare(password, user.password);
+      }
+    })
+    .then((isCorrect) => {
+      if (isCorrect) {
+        return user;
+      } else {
+        return new UnauthorizedError("credentials doesnt match");
       }
     })
     .then((user) => {

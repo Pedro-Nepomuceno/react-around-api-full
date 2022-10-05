@@ -43,6 +43,13 @@ const login = (req, res, next) => {
             expiresIn: "7d",
           }
         );
+        console.log(
+          { _id: user._id },
+          NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
+          {
+            expiresIn: "7d",
+          }
+        );
         return res.send({ data: user, token });
       }
     })

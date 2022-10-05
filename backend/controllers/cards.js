@@ -10,7 +10,6 @@ const {
 
 const getCards = (req, res, next) => {
   Card.find({})
-    .orFail(new NotFoundError("Cards are not found"))
     .then((cards) => res.status(HTTP_SUCCESS_OK).send(cards))
     .catch(next);
 };

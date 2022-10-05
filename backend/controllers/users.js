@@ -31,6 +31,7 @@ const login = (req, res, next) => {
       }
     })
     .then((user) => {
+      console.log(user);
       if (!user) {
         return Promise.reject(
           new UnauthorizedError("credentials doesnt match")

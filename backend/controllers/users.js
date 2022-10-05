@@ -24,10 +24,16 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
+      console.log(bcrypt.compare(password, user.password));
       if (!user) {
         return Promise.reject(new notFoundError("user not found"));
       } else {
-        return bcrypt.compare(password, user.password);
+        bcrypt.compare(password, user.password);
+        if (bcrypt.compare(password, user.password)) {
+          return user;
+        } else {
+          return new UnauthorizedError("credentials doesnt match");
+        }
       }
     })
     .then((user) => {

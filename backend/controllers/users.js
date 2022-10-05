@@ -4,11 +4,11 @@ const jwt = require("jsonwebtoken");
 
 const ConflictError = require("../error/conflict-error");
 
-const notFoundError = require("../error/not-found-error");
+const NotFoundError = require("../error/not-found-error");
 
-const badRequestError = require("../error/bad-request-error");
+const BadRequestError = require("../error/bad-request-error");
 
-const unAuthorizedError = require("../error/unauthorized-error");
+const UnAuthorizedError = require("../error/unauthorized-error");
 
 const {
   HTTP_SUCCESS_OK,
@@ -58,11 +58,11 @@ const getUserbyId = (req, res, next) => {
   const { userId } = req.params;
 
   User.findById(userId)
-    .orFail(new notFoundError("User ID not found"))
+    .orFail(new NotFoundError("User ID not found"))
     .then((users) => users.find((user) => user._id === req.params.id))
     .then((user) => {
       if (!user) {
-        throw new notFoundError("User ID not found");
+        throw new NotFoundError("User ID not found");
       }
       res.status(HTTP_SUCCESS_OK).send(user);
     })

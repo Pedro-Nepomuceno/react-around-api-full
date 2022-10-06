@@ -14,22 +14,20 @@ const getCards = (req, res, next) => {
     .catch(next);
 };
 
-const createCard = (req, res) => {
+const createCard = (req, res, next) => {
   const { name, link } = req.body;
+
   const owner = req.user._id;
+  console.log(name);
+  console.log(link);
+  console.log(owner);
   Card.create({ name, link, owner })
     .then((card) => res.status(HTTP_SUCCESS_OK).send(card))
     .catch((err) => {
-      if (err.name === "ValidatorError") {
-        res.status(HTTP_CLIENT_ERROR_BAD_REQUEST).send({
-          message: `${Object.values(err.errors)
-            .map((error) => error.message)
-            .join(", ")}`,
-        });
+      if (err.name === "ValidationError") {
+        next(new NotFoundError("Invalid login credentials"));
       } else {
-        res
-          .status(HTTP_INTERNAL_SERVER_ERROR)
-          .send({ message: "An error has occured on the server" });
+        next(err);
       }
     });
 };

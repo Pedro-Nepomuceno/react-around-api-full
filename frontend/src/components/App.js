@@ -138,7 +138,7 @@ function App() {
   function handleAddPlaceSubmit(newCard) {
     console.log("newcard", newCard);
     api
-      .addNewCard({ newCard }, localStorage.getItem("jwt"))
+      .addNewCard(newCard, localStorage.getItem("jwt"))
       .then((data) => {
         console.log({ data });
         setCards([data, ...cards]);

@@ -36,6 +36,7 @@ class Api {
   addNewCard({ name, link }, token) {
     console.log(name);
     console.log(link);
+    console.log("tokenfi", token);
     return fetch(`${this.baseUrl}/cards`, {
       method: "POST",
       headers: { authorization: `Bearer ${token}`, ...this.headers },

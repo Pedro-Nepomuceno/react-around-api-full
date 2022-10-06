@@ -24,6 +24,7 @@ const createCard = (req, res, next) => {
   Card.create({ name, link, owner })
     .then((card) => res.status(HTTP_SUCCESS_OK).send(card))
     .catch((err) => {
+      console.log("err", err.name);
       if (err.name === "ValidationError") {
         next(new NotFoundError("Invalid login credentials"));
       } else {

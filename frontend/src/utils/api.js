@@ -55,7 +55,7 @@ class Api {
     console.log(id);
     console.log(like);
     console.log("tokephoto", token);
-    return fetch(`${this.baseUrl}/cards/likes/${id}`, {
+    return fetch(`${this.baseUrl}/cards/${id}/likes`, {
       method: like ? "DELETE" : "PUT",
       headers: { authorization: `Bearer ${token}`, ...this.headers },
     }).then(this._handleServerResponse);

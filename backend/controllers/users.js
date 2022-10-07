@@ -136,6 +136,7 @@ const updateUserProfile = (req, res) => {
 const updateAvatar = (req, res) => {
   const currentUser = req.user._id;
   const { avatar } = req.body;
+  console.log("currentuser", currentUser, avatar);
 
   User.findOneAndUpdate(
     currentUser,
@@ -145,28 +146,10 @@ const updateAvatar = (req, res) => {
       runValidators: true,
     }
   )
-    .orFail()
+    .orFail(new BadRequestError())
     .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
     .catch((err) => {
-      if (err.name === "DocumentNotFoundError") {
-        res
-          .status(HTTP_CLIENT_ERROR_NOT_FOUND)
-          .send({ message: "User not found" });
-      } else if (err.name === "ValidationError") {
-        res.status(HTTP_CLIENT_ERROR_BAD_REQUEST).send({
-          message: `${Object.values(err.errors)
-            .map((error) => error.message)
-            .join(", ")}`,
-        });
-      } else if (err.name === "CastError") {
-        res.status(HTTP_CLIENT_ERROR_BAD_REQUEST).send({
-          message: "Invalid avatar link passed for updation",
-        });
-      } else {
-        res.status(HTTP_INTERNAL_SERVER_ERROR).send({
-          message: "An error has occurred on the server",
-        });
-      }
+      console.log(err);
     });
 };
 

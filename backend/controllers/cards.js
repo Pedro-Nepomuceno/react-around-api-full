@@ -31,32 +31,18 @@ const createCard = (req, res, next) => {
     });
 };
 
-const deleteCard = (req, res) => {
+const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   Card.findByIdAndDelete(cardId)
     .orFail()
     .then((card) => res.status(HTTP_SUCCESS_OK).send(card))
-    .catch((err) => {
-      if (err.name === "CardNotFoundError") {
-        res
-          .status(HTTP_CLIENT_ERROR_NOT_FOUND)
-          .send({ message: "Card not found" });
-      } else if (err.name === "CastError") {
-        res
-          .status(HTTP_CLIENT_ERROR_BAD_REQUEST)
-          .send({ message: "Invalid Card ID passed for deleting a card" });
-      } else {
-        res
-          .status(HTTP_INTERNAL_SERVER_ERROR)
-          .send({ message: "An error has occured on the server" });
-      }
-    });
+    .catch(next);
 };
 
-const likeCard = (req, res) => {
+const likeCard = (req, res, next) => {
   const currentUser = req.user._id;
   const { cardId } = req.params;
-  console.log("currentuser", currentUser, { cardId });
+  console.log("CURRENTUSER", currentUser, { cardId });
   Card.findByIdAndUpdate(
     cardId,
     { $addToSet: { likes: currentUser } },
@@ -64,24 +50,10 @@ const likeCard = (req, res) => {
   )
     .orFail(new UnauthorizedError())
     .then((card) => res.status(HTTP_SUCCESS_OK).send(card))
-    .catch((err) => {
-      if (err.name === "DocumentNotFoundError") {
-        res
-          .status(HTTP_CLIENT_ERROR_NOT_FOUND)
-          .send({ message: " Card not found" });
-      } else if (err.name === "CastError") {
-        res.status(HTTP_CLIENT_ERROR_BAD_REQUEST).send({
-          message: "Invalid Card ID passed for liking a card",
-        });
-      } else {
-        res.status(HTTP_INTERNAL_SERVER_ERROR).send({
-          message: " An error has occurred on the server",
-        });
-      }
-    });
+    .catch(next);
 };
 
-const dislikeCard = (req, res) => {
+const dislikeCard = (req, res, next) => {
   const currentUser = req.user._id;
   const { cardId } = req.params;
 
@@ -90,23 +62,9 @@ const dislikeCard = (req, res) => {
     { $pull: { likes: currentUser } },
     { new: true }
   )
-    .orFail()
-    .then((card) => res.status(HTTP_SUCCESS_OK).send({ data: card }))
-    .catch((err) => {
-      if (err.name === "DocumentNotFoundError") {
-        res
-          .status(HTTP_CLIENT_ERROR_NOT_FOUND)
-          .send({ message: "Card not found" });
-      } else if (err.name === "CastError") {
-        res.status(HTTP_CLIENT_ERROR_BAD_REQUEST).send({
-          message: "Invalid Card ID passed for disliking a card",
-        });
-      } else {
-        res.status(HTTP_INTERNAL_SERVER_ERROR).send({
-          message: "An error has occurred on the server",
-        });
-      }
-    });
+    .orFail(new UnauthorizedError())
+    .then((card) => res.status(HTTP_SUCCESS_OK).send(card))
+    .catch(next);
 };
 
 module.exports = {

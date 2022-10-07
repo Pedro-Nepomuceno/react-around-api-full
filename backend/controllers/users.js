@@ -147,7 +147,7 @@ const updateAvatar = (req, res) => {
     }
   )
     .orFail(new BadRequestError())
-    .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
+    .then((user) => res.status(HTTP_SUCCESS_OK).send(user))
     .catch((err) => {
       console.log(err);
     });

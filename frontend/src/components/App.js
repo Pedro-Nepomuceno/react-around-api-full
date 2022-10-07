@@ -95,8 +95,9 @@ function App() {
   }
   function handleUpdateAvatar(userPicture) {
     api
-      .editProfilePic({ userPicture }, localStorage.getItem("jwt"))
+      .editProfilePic(userPicture, localStorage.getItem("jwt"))
       .then((data) => {
+        console.log({ data });
         setCurrentUser(data);
         setIsAvatarPopupOpen(false);
       })

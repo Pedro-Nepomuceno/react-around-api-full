@@ -1,4 +1,5 @@
 const NotFoundError = require("../error/not-found-error");
+const UnauthorizedError = require("../error/unauthorized-error");
 
 const Card = require("../models/card");
 const {
@@ -55,14 +56,14 @@ const deleteCard = (req, res) => {
 const likeCard = (req, res) => {
   const currentUser = req.user._id;
   const { cardId } = req.params;
-
+  console.log("currentuser", currentUser, { cardId });
   Card.findByIdAndUpdate(
     cardId,
     { $addToSet: { likes: currentUser } },
     { new: true }
   )
-    .orFail()
-    .then((card) => res.status(HTTP_SUCCESS_OK).send({ data: card }))
+    .orFail(new UnauthorizedError())
+    .then((card) => res.status(HTTP_SUCCESS_OK).send(card))
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
         res

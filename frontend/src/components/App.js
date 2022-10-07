@@ -125,6 +125,7 @@ function App() {
     api
       .handleLikePhoto(card._id, isLiked, localStorage.getItem("jwt"))
       .then((newCard) => {
+        console.log({ newCard });
         setCards((state) =>
           state.map((currentCard) =>
             currentCard._id === card._id ? newCard : currentCard

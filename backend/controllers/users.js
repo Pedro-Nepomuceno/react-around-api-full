@@ -24,7 +24,6 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      console.log({ user });
       const token = jwt.sign(
         { _id: user._id },
         NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
@@ -32,10 +31,7 @@ const login = (req, res, next) => {
           expiresIn: "7d",
         }
       );
-      console.log(
-        "firstjwt",
-        NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
-      );
+
       return res.send({ data: user.toJSON(), token });
     })
     .catch(next);
@@ -96,7 +92,7 @@ const createUser = (req, res) => {
     });
 };
 
-const updateUserProfile = (req, res) => {
+const updateUserProfile = (req, res, next) => {
   const currentUser = req.user._id;
   const { name, about } = req.body;
 
@@ -108,29 +104,9 @@ const updateUserProfile = (req, res) => {
       runValidators: true,
     }
   )
-    .orFail()
-    .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
-    .catch((err) => {
-      if (err.name === "DocumentNotFoundError") {
-        res
-          .status(HTTP_CLIENT_ERROR_NOT_FOUND)
-          .send({ message: " User not found" });
-      } else if (err.name === "ValidationError") {
-        res.status(HTTP_CLIENT_ERROR_BAD_REQUEST).send({
-          message: `${Object.values(err.errors)
-            .map((error) => error.message)
-            .join(", ")}`,
-        });
-      } else if (err.name === "CastError") {
-        res.status(HTTP_CLIENT_ERROR_BAD_REQUEST).send({
-          message: "Invalid User ID passed for updation",
-        });
-      } else {
-        res.status(HTTP_INTERNAL_SERVER_ERROR).send({
-          message: "An error has occurred on the server",
-        });
-      }
-    });
+    .orFail(new BadRequestError())
+    .then((user) => res.status(HTTP_SUCCESS_OK).send(user))
+    .catch(next);
 };
 
 const updateAvatar = (req, res) => {

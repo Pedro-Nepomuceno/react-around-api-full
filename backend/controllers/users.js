@@ -112,7 +112,6 @@ const updateUserProfile = (req, res, next) => {
 const updateAvatar = (req, res) => {
   const currentUser = req.user._id;
   const { avatar } = req.body;
-  console.log("currentuser", currentUser, { avatar });
 
   User.findByIdAndUpdate(
     currentUser,

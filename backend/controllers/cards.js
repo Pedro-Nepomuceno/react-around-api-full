@@ -42,7 +42,8 @@ const deleteCard = (req, res, next) => {
 const likeCard = (req, res, next) => {
   const currentUser = req.user._id;
   const { cardId } = req.params;
-  console.log("CURRENTUSER", currentUser, { cardId });
+  console.log("CURRENTUSER", currentUser);
+  console.log("CARDID", { cardId });
   Card.findByIdAndUpdate(
     cardId,
     { $addToSet: { likes: currentUser } },

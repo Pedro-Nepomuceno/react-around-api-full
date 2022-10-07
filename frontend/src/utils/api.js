@@ -34,9 +34,6 @@ class Api {
   }
 
   addNewCard({ name, link }, token) {
-    console.log(name);
-    console.log(link);
-    console.log("tokenfi", token);
     return fetch(`${this.baseUrl}/cards`, {
       method: "POST",
       headers: { authorization: `Bearer ${token}`, ...this.headers },
@@ -55,6 +52,9 @@ class Api {
   }
 
   handleLikePhoto(id, like, token) {
+    console.log(id);
+    console.log(like);
+    console.log("tokephoto", token);
     return fetch(`${this.baseUrl}/cards/likes/${id}`, {
       method: like ? "DELETE" : "PUT",
       headers: { authorization: `Bearer ${token}`, ...this.headers },

@@ -22,7 +22,12 @@ router.delete(
   validateCardId,
   deleteCard
 );
-router.put("/:cardId/likes", validateRequestAuth, validateCardId, likeCard);
+router.put(
+  "/cards/:cardId/likes",
+  validateRequestAuth,
+  validateCardId,
+  likeCard
+);
 router.delete(
   "/:cardId/likes",
   validateRequestAuth,

@@ -47,6 +47,7 @@ class Api {
   }
 
   deleteCard(id, token) {
+    console.log("idApi", id);
     return fetch(`${this.baseUrl}/cards/${id}`, {
       method: "DELETE",
       headers: { authorization: `Bearer ${token}`, ...this.headers },

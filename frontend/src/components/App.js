@@ -106,6 +106,7 @@ function App() {
   }
 
   function handleCardDelete(card) {
+    console.log("card.id", card._id);
     api
       .deleteCard(card._id, localStorage.getItem("jwt"))
       .then(() => {

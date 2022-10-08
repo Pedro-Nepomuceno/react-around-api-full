@@ -95,7 +95,8 @@ const createUser = (req, res) => {
 const updateUserProfile = (req, res, next) => {
   const currentUser = req.user._id;
   const { name, about } = req.body;
-
+  console.log("name", name);
+  console.log("about", about);
   User.findByIdAndUpdate(
     currentUser,
     { name, about },

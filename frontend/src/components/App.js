@@ -84,7 +84,7 @@ function App() {
   }
   function handleUpdateUser(user) {
     api
-      .setUserProfile({ user }, localStorage.getItem("jwt"))
+      .setUserProfile(user, localStorage.getItem("jwt"))
       .then((data) => {
         setCurrentUser(data);
         setEditProfilePopupOpen(false);
@@ -97,7 +97,6 @@ function App() {
     api
       .editProfilePic(userPicture, localStorage.getItem("jwt"))
       .then((data) => {
-        console.log({ data });
         setCurrentUser(data);
         setIsAvatarPopupOpen(false);
       })

@@ -23,6 +23,8 @@ class Api {
   }
 
   setUserProfile({ name, about }, token) {
+    console.log({ name });
+    console.log(about);
     return fetch(`${this.baseUrl}/users/me`, {
       method: "PATCH",
       headers: { authorization: `Bearer ${token}`, ...this.headers },

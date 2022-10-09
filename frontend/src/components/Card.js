@@ -3,13 +3,11 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 export function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   const currentUser = React.useContext(CurrentUserContext);
-  console.log(card);
   const isOwn = card.owner === currentUser._id;
   const cardDeleteButtonClassName = `elements__delete ${
     isOwn ? "elements__delete" : "elements__delete_hidden"
   }`;
   const isLiked = card.likes.some((user) => user === currentUser._id);
-  console.log(isLiked);
 
   const cardLikeButtonClassName = `elements__info-button ${
     isLiked ? "elements__info-button_active" : ""

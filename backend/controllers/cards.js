@@ -33,9 +33,7 @@ const createCard = (req, res, next) => {
 
 const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
-  console.log(req.params);
-  console.log(req.params.id);
-  console.log({ cardId });
+
   Card.findByIdAndDelete(req.params.id)
     .orFail()
     .then((card) => res.status(HTTP_SUCCESS_OK).send(card))

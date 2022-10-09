@@ -36,7 +36,7 @@ const deleteCard = (req, res, next) => {
   console.log(req.params);
   console.log(req.params.id);
   console.log({ cardId });
-  Card.findByIdAndDelete(cardId)
+  Card.findByIdAndDelete(req.params.id)
     .orFail()
     .then((card) => res.status(HTTP_SUCCESS_OK).send(card))
     .catch(next);
@@ -44,9 +44,9 @@ const deleteCard = (req, res, next) => {
 
 const likeCard = (req, res, next) => {
   const currentUser = req.user._id;
-  const { id } = req.params._id;
+  const id = req.params.id;
   console.log("CURRENTUSER", currentUser);
-  console.log("CARDID", { id });
+  console.log("CARDID", id);
   Card.findByIdAndUpdate(
     id,
     { $addToSet: { likes: currentUser } },

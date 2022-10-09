@@ -23,8 +23,6 @@ class Api {
   }
 
   setUserProfile({ name, about }, token) {
-    console.log({ name });
-    console.log(about);
     return fetch(`${this.baseUrl}/users/me`, {
       method: "PATCH",
       headers: { authorization: `Bearer ${token}`, ...this.headers },
@@ -47,7 +45,6 @@ class Api {
   }
 
   deleteCard(id, token) {
-    console.log("idApi", id);
     return fetch(`${this.baseUrl}/cards/${id}`, {
       method: "DELETE",
       headers: { authorization: `Bearer ${token}`, ...this.headers },
@@ -55,9 +52,6 @@ class Api {
   }
 
   handleLikePhoto(id, like, token) {
-    console.log(id);
-    console.log(like);
-    console.log("tokephoto", token);
     return fetch(`${this.baseUrl}/cards/${id}/likes`, {
       method: like ? "DELETE" : "PUT",
       headers: { authorization: `Bearer ${token}`, ...this.headers },

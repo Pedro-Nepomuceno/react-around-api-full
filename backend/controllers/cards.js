@@ -62,7 +62,7 @@ const likeCard = (req, res, next) => {
     { $addToSet: { likes: currentUser } },
     { new: true }
   )
-    .orFail(new UnauthorizedError())
+    .orFail(() => new NotFoundError("Card ID not found"))
     .then((card) => res.status(HTTP_SUCCESS_OK).send(card))
     .catch(next);
 };
@@ -76,7 +76,7 @@ const dislikeCard = (req, res, next) => {
     { $pull: { likes: currentUser } },
     { new: true }
   )
-    .orFail(new UnauthorizedError())
+    .orFail(() => new NotFoundError("Card ID not found"))
     .then((card) => res.status(HTTP_SUCCESS_OK).send(card))
     .catch(next);
 };

@@ -12,6 +12,10 @@ const routes = require("./routes/index");
 
 app.use(helmet());
 
+const rateLimiter = require("./middleware/rateLimiter");
+
+app.use(rateLimiter);
+
 const cors = require("cors");
 
 mongoose.connect("mongodb://localhost:27017/react-around-api-full", {

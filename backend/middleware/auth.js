@@ -6,16 +6,12 @@ const UnauthorizedError = require("../error/unauthorized-error");
 const auth = (req, res, next) => {
   const { authorization } = req.headers;
 
-  console.log(req.headers);
-
   if (!authorization || !authorization.startsWith("Bearer ")) {
     return next(new UnauthorizedError("Authorization Required"));
   }
 
   const token = authorization.replace("Bearer ", "");
   let payload;
-  console.log(token);
-  console.log(JWT_SECRET);
 
   try {
     payload = jwt.verify(token, JWT_SECRET);

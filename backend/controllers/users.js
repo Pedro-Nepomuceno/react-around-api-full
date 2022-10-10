@@ -87,14 +87,12 @@ const createUser = (req, res) => {
       return User.create({ name, about, avatar, email, password: hash });
     })
     .then((admin) => {
-      res
-        .status(201)
-        .send({
-          name: admin.name,
-          about: admin.about,
-          avatar: admin.avatar,
-          email: admin.email,
-        });
+      res.status(201).send({
+        name: admin.name,
+        about: admin.about,
+        avatar: admin.avatar,
+        email: admin.email,
+      });
     })
     .catch((error) => {
       res.status(HTTP_INTERNAL_SERVER_ERROR).send({ message: error.message });
@@ -114,7 +112,7 @@ const updateUserProfile = (req, res, next) => {
       runValidators: true,
     }
   )
-    .orFail(new BadRequestError())
+    .orFail(() => new NotFoundError("User ID not found"))
     .then((user) => res.status(HTTP_SUCCESS_OK).send(user))
     .catch(next);
 };
@@ -131,7 +129,7 @@ const updateAvatar = (req, res) => {
       runValidators: true,
     }
   )
-    .orFail(new BadRequestError())
+    .orFail(() => new NotFoundError("User ID not found"))
     .then((user) => res.status(HTTP_SUCCESS_OK).send(user))
     .catch((err) => {
       console.log(err);

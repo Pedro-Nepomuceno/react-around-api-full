@@ -4,6 +4,8 @@ require("dotenv").config();
 
 const helmet = require("helmet");
 
+const errorHandling = require("./middleware/errorHandling");
+
 const mongoose = require("mongoose");
 
 const app = express();
@@ -52,10 +54,7 @@ app.use(errors());
 
 const { PORT = 3000 } = process.env;
 
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(500).send({ message: "An error occurred on the server" });
-});
+app.use(errorHandling);
 
 app.listen(PORT, () => {
   console.log(`app is listening`);

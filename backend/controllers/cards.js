@@ -1,5 +1,6 @@
 const NotFoundError = require("../error/not-found-error");
 const UnauthorizedError = require("../error/unauthorized-error");
+const BadRequestError = require("../error/bad-request-error");
 
 const Card = require("../models/card");
 const {
@@ -24,7 +25,7 @@ const createCard = (req, res, next) => {
     .then((card) => res.status(HTTP_SUCCESS_OK).send(card))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        next(new NotFoundError("Invalid login credentials"));
+        next(new BadRequestError("Invalid data"));
       } else {
         next(err);
       }
@@ -33,10 +34,22 @@ const createCard = (req, res, next) => {
 
 const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
+  Card.findById(req.params.id)
+    .orFail(() => {
+      new NotFoundError("Card ID not found");
+    })
+    .then((card) => {
+      if (!(card.owner.toString() === req.user._id)) {
+        throw new UnauthorizedError("Dont have permission to delete");
+      }
+      Card.findByIdAndDelete(req.params.id)
+        .orFail(() => {
+          new NotFoundError("Card ID not found");
+        })
+        .then((card) => res.status(HTTP_SUCCESS_OK).send(card))
+        .catch(next);
+    })
 
-  Card.findByIdAndDelete(req.params.id)
-    .orFail()
-    .then((card) => res.status(HTTP_SUCCESS_OK).send(card))
     .catch(next);
 };
 

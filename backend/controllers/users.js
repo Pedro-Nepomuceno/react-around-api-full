@@ -51,7 +51,7 @@ const getCurrentUser = (req, res, next) => {
 };
 
 const getUserbyId = (req, res, next) => {
-  const { userId } = req.params.id;
+  const { userId } = req.user._id;
 
   User.findById(userId)
     .orFail(new NotFoundError("User ID not found"))
@@ -87,7 +87,14 @@ const createUser = (req, res) => {
       return User.create({ name, about, avatar, email, password: hash });
     })
     .then((admin) => {
-      res.status(201).send(admin.name, admin.about, admin.avatar, admin.email);
+      res
+        .status(201)
+        .send({
+          name: admin.name,
+          about: admin.about,
+          avatar: admin.avatar,
+          email: admin.email,
+        });
     })
     .catch((error) => {
       res.status(HTTP_INTERNAL_SERVER_ERROR).send({ message: error.message });

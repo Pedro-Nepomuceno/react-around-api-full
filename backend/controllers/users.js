@@ -51,7 +51,7 @@ const getCurrentUser = (req, res, next) => {
 };
 
 const getUserbyId = (req, res, next) => {
-  const { userId } = req.params;
+  const { userId } = req.params.id;
 
   User.findById(userId)
     .orFail(new NotFoundError("User ID not found"))
@@ -69,7 +69,9 @@ const createUser = (req, res) => {
   const { name, about, avatar, email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(418).send({ message: "OpS SomEtHiNg wENt WRoNg" });
+    return res.status(418).send(() => {
+      new BadRequestError();
+    });
   }
   User.findOne({ email })
     .then((user) => {
@@ -85,7 +87,7 @@ const createUser = (req, res) => {
       return User.create({ name, about, avatar, email, password: hash });
     })
     .then((admin) => {
-      res.status(201).send({ admin });
+      res.status(201).send(admin.name, admin.about, admin.avatar, admin.email);
     })
     .catch((error) => {
       res.status(HTTP_INTERNAL_SERVER_ERROR).send({ message: error.message });

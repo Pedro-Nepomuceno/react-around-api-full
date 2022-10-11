@@ -31,7 +31,7 @@ const login = (req, res, next) => {
           expiresIn: "7d",
         }
       );
-      delete data.password;
+      delete user.password;
       return res.send({ data: user.toJSON(), token });
     })
     .catch(next);

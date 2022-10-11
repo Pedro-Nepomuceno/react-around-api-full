@@ -32,9 +32,7 @@ const login = (req, res, next) => {
         }
       );
 
-      const { password, ...rest } = user;
-      console.log(rest);
-      return res.send({ data: rest.toJSON(), token });
+      return res.send({ data: user.toJSON(), token });
     })
     .catch(next);
 };

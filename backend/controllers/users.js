@@ -32,7 +32,9 @@ const login = (req, res, next) => {
         }
       );
 
-      return res.send({ data: user.toJSON(), token });
+      const { password, ...rest } = user;
+      console.log(rest);
+      return res.send({ data: rest.toJSON(), token });
     })
     .catch(next);
 };
@@ -84,7 +86,7 @@ const createUser = (req, res) => {
       }
     })
     .then((hash) => {
-      return User.create({ name, about, avatar, email, password: hash });
+      User.create({ name, about, avatar, email, password: hash });
     })
     .then((admin) => {
       res.status(201).send({

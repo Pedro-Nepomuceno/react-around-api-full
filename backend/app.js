@@ -14,9 +14,9 @@ const routes = require("./routes/index");
 
 app.use(helmet());
 
-const rateLimiter = require("./middleware/rateLimiter");
+const limiter = require("./middleware/rateLimiter");
 
-app.use(rateLimiter);
+app.use(limiter);
 
 const cors = require("cors");
 

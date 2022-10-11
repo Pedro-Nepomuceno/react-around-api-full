@@ -1,9 +1,10 @@
-import rateLimit from "express-rate-limit";
+const rateLimit = require("express-rate-limit");
 
-export const rateLimiterUsingThirdParty = rateLimit({
-  windowMs: 24 * 60 * 60 * 1000, // 24 hrs in milliseconds
-  max: 100,
-  message: "You have exceeded the 100 requests in 24 hrs limit!",
-  standardHeaders: true,
-  legacyHeaders: false,
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 mins
+  max: 100, // IP: 100 per 'window' (per 15 mins)
+  standardHeaders: true, // Return rate limit info in the 'RateLimit-*' headers
+  legacyHeaders: false, // Disable the 'X-RateLimit-*' headers
 });
+
+module.exports = limiter;

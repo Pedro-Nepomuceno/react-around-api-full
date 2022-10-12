@@ -40,7 +40,7 @@ const deleteCard = (req, res, next) => {
     })
     .then((card) => {
       if (!(card.owner.toString() === req.user._id)) {
-        throw new UnauthorizedError("Dont have permission to delete");
+        res.status(403).send("Dont have permission to delete");
       }
       Card.findByIdAndDelete(req.params.id)
         .orFail(() => {

@@ -62,7 +62,7 @@ const validateCardId = celebrate({
 
 const validateUserId = celebrate({
   params: Joi.object().keys({
-    userId: Joi.string()
+    id: Joi.string()
       .required()
       .custom((value, helpers) => {
         if (ObjectId.isValid(value)) {

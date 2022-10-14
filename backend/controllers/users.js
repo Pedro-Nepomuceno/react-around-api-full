@@ -23,7 +23,6 @@ const login = (req, res, next) => {
           expiresIn: "7d",
         }
       );
-      console.log(token);
       return res.send({
         name: user.name,
         about: user.about,
@@ -49,8 +48,6 @@ const getCurrentUser = (req, res, next) => {
 };
 
 const getUserbyId = (req, res, next) => {
-  console.log(req.params.id);
-  console.log(req.user._id);
   User.findById(req.params.id)
     .orFail(new NotFoundError("user not found"))
     .then((user) => res.send(user))

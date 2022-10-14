@@ -28,7 +28,6 @@ export function AddPlacePopup({ isOpen, onClose, onSubmit, onAddPlaceSubmit }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log({ name, link });
     onAddPlaceSubmit({ name, link });
   }
   React.useEffect(() => {

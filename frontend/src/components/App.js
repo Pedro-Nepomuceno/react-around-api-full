@@ -106,7 +106,6 @@ function App() {
   }
 
   function handleCardDelete(card) {
-    console.log("card.id", card._id);
     api
       .deleteCard(card._id, localStorage.getItem("jwt"))
       .then(() => {
@@ -125,7 +124,6 @@ function App() {
     api
       .handleLikePhoto(card._id, isLiked, localStorage.getItem("jwt"))
       .then((newCard) => {
-        console.log({ newCard });
         setCards((state) =>
           state.map((currentCard) =>
             currentCard._id === card._id ? newCard : currentCard
@@ -138,11 +136,9 @@ function App() {
   }
 
   function handleAddPlaceSubmit(newCard) {
-    console.log("newcard", newCard);
     api
       .addNewCard(newCard, localStorage.getItem("jwt"))
       .then((data) => {
-        console.log({ data });
         setCards([data, ...cards]);
         setIsAddPlacePopupOpen(false);
       })

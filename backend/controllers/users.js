@@ -48,6 +48,8 @@ const getCurrentUser = (req, res, next) => {
 };
 
 const getUserbyId = (req, res, next) => {
+  console.log(req.params.id);
+  console.log(req.user._id);
   User.findById(req.params.id)
     .orFail(new NotFoundError("user not found"))
     .then((user) => res.send(user))

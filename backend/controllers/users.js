@@ -23,6 +23,7 @@ const login = (req, res, next) => {
           expiresIn: "7d",
         }
       );
+      console.log(token);
       return res.send({
         name: user.name,
         about: user.about,

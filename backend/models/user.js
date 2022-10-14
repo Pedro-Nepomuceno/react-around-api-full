@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 
 const validator = require("validator");
 
-const urlRegExp = require("../utils/regex");
 const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({

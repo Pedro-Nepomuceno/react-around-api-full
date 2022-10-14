@@ -1,22 +1,14 @@
-const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+
 const jwt = require("jsonwebtoken");
+
+const User = require("../models/user");
 
 const ConflictError = require("../error/conflict-error");
 
 const NotFoundError = require("../error/not-found-error");
 
-const BadRequestError = require("../error/bad-request-error");
-
-const UnAuthorizedError = require("../error/unauthorized-error");
-
-const {
-  HTTP_SUCCESS_OK,
-  HTTP_CLIENT_ERROR_BAD_REQUEST,
-  HTTP_CLIENT_ERROR_NOT_FOUND,
-  HTTP_INTERNAL_SERVER_ERROR,
-} = require("../utils/status");
-const UnauthorizedError = require("../error/unauthorized-error");
+const { HTTP_SUCCESS_OK } = require("../utils/status");
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -62,14 +54,9 @@ const getUserbyId = (req, res, next) => {
     .catch(next);
 };
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(418).send(() => {
-      new BadRequestError();
-    });
-  }
   User.findOne({ email })
     .then((user) => {
       if (user) {
@@ -91,16 +78,13 @@ const createUser = (req, res) => {
         email: admin.email,
       });
     })
-    .catch((error) => {
-      res.status(HTTP_INTERNAL_SERVER_ERROR).send({ message: error.message });
-    });
+    .catch(next);
 };
 
 const updateUserProfile = (req, res, next) => {
   const currentUser = req.user._id;
   const { name, about } = req.body;
-  console.log("name", name);
-  console.log("about", about);
+
   User.findByIdAndUpdate(
     currentUser,
     { name, about },
@@ -114,7 +98,7 @@ const updateUserProfile = (req, res, next) => {
     .catch(next);
 };
 
-const updateAvatar = (req, res) => {
+const updateAvatar = (req, res, next) => {
   const currentUser = req.user._id;
   const { avatar } = req.body;
 
@@ -128,9 +112,7 @@ const updateAvatar = (req, res) => {
   )
     .orFail(() => new NotFoundError("User ID not found"))
     .then((user) => res.status(HTTP_SUCCESS_OK).send(user))
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch(next);
 };
 
 module.exports = {

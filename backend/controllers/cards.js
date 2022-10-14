@@ -1,14 +1,9 @@
 const NotFoundError = require("../error/not-found-error");
-const UnauthorizedError = require("../error/unauthorized-error");
+
 const BadRequestError = require("../error/bad-request-error");
 
 const Card = require("../models/card");
-const {
-  HTTP_SUCCESS_OK,
-  HTTP_CLIENT_ERROR_BAD_REQUEST,
-  HTTP_CLIENT_ERROR_NOT_FOUND,
-  HTTP_INTERNAL_SERVER_ERROR,
-} = require("../utils/status");
+const { HTTP_SUCCESS_OK } = require("../utils/status");
 
 const getCards = (req, res, next) => {
   Card.find({})
@@ -33,7 +28,6 @@ const createCard = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-  const { cardId } = req.params;
   Card.findById(req.params.id)
     .orFail(() => {
       new NotFoundError("Card ID not found");
@@ -46,7 +40,7 @@ const deleteCard = (req, res, next) => {
         .orFail(() => {
           new NotFoundError("Card ID not found");
         })
-        .then((card) => res.status(HTTP_SUCCESS_OK).send(card))
+        .then((data) => res.status(HTTP_SUCCESS_OK).send(data))
         .catch(next);
     })
 
@@ -55,7 +49,7 @@ const deleteCard = (req, res, next) => {
 
 const likeCard = (req, res, next) => {
   const currentUser = req.user._id;
-  const id = req.params.id;
+  const { id } = req.params.id;
 
   Card.findByIdAndUpdate(
     id,

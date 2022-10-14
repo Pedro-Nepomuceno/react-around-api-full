@@ -2,11 +2,15 @@ const express = require("express");
 
 require("dotenv").config();
 
+const mongoose = require("mongoose");
+
 const helmet = require("helmet");
 
-const errorHandling = require("./middleware/errorHandling");
+const cors = require("cors");
 
-const mongoose = require("mongoose");
+const { errors } = require("celebrate");
+
+const errorHandling = require("./middleware/errorHandling");
 
 const app = express();
 
@@ -18,16 +22,14 @@ const limiter = require("./middleware/rateLimiter");
 
 app.use(limiter);
 
-const cors = require("cors");
-
 mongoose.connect("mongodb://localhost:27017/react-around-api-full", {
   useNewUrlParser: true,
 });
 
-const { errors } = require("celebrate");
-
 const { requestLogger, errorLogger } = require("./middleware/logger");
+
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: true }));
 
 const allowedOrigins = [
@@ -36,6 +38,7 @@ const allowedOrigins = [
   "http://localhost:3000", // Use the port your frontend is served on
 ];
 app.use(cors({ origin: allowedOrigins }));
+
 app.options("*", cors());
 
 app.use(requestLogger);
@@ -59,7 +62,3 @@ app.use(errorHandling);
 app.listen(PORT, () => {
   console.log(`app is listening`);
 });
-
-const crypto = require("crypto");
-
-const randomString = crypto.randomBytes(16).toString("hex");

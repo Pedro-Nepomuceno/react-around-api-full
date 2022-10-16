@@ -154,9 +154,6 @@ function App() {
           setInfoToolTip(true);
           setStatus(true);
           history.push("/signin");
-          setTimeout(() => {
-            handleClosePopup();
-          }, 3000);
         } else {
           setInfoToolTip(true);
           setStatus(false);

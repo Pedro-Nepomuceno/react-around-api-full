@@ -2,6 +2,8 @@ const NotFoundError = require("../error/not-found-error");
 
 const BadRequestError = require("../error/bad-request-error");
 
+const ForbiddenError = require("../error/forbiddenError");
+
 const Card = require("../models/card");
 const { HTTP_SUCCESS_OK } = require("../utils/status");
 
@@ -34,7 +36,7 @@ const deleteCard = (req, res, next) => {
     })
     .then((card) => {
       if (!(card.owner.toString() === req.user._id)) {
-        res.status(403).send("Dont have permission to delete");
+        next(new ForbiddenError("Dont have permission to delete"));
       }
       Card.findByIdAndDelete(req.params.id)
         .orFail(() => {

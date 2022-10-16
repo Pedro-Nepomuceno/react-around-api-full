@@ -148,7 +148,7 @@ function App() {
   }
   function onRegister(email, password) {
     auth
-      .register(email, password)
+      .register({ email, password })
       .then((res) => {
         if (res.data._id) {
           setInfoToolTip(true);

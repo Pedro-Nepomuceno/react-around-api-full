@@ -147,12 +147,10 @@ function App() {
       });
   }
   function onRegister(email, password) {
-    console.log(email, password);
     auth
       .register(email, password)
       .then((res) => {
-        console.log("authfrontend", res);
-        if (res.data._id) {
+        if (res._id) {
           setInfoToolTip(true);
           setStatus(true);
           history.push("/signin");
@@ -161,7 +159,8 @@ function App() {
           setStatus(false);
         }
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         setInfoToolTip(true);
         setStatus(false);
       });

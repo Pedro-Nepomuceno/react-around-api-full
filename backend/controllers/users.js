@@ -68,12 +68,11 @@ const createUser = (req, res, next) => {
       }
     })
     .then((hash) => {
-      console.log(name, about, avatar, email, hash);
       return User.create({ name, about, avatar, email, password: hash });
     })
     .then((data) => {
-      console.log({ data });
       res.status(201).send({
+        _id: data._id,
         name: data.name,
         about: data.about,
         avatar: data.avatar,

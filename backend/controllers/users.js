@@ -73,7 +73,14 @@ const createUser = (req, res, next) => {
     })
     .then((admin) => {
       console.log({ admin });
-      res.status(201).send({ admin });
+      res
+        .status(201)
+        .send({
+          name: admin.name,
+          about: admin.about,
+          avatar: admin.avatar,
+          email: admin.email,
+        });
     })
     .catch(next);
 };

@@ -71,7 +71,8 @@ const createUser = (req, res, next) => {
       User.create({ name, about, avatar, email, password: hash });
     })
     .then((admin) => {
-      res.status(201).send({ admin });
+      console.log(admin);
+      return res.status(201).send({ admin });
     })
     .catch(next);
 };

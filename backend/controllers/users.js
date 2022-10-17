@@ -69,7 +69,7 @@ const createUser = (req, res, next) => {
     })
     .then((hash) => {
       console.log(name, about, avatar, email, hash);
-      User.create({ name, about, avatar, email, password: hash });
+      return User.create({ name, about, avatar, email, password: hash });
     })
     .then((data) => {
       console.log({ data });

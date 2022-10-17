@@ -152,7 +152,7 @@ function App() {
       .register(email, password)
       .then((res) => {
         console.log("authfrontend", res);
-        if (res._id) {
+        if (res.data._id) {
           setInfoToolTip(true);
           setStatus(true);
           history.push("/signin");

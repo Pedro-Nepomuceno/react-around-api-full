@@ -72,7 +72,7 @@ class Api {
 const BASE_URL =
   process.env.NODE_ENV === "production"
     ? "https://api.pedronepomuceno.students.nomoredomainssbs.ru"
-    : "http://localhost:3000";
+    : "http://localhost:3001";
 
 const api = new Api({
   baseUrl: BASE_URL,

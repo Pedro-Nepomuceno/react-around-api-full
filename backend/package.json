@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon app.js",
     "lint": "npx eslint . --fix",
-    "build": "react-scripts build",
+    "build": "npm i",
     "start": "node app.js"
   },
   "repository": {

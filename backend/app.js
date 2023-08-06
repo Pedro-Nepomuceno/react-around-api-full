@@ -33,8 +33,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const allowedOrigins = [
-  "https://www.pedronepomuceno.students.nomoredomainssbs.ru",
-  "https://pedronepomuceno.students.nomoredomainssbs.ru",
+  "https://around-us-5wjp.onrender.com",
+  "https://around-react.netlify.app",
   "http://localhost:3001", // Use the port your frontend is served on
 ];
 app.use(cors({ origin: allowedOrigins }));

@@ -2,6 +2,9 @@
   "homepage": "https://around-react.netlify.app",
   "name": "around-react",
   "version": "0.1.0",
+  "engines": {
+    "node": "18.17.0"
+  },
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",

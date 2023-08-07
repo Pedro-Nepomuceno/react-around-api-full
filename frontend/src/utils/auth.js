@@ -4,7 +4,7 @@ class Auth {
     this.headers = headers;
   }
 
-  _handleServerResponse(res) {
+  static _handleServerResponse(res) {
     return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
   }
 

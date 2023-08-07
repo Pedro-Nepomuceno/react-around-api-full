@@ -5,7 +5,9 @@ class Auth {
   }
 
   static _handleServerResponse(res) {
-    return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
+    return res.ok
+      ? res.json()
+      : Promise.reject(new Error(`Error: ${res.status}`));
   }
 
   register({ email, password }) {

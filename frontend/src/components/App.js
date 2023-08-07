@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
 import { Route, Switch, useHistory, Redirect } from "react-router-dom";
 import Header from "./Header.js";
 import Main from "./Main.js";
@@ -53,8 +53,6 @@ function App() {
             setEmail(res.data.email);
             setIsLogged(true);
             history.push("/");
-          } else {
-            return;
           }
         })
         .catch((err) => console.log(err));

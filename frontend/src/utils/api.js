@@ -20,8 +20,10 @@ class Api {
     }).then(this._handleServerResponse);
   }
 
-  _handleServerResponse(res) {
-    return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
+  static _handleServerResponse(res) {
+    return res.ok
+      ? res.json()
+      : Promise.reject(new Error(`Error: ${res.status}`));
   }
 
   setUserProfile({ name, about }, token) {

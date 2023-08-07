@@ -188,6 +188,7 @@ function App() {
     setInfoToolTip(false);
     history.push("/signin");
   }
+  // eslint-disable-next-line no-shadow
 
   return (
     <div className="page">

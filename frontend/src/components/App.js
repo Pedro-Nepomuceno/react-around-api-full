@@ -9,7 +9,7 @@ import api from "../utils/api";
 import auth from "../utils/auth.js";
 import { Register } from "./Register.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { EditProfilePopup } from "../components/EditProfilePopup";
+import { EditProfilePopup } from "./EditProfilePopup";
 import { EditAvatarPopup } from "./EditAvatarPopup";
 import { AddPlacePopup } from "./AddPlacePopup";
 import ProtectedRoute from "./ProtectedRoute";

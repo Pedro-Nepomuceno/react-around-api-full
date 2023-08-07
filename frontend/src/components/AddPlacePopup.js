@@ -1,7 +1,7 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
 
-export function AddPlacePopup({ isOpen, onClose, onSubmit, onAddPlaceSubmit }) {
+export function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit }) {
   const [name, setName] = React.useState("");
   const [link, setLink] = React.useState("");
   const [isTitleValid, setIsTitleValid] = React.useState(false);

@@ -3,6 +3,8 @@
   "rules": {
     "import/extensions": "off",
     "import/prefer-default-export": "off",
+    "no-duplicate-imports": "error",
+    "import/no-named-as-default": "off",
     "no-underscore-dangle": ["off", { "allow": ["id"] }]
   }
 }

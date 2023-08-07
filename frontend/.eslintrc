@@ -1,6 +1,7 @@
 {
-	"extends": ["airbnb-base", "prettier"],
-	"rules": {
-		"no-underscore-dangle": ["off", { "allow": ["id"] }]
-	}
+  "extends": ["airbnb-base", "prettier"],
+  "rules": {
+    "import/extensions": "off",
+    "no-underscore-dangle": ["off", { "allow": ["id"] }]
+  }
 }

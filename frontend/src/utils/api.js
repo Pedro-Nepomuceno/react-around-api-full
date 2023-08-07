@@ -3,6 +3,7 @@ class Api {
     this.baseUrl = baseUrl;
     this.headers = headers;
   }
+
   getUserInfo(token) {
     return fetch(`${this.baseUrl}/users/me`, {
       headers: { authorization: `Bearer ${token}`, ...this.headers },
@@ -12,6 +13,7 @@ class Api {
   getAppInfo(token) {
     return Promise.all([this.getInitialCards(token), this.getUserInfo(token)]);
   }
+
   getInitialCards(token) {
     return fetch(`${this.baseUrl}/cards`, {
       headers: { authorization: `Bearer ${token}`, ...this.headers },
@@ -71,7 +73,7 @@ class Api {
 
 const BASE_URL =
   process.env.NODE_ENV === "production"
-    ? "https://api.pedronepomuceno.students.nomoredomainssbs.ru"
+    ? "https://around-us-5wjp.onrender.com"
     : "http://localhost:3001";
 
 const api = new Api({
@@ -81,3 +83,5 @@ const api = new Api({
   },
 });
 export default api;
+
+// https://api.pedronepomuceno.students.nomoredomainssbs.ru

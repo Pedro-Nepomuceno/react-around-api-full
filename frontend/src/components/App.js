@@ -25,10 +25,8 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState([]);
   const [infoToolTip, setInfoToolTip] = useState(false);
   const [loggedIn, setIsLogged] = useState(false);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(null);
   const [status, setStatus] = useState(false);
-
-  // eslint-disable-next-line no-shadow
 
   const history = useHistory();
 
@@ -190,6 +188,7 @@ function App() {
     setInfoToolTip(false);
     history.push("/signin");
   }
+
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>

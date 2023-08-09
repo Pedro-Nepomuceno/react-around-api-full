@@ -11,6 +11,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { EditProfilePopup } from "./EditProfilePopup";
 import { EditAvatarPopup } from "./EditAvatarPopup";
 import { AddPlacePopup } from "./AddPlacePopup";
+
 import ProtectedRoute from "./ProtectedRoute";
 import { Login } from "./Login";
 import { InfoTooltip } from "./InfoTooltip";

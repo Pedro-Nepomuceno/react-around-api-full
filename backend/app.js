@@ -35,7 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = [
   "https://around-us-5wjp.onrender.com",
   "https://pedro-nepomuceno.github.io",
-  "http://localhost:3001", // Use the port your frontend is served on
+  "http://localhost:3000", // Use the port your frontend is served on
 ];
 app.use(cors({ origin: allowedOrigins }));
 

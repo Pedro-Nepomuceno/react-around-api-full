@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/react-around-api-full/static/css/main.bb9d7da4.css",
-    "main.js": "/react-around-api-full/static/js/main.0b0bdb32.js",
+    "main.js": "/react-around-api-full/static/js/main.816d9a0b.js",
     "static/js/787.1c78f32b.chunk.js": "/react-around-api-full/static/js/787.1c78f32b.chunk.js",
     "static/media/Inter-Medium.woff": "/react-around-api-full/static/media/Inter-Medium.9053572c46aeb4b16caa.woff",
     "static/media/Inter-Black.woff": "/react-around-api-full/static/media/Inter-Black.c6938660eec019fefd68.woff",
@@ -20,11 +20,11 @@
     "static/media/changeProfile.svg": "/react-around-api-full/static/media/changeProfile.a086f758840ae814ecde.svg",
     "static/media/plus.svg": "/react-around-api-full/static/media/plus.d86bb2edc2f6eadb96b7.svg",
     "main.bb9d7da4.css.map": "/react-around-api-full/static/css/main.bb9d7da4.css.map",
-    "main.0b0bdb32.js.map": "/react-around-api-full/static/js/main.0b0bdb32.js.map",
+    "main.816d9a0b.js.map": "/react-around-api-full/static/js/main.816d9a0b.js.map",
     "787.1c78f32b.chunk.js.map": "/react-around-api-full/static/js/787.1c78f32b.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.bb9d7da4.css",
-    "static/js/main.0b0bdb32.js"
+    "static/js/main.816d9a0b.js"
   ]
 }

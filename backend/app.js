@@ -34,12 +34,12 @@ app.use(express.urlencoded({ extended: true }));
 
 const allowedOrigins = [
   "https://around-us-5wjp.onrender.com",
-  "https://pedro-nepomuceno.github.io/",
+  "https://pedro-nepomuceno.github.io",
   "http://localhost:3001", // Use the port your frontend is served on
 ];
 app.use(cors({ origin: allowedOrigins }));
 
-app.options("*", cors());
+// app.options("*", cors());
 
 app.use(requestLogger);
 

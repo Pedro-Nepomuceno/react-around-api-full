@@ -45,7 +45,10 @@ class Auth {
 //     ? "https://api.pedronepomuceno.students.nomoredomainssbs.ru"
 //     : "http://localhost:3000";
 
-const BASE_URL = "http://localhost:3000";
+const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://around-us-5wjp.onrender.com"
+    : "http://localhost:3000";
 
 const auth = new Auth({
   baseUrl: BASE_URL,

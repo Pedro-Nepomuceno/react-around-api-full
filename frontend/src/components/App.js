@@ -144,6 +144,7 @@ function App() {
       });
   }
   function onRegister({ email: loginEmail, password }) {
+    console.log(email);
     auth
       .register({ email: loginEmail, password })
       .then((res) => {

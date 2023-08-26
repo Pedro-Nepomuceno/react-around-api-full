@@ -143,10 +143,9 @@ function App() {
         console.log(err);
       });
   }
-  function onRegister({ email: loginEmail, password }) {
-    console.log(email);
+  function onRegister({ loginEmail, password }) {
     auth
-      .register({ email: loginEmail, password })
+      .register({ loginEmail, password })
       .then((res) => {
         if (res._id) {
           setInfoToolTip(true);

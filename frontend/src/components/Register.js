@@ -2,18 +2,18 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 export function Register({ onRegister }) {
-	const [email, setEmail] = React.useState("");
+	const [loginEmail, setLoginEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
 
 	function handleEmailChange(e) {
-		setEmail(e.target.value);
+		setLoginEmail(e.target.value);
 	}
 	function handlePasswordChange(e) {
 		setPassword(e.target.value);
 	}
 	function handleSubmit(e) {
 		e.preventDefault();
-		const userRegistration = { email, password };
+		const userRegistration = { loginEmail, password };
 		onRegister(userRegistration);
 	}
 

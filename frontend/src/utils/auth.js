@@ -15,8 +15,8 @@ class Auth {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify({
-        email,
-        password,
+        email: String(email),
+        password: String(password),
       }),
     }).then(this._handleServerResponse);
   }

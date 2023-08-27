@@ -76,7 +76,7 @@ class Api {
 const BASE_URL =
   process.env.NODE_ENV === "production"
     ? "https://around-us-5wjp.onrender.com"
-    : "http://localhost:3001";
+    : "http://localhost:3000";
 
 const api = new Api({
   baseUrl: BASE_URL,

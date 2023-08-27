@@ -25,7 +25,7 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState([]);
   const [infoToolTip, setInfoToolTip] = useState(false);
   const [loggedIn, setIsLogged] = useState(false);
-  const [email, setEmail] = useState("");
+  const [signUpEmail, setSignUpEmail] = useState("");
   const [status, setStatus] = useState(false);
 
   const history = useHistory();
@@ -35,9 +35,12 @@ function App() {
     if (token && loggedIn) {
       api
         .getAppInfo(token)
-        .then(([CardData, userData]) => {
-          setCurrentUser(userData);
-          setCards(CardData);
+        .then(async ([CardData, userData]) => {
+          const data = await CardData.json();
+          const userInfo = await userData.json();
+          console.log(data);
+          setCurrentUser(userInfo);
+          setCards(data);
         })
         .catch((err) => console.log(err));
     }
@@ -48,9 +51,10 @@ function App() {
     if (token) {
       auth
         .checkToken(token)
-        .then((res) => {
+        .then(async (res) => {
+          const data = await res.json();
           if (res) {
-            setEmail(res.data.email);
+            setSignUpEmail(data.email);
             setIsLogged(true);
             history.push("/");
           }
@@ -143,11 +147,12 @@ function App() {
         console.log(err);
       });
   }
-  function onRegister({ loginEmail, password }) {
+  function onRegister({ email, password }) {
     auth
-      .register({ loginEmail, password })
-      .then((res) => {
-        if (res._id) {
+      .register({ email, password })
+      .then(async (res) => {
+        const data = await res.json();
+        if (data._id) {
           setInfoToolTip(true);
           setStatus(true);
           history.push("/signin");
@@ -166,11 +171,12 @@ function App() {
   function onLogin({ email: loginEmail, password }) {
     auth
       .login({ email: loginEmail, password })
-      .then((res) => {
-        if (res.token) {
-          setEmail(loginEmail);
+      .then(async (res) => {
+        const data = await res.json();
+        if (data.token) {
+          setSignUpEmail(loginEmail);
           setIsLogged(true);
-          localStorage.setItem("jwt", res.token);
+          localStorage.setItem("jwt", data.token);
           history.push("/");
         } else {
           setInfoToolTip(true);
@@ -193,7 +199,7 @@ function App() {
     <>
       <div className="page">
         <CurrentUserContext.Provider value={currentUser}>
-          <Header onSignOut={onSignOut} email={email} />
+          <Header onSignOut={onSignOut} email={signUpEmail} />
           <Switch>
             <ProtectedRoute exact path="/" loggedIn={loggedIn}>
               <Main

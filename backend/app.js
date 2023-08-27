@@ -22,9 +22,7 @@ const limiter = require("./middleware/rateLimiter");
 
 app.use(limiter);
 
-mongoose.connect("mongodb://localhost:27017/react-around-api-full", {
-  useNewUrlParser: true,
-});
+mongoose.connect("mongodb://127.0.0.1:27017/react-around-api-full");
 
 const { requestLogger, errorLogger } = require("./middleware/logger");
 
@@ -36,6 +34,7 @@ const allowedOrigins = [
   "https://around-us-5wjp.onrender.com",
   "https://pedro-nepomuceno.github.io",
   "http://localhost:3000", // Use the port your frontend is served on
+  "http://localhost:3001", // Use the port your frontend is served on
 ];
 app.use(cors({ origin: allowedOrigins }));
 

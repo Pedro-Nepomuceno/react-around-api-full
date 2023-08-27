@@ -10,18 +10,19 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 2,
     maxlength: 30,
-    default: "Pedro Nepomuceno",
+    default: "Pedro Lima",
   },
   about: {
     type: String,
     required: true,
     minlength: 2,
     maxlength: 30,
-    default: "Sailor",
+    default: "Developer",
   },
   avatar: {
     type: String,
-    default: "https://pictures.s3.yandex.net/resources/avatar_1604080799.jpg",
+    default:
+      "https://avatars.mds.yandex.net/i?id=1d8daf4388491ab273de74671423e884c8a0c6b9-7084594-images-thumbs&n=13",
     validate: {
       validator: validator.isURL,
       message: 'The "avatar" must be a valid url',

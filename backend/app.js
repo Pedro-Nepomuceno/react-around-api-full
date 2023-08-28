@@ -22,7 +22,9 @@ const limiter = require("./middleware/rateLimiter");
 
 app.use(limiter);
 
-mongoose.connect("mongodb://127.0.0.1:27017/react-around-api-full");
+mongoose.connect("mongodb://localhost:27017/react-around-api-full");
+
+// mongoose.connect("mongodb://127.0.0.1:27017/react-around-api-full");
 
 const { requestLogger, errorLogger } = require("./middleware/logger");
 

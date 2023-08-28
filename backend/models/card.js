@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
 const { urlRegExp } = require("../utils/regex");
 
 const cardsSchema = new mongoose.Schema({

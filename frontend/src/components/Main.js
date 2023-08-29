@@ -1,5 +1,6 @@
 import React from "react";
 import Card from "./Card.js";
+import { LoadingSpinner } from "./LoadingSpinner.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 function Main({
@@ -12,7 +13,10 @@ function Main({
   cards,
 }) {
   const currentuserData = React.useContext(CurrentUserContext);
-  console.log(currentuserData);
+
+  if (!currentuserData) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
 
   return (
     <>

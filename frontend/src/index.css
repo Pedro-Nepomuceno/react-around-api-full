@@ -56,3 +56,4 @@
 @import url(./blocks/header/__auth-wrapper/header__auth-wrapper.css);
 @import url(./blocks/header/__logout/header__logout.css);
 @import url(./blocks/header/__user/header__user.css);
+@import url(./blocks/spinner/spinner.css);

@@ -30,6 +30,10 @@ function App() {
 
   const history = useHistory();
 
+  if (!currentUser) {
+    return;
+  }
+
   React.useEffect(() => {
     const token = localStorage.getItem("jwt");
     if (token && loggedIn) {
@@ -99,6 +103,7 @@ function App() {
       .editProfilePic(userPicture, localStorage.getItem("jwt"))
       .then(async (data) => {
         const profilePicture = await data.json();
+        console.log("Profile picture:", profilePicture);
         setCurrentUser(profilePicture.data);
         setIsAvatarPopupOpen(false);
       })

@@ -43,6 +43,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const allowedOrigins = [
+  "https://different-cowboy-hat-fly.cyclic.cloud",
   "https://around-us-5wjp.onrender.com",
   "https://pedro-nepomuceno.github.io",
   "http://localhost:3000", // Use the port your frontend is served on

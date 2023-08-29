@@ -14,7 +14,6 @@ import { AddPlacePopup } from "./AddPlacePopup";
 import ProtectedRoute from "./ProtectedRoute";
 import { Login } from "./Login";
 import { InfoTooltip } from "./InfoTooltip";
-import { LoadingSpinner } from "./LoadingSpinner.js";
 
 function App() {
   const [cards, setCards] = React.useState([]);
@@ -30,10 +29,6 @@ function App() {
   const [status, setStatus] = useState(false);
 
   const history = useHistory();
-
-  if (!currentUser) {
-    return <LoadingSpinner></LoadingSpinner>;
-  }
 
   React.useEffect(() => {
     const token = localStorage.getItem("jwt");

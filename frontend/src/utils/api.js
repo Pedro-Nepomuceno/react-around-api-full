@@ -73,13 +73,13 @@ class Api {
   }
 }
 
-const BASE_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://different-cowboy-hat-fly.cyclic.cloud"
-    : "http://localhost:3000";
+// const BASE_URL =
+//   process.env.NODE_ENV === "production"
+//     ? "https://different-cowboy-hat-fly.cyclic.cloud"
+//     : "http://localhost:3000";
 
 const api = new Api({
-  baseUrl: BASE_URL,
+  baseUrl: "https://different-cowboy-hat-fly.cyclic.cloud",
   headers: {
     "Content-Type": "application/json",
   },

@@ -1,5 +1,5 @@
 import React from "react";
-import { PopupWithForm } from "./PopupWithForm.js";
+import { PopupWithForm } from "./PopupWithForm";
 
 export function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit }) {
   const [name, setName] = React.useState("");

@@ -47,7 +47,7 @@ class Auth {
 
 const BASE_URL =
   process.env.NODE_ENV === "production"
-    ? "https://around-us-5wjp.onrender.com"
+    ? "https://different-cowboy-hat-fly.cyclic.cloud"
     : "http://localhost:3000";
 
 const auth = new Auth({

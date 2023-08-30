@@ -73,13 +73,13 @@ class Api {
   }
 }
 
-// const BASE_URL =
-//   process.env.NODE_ENV === "production"
-//     ? "https://different-cowboy-hat-fly.cyclic.cloud"
-//     : "http://localhost:3000";
+const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://around-us-5wjp.onrender.com"
+    : "http://localhost:3000";
 
 const api = new Api({
-  baseUrl: "https://around-us-5wjp.onrender.com",
+  baseUrl: BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },

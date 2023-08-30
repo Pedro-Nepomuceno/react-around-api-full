@@ -79,7 +79,7 @@ class Api {
 //     : "http://localhost:3000";
 
 const api = new Api({
-  baseUrl: "https://different-cowboy-hat-fly.cyclic.cloud",
+  baseUrl: "https://around-us-5wjp.onrender.com",
   headers: {
     "Content-Type": "application/json",
   },

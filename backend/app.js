@@ -50,7 +50,7 @@ const allowedOrigins = [
   "http://localhost:3000", // Use the port your frontend is served on
   "http://localhost:3001", // Use the port your frontend is served on
 ];
-app.use(cors({ origin: allowedOrigins }));
+app.use(cors({ origin: "*" }));
 
 // app.options("*", cors());
 

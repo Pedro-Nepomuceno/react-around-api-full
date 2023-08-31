@@ -46,6 +46,7 @@ const allowedOrigins = [
   "https://different-cowboy-hat-fly.cyclic.cloud",
   "https://around-us-5wjp.onrender.com",
   "https://pedro-nepomuceno.github.io",
+  "https://pedro-nepomuceno.github.io/react-around-api-full",
   "http://localhost:3000", // Use the port your frontend is served on
   "http://localhost:3001", // Use the port your frontend is served on
 ];

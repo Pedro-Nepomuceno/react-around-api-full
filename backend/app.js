@@ -24,14 +24,13 @@ app.use(limiter);
 
 mongoose.set("strictQuery", false);
 
-const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(process.env.MONGO_URI);
-  } catch (error) {
-    console.log(error);
-    process.exit(1);
-  }
-};
+try {
+  const conn = await mongoose.connect(process.env.MONGO_URI);
+} catch (error) {
+  console.log(error);
+  process.exit(1);
+}
+
 // mongoose.connect("mongodb://localhost:27017/react-around-api-full");
 
 // this mongoose.connect("mongodb://127.0.0.1:27017/react-around-api-full");

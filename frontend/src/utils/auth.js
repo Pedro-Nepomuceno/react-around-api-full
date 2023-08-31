@@ -51,7 +51,7 @@ class Auth {
 //     : "http://localhost:3000";
 
 const auth = new Auth({
-  baseUrl: "https://different-cowboy-hat-fly.cyclic.cloud",
+  baseUrl: "https://different-cowboy-hat-fly.cyclic.cloud/",
   headers: {
     "Content-Type": "application/json",
   },

@@ -203,7 +203,11 @@ function App() {
         <CurrentUserContext.Provider value={currentUser}>
           <Header onSignOut={onSignOut} email={signUpEmail} />
           <Switch>
-            <ProtectedRoute exact path="/" loggedIn={loggedIn}>
+            <ProtectedRoute
+              exact
+              path="/react-around-api-full/"
+              loggedIn={loggedIn}
+            >
               <Main
                 onEditAvatarClick={handleEditAvatarClick}
                 onEditProfileClick={handleEditProfileClick}
@@ -214,14 +218,18 @@ function App() {
                 cards={cards}
               />
             </ProtectedRoute>
-            <Route path="/signup">
+            <Route path="/react-around-api-full/signup">
               <Register onRegister={onRegister} />
             </Route>
-            <Route path="/signin">
+            <Route path="/react-around-api-full/signin">
               <Login onSign={onLogin} />
             </Route>
             <Route>
-              {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
+              {loggedIn ? (
+                <Redirect to="/" />
+              ) : (
+                <Redirect to="/react-around-api-full/signin" />
+              )}
             </Route>
           </Switch>
           <InfoTooltip

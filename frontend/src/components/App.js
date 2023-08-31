@@ -226,7 +226,7 @@ function App() {
             </Route>
             <Route>
               {loggedIn ? (
-                <Redirect to="/" />
+                <Redirect to="/react-around-api-full" />
               ) : (
                 <Redirect to="/react-around-api-full/signin" />
               )}

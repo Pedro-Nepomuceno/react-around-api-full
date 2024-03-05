@@ -7,7 +7,8 @@ export function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   const cardDeleteButtonClassName = `elements__delete ${
     isOwn ? "elements__delete" : "elements__delete_hidden"
   }`;
-  const isLiked = card.likes.some((user) => user === currentUser._id);
+  const isLiked =
+    card?.likes?.some((user) => user === currentUser._id) ?? false;
 
   const cardLikeButtonClassName = `elements__info-button ${
     isLiked ? "elements__info-button_active" : ""
@@ -45,7 +46,7 @@ export function Card({ card, onCardClick, onCardLike, onCardDelete }) {
             onClick={handleLikeClick}
             className={cardLikeButtonClassName}
           ></button>
-          <p className="elements__counter">{card.likes.length}</p>
+          <p className="elements__counter">{card.likes?.length || 0}</p>
         </div>
       </div>
       <div className="popup" id="delete-popup">

@@ -15,61 +15,59 @@ function Main({
   const currentuserData = React.useContext(CurrentUserContext);
 
   if (!currentuserData) {
-    return <LoadingSpinner></LoadingSpinner>;
+    return <LoadingSpinner />;
   }
 
   return (
-    <>
-      <main>
-        <section className="profile">
-          <div className="profile__avatar">
-            <div className="profile__overlay">
-              <button
-                type="button"
-                onClick={onEditAvatarClick}
-                className="profile__change-photo"
-              />
-            </div>
-            {currentuserData.avatar && (
-              <img
-                className="profile__avatar-pic"
-                src={currentuserData.avatar}
-                alt="avatar"
-              />
-            )}
-          </div>
-          <div className="profile__info">
-            <h1 className="profile__name">{currentuserData.name}</h1>
-            <p className="profile__text">{currentuserData.about}</p>
-
+    <main>
+      <section className="profile">
+        <div className="profile__avatar">
+          <div className="profile__overlay">
             <button
-              onClick={onEditProfileClick}
-              aria-label="Edit"
               type="button"
-              className="profile__edit"
+              onClick={onEditAvatarClick}
+              className="profile__change-photo"
             />
           </div>
+          {currentuserData.avatar && (
+            <img
+              className="profile__avatar-pic"
+              src={currentuserData.avatar}
+              alt="avatar"
+            />
+          )}
+        </div>
+        <div className="profile__info">
+          <h1 className="profile__name">{currentuserData.name}</h1>
+          <p className="profile__text">{currentuserData.about}</p>
 
           <button
-            onClick={onAddPlaceClick}
-            aria-label="Add"
+            onClick={onEditProfileClick}
+            aria-label="Edit"
             type="button"
-            className="profile__plus"
+            className="profile__edit"
           />
-        </section>
-        <section className="elements">
-          {cards.map((card) => (
-            <Card
-              key={card._id}
-              card={card}
-              onCardClick={onCardClick}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
-            />
-          ))}
-        </section>
-      </main>
-    </>
+        </div>
+
+        <button
+          onClick={onAddPlaceClick}
+          aria-label="Add"
+          type="button"
+          className="profile__plus"
+        />
+      </section>
+      <section className="elements">
+        {cards.map((card) => (
+          <Card
+            key={card._id}
+            card={card}
+            onCardClick={onCardClick}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+          />
+        ))}
+      </section>
+    </main>
   );
 }
 export default Main;

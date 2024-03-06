@@ -30,6 +30,18 @@ function App() {
 
   const history = useHistory();
 
+  function handleAddPlaceSubmit(newCard) {
+    api
+      .addNewCard(newCard, localStorage.getItem("jwt"))
+      .then((data) => {
+        setCards([data, ...cards]);
+        setIsAddPlacePopupOpen(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   React.useEffect(() => {
     const token = localStorage.getItem("jwt");
     if (token && loggedIn) {
@@ -38,7 +50,6 @@ function App() {
         .then(async ([CardData, userData]) => {
           const data = await CardData.json();
           const userInfo = await userData.json();
-          console.log(data);
           setCurrentUser(userInfo);
           setCards(data);
         })
@@ -138,17 +149,6 @@ function App() {
       });
   }
 
-  function handleAddPlaceSubmit(newCard) {
-    api
-      .addNewCard(newCard, localStorage.getItem("jwt"))
-      .then((data) => {
-        setCards([data, ...cards]);
-        setIsAddPlacePopupOpen(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
   function onRegister({ email, password }) {
     auth
       .register({ email, password })

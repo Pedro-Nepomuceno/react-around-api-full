@@ -54,10 +54,10 @@ app.use(errorLogger);
 
 app.use(errors());
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3001, HOST = "172.31.24.117" } = process.env;
 
 app.use(errorHandling);
 
-app.listen(PORT, () => {
+app.listen(PORT, HOST, () => {
   console.log(`app is listening`);
 });

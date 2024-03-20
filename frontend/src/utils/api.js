@@ -85,9 +85,3 @@ const api = new Api({
   },
 });
 export default api;
-
-// https://around-us-5wjp.onrender.com
-// https://different-cowboy-hat-fly.cyclic.cloud
-
-// https://api.pedronepomuceno.students.nomoredomainssbs.ru
-// continue development

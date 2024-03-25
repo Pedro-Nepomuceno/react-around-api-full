@@ -79,9 +79,11 @@ class Api {
 //     : "http://localhost:3000";
 
 const api = new Api({
-  baseUrl: "https://different-cowboy-hat-fly.cyclic.cloud",
+  baseUrl: "http://54.89.29.89:3001",
   headers: {
     "Content-Type": "application/json",
   },
 });
 export default api;
+
+// https://different-cowboy-hat-fly.cyclic.cloud

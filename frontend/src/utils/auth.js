@@ -51,11 +51,9 @@ class Auth {
 //     : "http://localhost:3000";
 
 const auth = new Auth({
-  baseUrl: "http://54.89.29.89:3001",
+  baseUrl: "https://mysubdomain.apiaroundreact.net",
   headers: {
     "Content-Type": "application/json",
   },
 });
 export default auth;
-
-// set up elastic Ip

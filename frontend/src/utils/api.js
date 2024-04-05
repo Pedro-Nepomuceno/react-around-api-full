@@ -85,5 +85,3 @@ const api = new Api({
   },
 });
 export default api;
-// certication failed due to firewall
-// allow port 80 on server

@@ -41,6 +41,7 @@ app.use(cors());
 const corsOptions = {
   origin: "https://react-around-api-full-rho.vercel.app",
   methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
 };
 
 app.use(cors(corsOptions));

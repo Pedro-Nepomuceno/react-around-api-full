@@ -45,11 +45,6 @@ class Auth {
 //     ? "https://api.pedronepomuceno.students.nomoredomainssbs.ru"
 //     : "http://localhost:3000";
 
-// const BASE_URL =
-//   process.env.NODE_ENV === "production"
-//     ? "https://different-cowboy-hat-fly.cyclic.cloud"
-//     : "http://localhost:3000";
-
 const auth = new Auth({
   baseUrl: "https://mysubdomain.apiaroundreact.net",
   headers: {

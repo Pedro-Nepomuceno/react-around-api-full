@@ -34,6 +34,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
 
+app.options("*", cors());
+
 const corsOptions = {
   origin: "https://react-around-api-full-rho.vercel.app",
   methods: "GET,POST,PUT,DELETE",

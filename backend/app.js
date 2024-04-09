@@ -32,6 +32,14 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
+app.use(
+  cors({
+    origin: "https://react-around-api-full-rho.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
 app.use(cors());
 
 app.use(requestLogger);

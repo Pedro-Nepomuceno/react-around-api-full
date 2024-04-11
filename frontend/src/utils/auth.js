@@ -52,3 +52,5 @@ const auth = new Auth({
   },
 });
 export default auth;
+
+// set preflight config on server

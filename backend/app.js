@@ -40,6 +40,22 @@ app.use(
   })
 );
 
+app.options("/signup", (req, res) => {
+  // Set CORS headers
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://react-around-api-full-rho.vercel.app"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "POST");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // Log CORS headers
+  console.log("CORS headers:", res.getHeaders());
+
+  // Respond to preflight request
+  res.status(200).end();
+});
+
 app.options("*", cors());
 
 app.use(requestLogger);

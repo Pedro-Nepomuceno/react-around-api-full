@@ -53,4 +53,3 @@ const auth = new Auth({
   },
 });
 export default auth;
-// fix nginx configuration

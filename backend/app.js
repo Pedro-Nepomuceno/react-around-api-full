@@ -60,7 +60,6 @@ app.options("/signup", (req, res) => {
     "https://react-around-api-full-rho.vercel.app"
   );
   res.setHeader("Access-Control-Allow-Methods", "POST");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   // Log CORS headers
   console.log("CORS headers:", res.getHeaders());

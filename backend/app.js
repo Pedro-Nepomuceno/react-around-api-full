@@ -32,16 +32,17 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
+app.use(
+  cors({
+    origin: "https://react-around-api-full-rho.vercel.app",
+    allowedHeaders: ["Content-Type"],
+  })
+);
 app.use((req, res, next) => {
-  res.header(
+  res.setHeader(
     "Access-Control-Allow-Origin",
     "https://react-around-api-full-rho.vercel.app"
   );
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  // res.header(
-  //   "Access-Control-Allow-Headers",
-  //   "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  // );
   next();
 });
 
@@ -53,20 +54,20 @@ app.use((req, res, next) => {
 //   })
 // );
 
-app.options("/signup", (req, res) => {
-  // Set CORS headers
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://react-around-api-full-rho.vercel.app"
-  );
-  res.setHeader("Access-Control-Allow-Methods", "POST");
+// app.options("/signup", (req, res) => {
+//   // Set CORS headers
+//   res.setHeader(
+//     "Access-Control-Allow-Origin",
+//     "https://react-around-api-full-rho.vercel.app"
+//   );
+//   res.setHeader("Access-Control-Allow-Methods", "POST");
 
-  // Log CORS headers
-  console.log("CORS headers:", res.getHeaders());
+//   // Log CORS headers
+//   console.log("CORS headers:", res.getHeaders());
 
-  // Respond to preflight request
-  res.status(200).end();
-});
+//   // Respond to preflight request
+//   res.status(200).end();
+// });
 
 app.options("*", cors());
 

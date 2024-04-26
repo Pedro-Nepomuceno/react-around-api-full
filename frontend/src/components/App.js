@@ -4,16 +4,16 @@ import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
 import ImagePopup from "./ImagePopup.js";
-import api from "../utils/api";
+import api from "../utils/api.js";
 import auth from "../utils/auth.js";
 import { Register } from "./Register.js";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { EditProfilePopup } from "./EditProfilePopup";
-import { EditAvatarPopup } from "./EditAvatarPopup";
-import { AddPlacePopup } from "./AddPlacePopup";
-import ProtectedRoute from "./ProtectedRoute";
-import { Login } from "./Login";
-import { InfoTooltip } from "./InfoTooltip";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
+import { EditProfilePopup } from "./EditProfilePopup.js";
+import { EditAvatarPopup } from "./EditAvatarPopup.js";
+import { AddPlacePopup } from "./AddPlacePopup.js";
+import ProtectedRoute from "./ProtectedRoute.js";
+import { Login } from "./Login.js";
+import { InfoTooltip } from "./InfoTooltip.js";
 
 function App() {
   const [cards, setCards] = React.useState([]);
@@ -196,7 +196,6 @@ function App() {
     setInfoToolTip(false);
     history.push("/signin");
   }
-
   return (
     <>
       <div className="page">

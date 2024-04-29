@@ -158,7 +158,9 @@ function App() {
     auth
       .register({ email, password })
       .then((res) => {
+        console.log("res status", res.status);
         const data = res.json();
+        console.log("data", data);
         if (data._id) {
           setInfoToolTip(true);
           setStatus(true);

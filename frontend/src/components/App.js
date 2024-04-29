@@ -64,6 +64,9 @@ function App() {
         .checkToken(token)
         .then(async (res) => {
           console.log("Response status:", res.status);
+          if (res.status === 204) {
+            setIsLogged(false);
+          }
           const data = await res.json();
           console.log("Response data:", data);
           if (res) {

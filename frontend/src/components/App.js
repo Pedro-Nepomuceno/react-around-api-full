@@ -157,8 +157,8 @@ function App() {
   function onRegister({ email, password }) {
     auth
       .register({ email, password })
-      .then(async (res) => {
-        const data = await res.json();
+      .then((res) => {
+        const data = res.json();
         if (data._id) {
           setInfoToolTip(true);
           setStatus(true);

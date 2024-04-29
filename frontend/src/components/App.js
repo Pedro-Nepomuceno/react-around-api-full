@@ -63,7 +63,9 @@ function App() {
       auth
         .checkToken(token)
         .then(async (res) => {
+          console.log("Response status:", res.status);
           const data = await res.json();
+          console.log("Response data:", data);
           if (res) {
             setSignUpEmail(data.email);
             setIsLogged(true);

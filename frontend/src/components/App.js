@@ -161,6 +161,11 @@ function App() {
         console.log("res status", res.status);
         const data = res.json();
         console.log("data", data);
+        if (res.status === 204) {
+          // Handle 204 status (No Content)
+          setInfoToolTip(true);
+          setStatus(true); // Indicate success without JSON data
+          history.push("/signin");        
         if (data._id) {
           setInfoToolTip(true);
           setStatus(true);

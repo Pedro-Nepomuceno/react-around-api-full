@@ -158,6 +158,7 @@ function App() {
     auth
       .register({ email, password })
       .then((res) => {
+        console.log(res);
         console.log("res status", res.status);
         const data = res.json();
         console.log("data", data);
@@ -165,7 +166,8 @@ function App() {
           // Handle 204 status (No Content)
           setInfoToolTip(true);
           setStatus(true); // Indicate success without JSON data
-          history.push("/signin");        
+          history.push("/signin");
+        }
         if (data._id) {
           setInfoToolTip(true);
           setStatus(true);

@@ -154,20 +154,14 @@ function App() {
       });
   }
 
-  function onRegister({ email, password }) {
-    auth
+  async function onRegister({ email, password }) {
+    await auth
       .register({ email, password })
       .then((res) => {
         console.log(res);
         console.log("res status", res.status);
-        const data = res.json();
+        const data = await res.json();
         console.log("data", data);
-        if (res.status === 204) {
-          // Handle 204 status (No Content)
-          setInfoToolTip(true);
-          setStatus(true); // Indicate success without JSON data
-          history.push("/signin");
-        }
         if (data._id) {
           setInfoToolTip(true);
           setStatus(true);

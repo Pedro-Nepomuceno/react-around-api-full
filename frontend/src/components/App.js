@@ -155,28 +155,51 @@ function App() {
   }
 
   async function onRegister({ email, password }) {
-    await auth
-      .register({ email, password })
-      .then((res) => {
-        console.log(res);
-        console.log("res status", res.status);
-        const data = await res.json();
-        console.log("data", data);
-        if (data._id) {
-          setInfoToolTip(true);
-          setStatus(true);
-          history.push("/signin");
-        } else {
-          setInfoToolTip(true);
-          setStatus(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+    try {
+      const res = await auth.register({ email, password });
+      console.log(res);
+      console.log("res status", res.status);
+      const data = await res.json(); // Wait for JSON parsing to complete
+      console.log("data", data);
+      if (data && data._id) {
+        // Check if data exists and has _id property
+        setInfoToolTip(true);
+        setStatus(true);
+        history.push("/signin");
+      } else {
         setInfoToolTip(true);
         setStatus(false);
-      });
+      }
+    } catch (err) {
+      console.error("Error occurred during registration:", err);
+      setInfoToolTip(true);
+      setStatus(false);
+    }
   }
+
+  // function onRegister({ email, password }) {
+  //   auth
+  //     .register({ email, password })
+  //     .then((res) => {
+  //       console.log(res);
+  //       console.log("res status", res.status);
+  //       const data = res.json();
+  //       console.log("data", data);
+  //       if (data._id) {
+  //         setInfoToolTip(true);
+  //         setStatus(true);
+  //         history.push("/signin");
+  //       } else {
+  //         setInfoToolTip(true);
+  //         setStatus(false);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       setInfoToolTip(true);
+  //       setStatus(false);
+  //     });
+  // }
 
   function onLogin({ email: loginEmail, password }) {
     auth

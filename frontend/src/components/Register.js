@@ -18,7 +18,7 @@ export function Register({ onRegister }) {
   }
 
   return (
-    <main className="form">
+    <main className="form" id="register">
       <form className="form__auth" onSubmit={handleSubmit}>
         <div className="form__content">
           <h3 className="form__title">Sign up</h3>

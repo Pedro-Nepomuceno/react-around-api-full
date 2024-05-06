@@ -157,10 +157,7 @@ function App() {
   async function onRegister({ email, password }) {
     try {
       const res = await auth.register({ email, password });
-      console.log(res);
-      console.log("res status", res.status);
       const data = await res.json(); // Wait for JSON parsing to complete
-      console.log("data", data);
       if (data && data._id) {
         // Check if data exists and has _id property
         setInfoToolTip(true);

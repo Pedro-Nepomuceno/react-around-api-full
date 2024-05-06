@@ -38,13 +38,6 @@ app.use(
     allowedHeaders: ["Content-Type"],
   })
 );
-app.use((req, res, next) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://react-around-api-full-rho.vercel.app"
-  );
-  next();
-});
 
 app.options("*", cors());
 

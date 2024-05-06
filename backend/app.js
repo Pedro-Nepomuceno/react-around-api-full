@@ -18,7 +18,7 @@ app.options("*", cors());
 
 app.use(
   cors({
-    origin: "https://react-around-api-full-rho.vercel.app",
+    origin: "*",
     allowedHeaders: "*",
   })
 );

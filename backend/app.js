@@ -34,12 +34,14 @@ app.use(express.urlencoded({ extended: true }));
 
 app.options("*", cors());
 
-app.use(
-  cors({
-    origin: "https://react-around-api-full-rho.vercel.app",
-    allowedHeaders: "*",
-  })
-);
+app.use(cors());
+
+// app.use(
+//   cors({
+//     origin: "https://react-around-api-full-rho.vercel.app",
+//     allowedHeaders: "*",
+//   })
+// );
 
 app.use(requestLogger);
 

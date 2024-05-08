@@ -70,7 +70,7 @@ const createUser = (req, res, next) => {
     })
     .then((hash) => User.create({ name, about, avatar, email, password: hash }))
     .then((data) => {
-      console.log(data);
+      console.log("Created user data:", data);
       res.set({
         "Content-Type": "application/json; charset=utf-8",
         "Access-Control-Allow-Origin":

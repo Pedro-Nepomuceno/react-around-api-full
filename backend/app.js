@@ -62,14 +62,3 @@ app.use(errorHandling);
 app.listen(PORT, () => {
   console.log(`app is listening`);
 });
-
-// if ($request_method = 'OPTIONS') {
-//   add_header 'Access-Control-Allow-Origin' 'https://react-around-api-full-rho.vercel.app' ;
-//   add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,referrer';
-//   add_header 'Access-Control-Max-Age' 1728000;
-
-// }
-
-// add_header 'Access-Control-Allow-Origin' 'https://react-around-api-full-rho.vercel.app';
-// add_header 'Access-Control-Allow-Methods' 'GET, POST, PATCH, OPTIONS';
-// add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';

@@ -71,6 +71,16 @@ const createUser = (req, res, next) => {
     .then((hash) => User.create({ name, about, avatar, email, password: hash }))
     .then((data) => {
       console.log(data);
+      res.set({
+        "Content-Type": "application/json; charset=utf-8",
+        "Access-Control-Allow-Origin":
+          "https://react-around-api-full-rho.vercel.app",
+        "Access-Control-Allow-Methods": "GET, POST, PATCH, OPTIONS",
+        // Add other headers if needed
+      });
+      // Log response headers
+      console.log(res.getHeaders());
+      // Send response
       res.status(201).send({
         _id: data._id,
         name: data.name,

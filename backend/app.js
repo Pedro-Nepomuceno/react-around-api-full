@@ -60,5 +60,5 @@ const { PORT = 3001 } = process.env;
 app.use(errorHandling);
 
 app.listen(PORT, () => {
-  console.log(`app is listening`);
+  console.log(`app is listening on port ${PORT}`);
 });

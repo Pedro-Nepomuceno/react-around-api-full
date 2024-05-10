@@ -70,7 +70,7 @@ const createUser = (req, res, next) => {
     })
     .then((hash) => User.create({ name, about, avatar, email, password: hash }))
     .then((data) => {
-      console.log("Created user data:", data);
+      console.error("Created user data:", data);
       res.set({
         "Content-Type": "application/json; charset=utf-8",
         "Access-Control-Allow-Origin":
@@ -79,7 +79,7 @@ const createUser = (req, res, next) => {
         // Add other headers if needed
       });
       // Log response headers
-      console.log(res.getHeaders());
+      console.error(res.getHeaders());
       // Send response
       res.status(201).send({
         _id: data._id,

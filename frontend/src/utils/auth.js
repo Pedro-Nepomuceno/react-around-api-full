@@ -49,6 +49,7 @@ const auth = new Auth({
   baseUrl: "https://mysubdomain.apiaroundreact.net",
   headers: {
     "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
     //    referrer: "unsafe-url",
   },
 });

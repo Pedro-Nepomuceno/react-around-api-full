@@ -160,6 +160,7 @@ function App() {
     try {
       const res = await auth.register({ email, password });
       const data = await res.json(); // Wait for JSON parsing to complete
+      console.log("Response data after res.json:", data);
       if (data && data._id) {
         // Check if data exists and has _id property
         setInfoToolTip(true);

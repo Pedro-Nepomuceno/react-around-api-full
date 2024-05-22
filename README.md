@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a web application deployed on AWS using Ubuntu as the operating system, Nginx as the web server, and PM2 as the process manager. It provides a comprehensive solution for building and deploying a full-stack web application with authentication and authorization features.
+This project is a web application deployed on AWS using Ubuntu as the operating system, Nginx as the web server, and PM2 as the process manager. It provides a comprehensive solution for building and deploying a full-stack web application with authentication and authorization features. The project is deployed and accessible at https://react-around-api-full-rho.vercel.app/
 
 ## Features
 

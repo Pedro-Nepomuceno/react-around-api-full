@@ -24,6 +24,7 @@ const login = (req, res, next) => {
         }
       );
       return res.send({
+        _id: user._id,
         name: user.name,
         about: user.about,
         avatar: user.avatar,
@@ -41,6 +42,9 @@ const getUsers = (req, res, next) => {
 };
 
 const getCurrentUser = (req, res, next) => {
+  if (!req.user._id) {
+    next(new NotFoundError("User ID not found in request"));
+  }
   User.findById(req.user._id)
     .orFail(new NotFoundError("User ID not found"))
     .then((user) => res.status(HTTP_SUCCESS_OK).send(user))

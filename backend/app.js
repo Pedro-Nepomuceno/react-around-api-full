@@ -59,6 +59,14 @@ const { PORT = 4000 } = process.env;
 
 app.use(errorHandling);
 
+mongoose.connection.on("connected", () => {
+  console.log("Connected to MongoDB");
+});
+
+mongoose.connection.on("error", (err) => {
+  console.error("MongoDB connection error:", err);
+});
+
 app.listen(PORT, () => {
   console.log(`app is listening on port ${PORT}`);
 });

@@ -23,7 +23,8 @@ const auth = (req, res, next) => {
     return next(new UnauthorizedError("Authorization Required"));
   }
 
-  req.user = payload; // assigning the payload to the request object
+  req.userId = payload._id;
+  // req.user = payload; // assigning the payload to the request object
 
   return next(); // sending the request to the next middleware
 };

@@ -41,23 +41,52 @@ function App() {
         console.log(err);
       });
   }
-
   React.useEffect(() => {
     const token = localStorage.getItem("jwt");
     if (token && loggedIn) {
       api
         .getAppInfo(token)
         .then(async ([CardData, userData]) => {
+          console.log("Raw CardData:", CardData);
+          console.log("Raw userData:", userData);
+
           const data = await CardData.json();
           const userInfo = await userData.json();
-          setCurrentUser(userInfo);
-          setCards(data);
+
+          console.log("Parsed card data:", data);
+          console.log("Parsed user info:", userInfo);
+
+          if (userInfo && userInfo._id) {
+            setCurrentUser(userInfo);
+            setCards(data);
+          } else {
+            console.error("Invalid user data received:", userInfo);
+            // Handle the error appropriately (e.g., log out the user, show an error message)
+          }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.error("Error fetching app info:", err);
+          // Handle the error appropriately
+        });
     }
   }, [loggedIn]);
 
-  // currentUser, cards
+  // React.useEffect(() => {
+  //   const token = localStorage.getItem("jwt");
+  //   if (token && loggedIn) {
+  //     api
+  //       .getAppInfo(token)
+  //       .then(async ([CardData, userData]) => {
+  //         const data = await CardData.json();
+  //         const userInfo = await userData.json();
+  //         setCurrentUser(userInfo);
+  //         setCards(data);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   }
+  // }, [loggedIn]);
+
+  // currentUser, cards;
 
   React.useEffect(() => {
     const token = localStorage.getItem("jwt");

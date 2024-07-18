@@ -10,14 +10,35 @@ class Api {
     }).then(this._handleServerResponse);
   }
 
+  // getAppInfo(token) {
+  //   return Promise.all([this.getInitialCards(token), this.getUserInfo(token)]);
+  // }
+
   getAppInfo(token) {
-    return Promise.all([this.getInitialCards(token), this.getUserInfo(token)]);
+    return Promise.all([
+      this.getInitialCards(token).then((res) => {
+        console.log("Initial cards response:", res);
+        return res;
+      }),
+      this.getUserInfo(token).then((res) => {
+        console.log("User info response:", res);
+        return res;
+      }),
+    ]);
   }
 
+  // getInitialCards(token) {
+  //   return fetch(`${this.baseUrl}/cards`, {
+  //     headers: { authorization: `Bearer ${token}`, ...this.headers },
+  //   }).then(this._handleServerResponse);
+  // }
   getInitialCards(token) {
     return fetch(`${this.baseUrl}/cards`, {
       headers: { authorization: `Bearer ${token}`, ...this.headers },
-    }).then(this._handleServerResponse);
+    }).then((res) => {
+      console.log("Cards response status:", res.status);
+      return this._handleServerResponse(res);
+    });
   }
 
   static _handleServerResponse(res) {

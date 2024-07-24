@@ -90,6 +90,7 @@ function App() {
 
   React.useEffect(() => {
     const token = localStorage.getItem("jwt");
+    console.log(token);
     if (token) {
       auth
         .checkToken(token)
@@ -190,9 +191,8 @@ function App() {
   async function onRegister({ email, password }) {
     try {
       const res = await auth.register({ email, password });
-      const data = await res.json(); // Wait for JSON parsing to complete
-      console.log("Response data after res.json:", data);
-      if (data && data._id) {
+      console.log("Response data after onRegister hit:", res);
+      if (res && res._id) {
         // Check if data exists and has _id property
         setInfoToolTip(true);
         setStatus(true);
@@ -232,26 +232,50 @@ function App() {
   //     });
   // }
 
-  function onLogin({ email: loginEmail, password }) {
-    auth
-      .login({ email: loginEmail, password })
-      .then(async (res) => {
-        const data = await res.json();
-        if (data.token) {
-          setSignUpEmail(loginEmail);
-          setIsLogged(true);
-          localStorage.setItem("jwt", data.token);
-          history.push("/");
-        } else {
-          setInfoToolTip(true);
-          setStatus(false);
-        }
-      })
-      .catch(() => {
+  async function onLogin({ email, password }) {
+    try {
+      const data = await auth.login({ email, password });
+      console.log("Login response:", data);
+      if (data.token) {
+        setSignUpEmail(email);
+        setIsLogged(true);
+        localStorage.setItem("jwt", data.token);
+        history.push("/");
+      } else {
         setInfoToolTip(true);
         setStatus(false);
-      });
+      }
+    } catch (err) {
+      console.error("Error occurred during login:", err);
+      setInfoToolTip(true);
+      setStatus(false);
+    }
   }
+
+  // function onLogin({ email: loginEmail, password }) {
+  //   auth
+  //     .login({ email: loginEmail, password })
+  //     .then(async (res) => {
+  //       console.log(`this is the data after onLogin hit ${res}`);
+  //       const data = await res.json();
+  //       console.log(
+  //         `this is the onLogin data response after being parsed to json ${data}`
+  //       );
+  //       if (data.token) {
+  //         setSignUpEmail(loginEmail);
+  //         setIsLogged(true);
+  //         localStorage.setItem("jwt", data.token);
+  //         history.push("/");
+  //       } else {
+  //         setInfoToolTip(true);
+  //         setStatus(false);
+  //       }
+  //     })
+  //     .catch(() => {
+  //       setInfoToolTip(true);
+  //       setStatus(false);
+  //     });
+  // }
 
   function onSignOut() {
     localStorage.removeItem("jwt");

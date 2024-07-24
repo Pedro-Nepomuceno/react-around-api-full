@@ -4,10 +4,11 @@ class Api {
     this.headers = headers;
   }
 
-  getUserInfo(token) {
-    return fetch(`${this.baseUrl}/users/me`, {
+  async getUserInfo(token) {
+    const res = await fetch(`${this.baseUrl}/users/me`, {
       headers: { authorization: `Bearer ${token}`, ...this.headers },
-    }).then(this._handleServerResponse);
+    });
+    return this._handleServerResponse(res);
   }
 
   // getAppInfo(token) {
@@ -32,6 +33,7 @@ class Api {
   //     headers: { authorization: `Bearer ${token}`, ...this.headers },
   //   }).then(this._handleServerResponse);
   // }
+
   getInitialCards(token) {
     return fetch(`${this.baseUrl}/cards`, {
       headers: { authorization: `Bearer ${token}`, ...this.headers },
@@ -41,21 +43,23 @@ class Api {
     });
   }
 
-  static _handleServerResponse(res) {
+  // eslint-disable-next-line class-methods-use-this
+  _handleServerResponse(res) {
     return res.ok
       ? res.json()
       : Promise.reject(new Error(`Error: ${res.status}`));
   }
 
-  setUserProfile({ name, about }, token) {
-    return fetch(`${this.baseUrl}/users/me`, {
+  async setUserProfile({ name, about }, token) {
+    const res = await fetch(`${this.baseUrl}/users/me`, {
       method: "PATCH",
       headers: { authorization: `Bearer ${token}`, ...this.headers },
       body: JSON.stringify({
         name,
         about,
       }),
-    }).then(this._handleServerResponse);
+    });
+    return this._handleServerResponse(res);
   }
 
   addNewCard({ name, link }, token) {
@@ -94,13 +98,13 @@ class Api {
   }
 }
 
-// const BASE_URL =
-//   process.env.NODE_ENV === "production"
-//     ? "https://different-cowboy-hat-fly.cyclic.cloud"
-//     : "http://localhost:3000";
+const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://mysubdomain.apiaroundreact.net"
+    : "http://localhost:4000";
 
 const api = new Api({
-  baseUrl: "https://mysubdomain.apiaroundreact.net",
+  baseUrl: BASE_URL,
   headers: {
     "Content-Type": "application/json",
     referrer: "unsafe-url",

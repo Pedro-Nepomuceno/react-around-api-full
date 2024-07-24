@@ -1,20 +1,18 @@
 const express = require("express");
 
+const cors = require("cors");
+
+const app = express();
+
 require("dotenv").config();
 
 const mongoose = require("mongoose");
 
 const helmet = require("helmet");
 
-const cors = require("cors");
-
 const { errors } = require("celebrate");
 
 const errorHandling = require("./middleware/errorHandling");
-
-const app = express();
-
-app.options("*", cors());
 
 app.use(
   cors({
@@ -22,6 +20,13 @@ app.use(
     allowedHeaders: "*",
   })
 );
+
+app.options("*", cors());
+
+app.use((req, res, next) => {
+  console.log("CORS headers:", res.getHeaders());
+  next();
+});
 
 const routes = require("./routes/index");
 
@@ -43,6 +48,16 @@ const { requestLogger, errorLogger } = require("./middleware/logger");
 
 app.use(requestLogger);
 
+app.use(errorLogger);
+
+app.use((err, req, res, next) => {
+  console.error("Global error handler:", err);
+  res.status(err.statusCode || 500).send({
+    message: err.message || "An error occurred on the server",
+    error: process.env.NODE_ENV === "production" ? {} : err,
+  });
+});
+
 app.get("/crash-test", () => {
   setTimeout(() => {
     throw new Error("Server will crash now");
@@ -51,13 +66,18 @@ app.get("/crash-test", () => {
 
 app.use(routes);
 
-app.use(errorLogger);
-
 app.use(errors());
 
-const { PORT = 4000 } = process.env;
+const PORT = process.env.PORT || 4000;
 
 app.use(errorHandling);
+
+app.use((err, req, res, next) => {
+  console.error("Global error handler:", err);
+  res
+    .status(500)
+    .send({ message: "An error occurred on the server", error: err.message });
+});
 
 mongoose.connection.on("connected", () => {
   console.log("Connected to MongoDB");
@@ -70,3 +90,5 @@ mongoose.connection.on("error", (err) => {
 app.listen(PORT, () => {
   console.log(`app is listening on port ${PORT}`);
 });
+
+console.log(`Server starting... ${new Date().toISOString()}`);

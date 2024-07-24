@@ -4,10 +4,10 @@
   "description": "server side",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js",
+    "dev": "cross-env NODE_ENV=development nodemon app.js",
     "lint": "npx eslint . --fix",
     "build": "npm i",
-    "start": "PORT=4000 node app.js"
+    "start": "cross-env NODE_ENV=production PORT=4000 node app.js"
   },
   "repository": {
     "type": "git",

@@ -19,12 +19,15 @@ const auth = (req, res, next) => {
       token,
       NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
     );
+    console.log("Decoded payload:", payload);
   } catch (err) {
+    console.error("JWT verification error:", err);
     return next(new UnauthorizedError("Authorization Required"));
   }
 
-  req.userId = payload._id;
-  // req.user = payload; // assigning the payload to the request object
+  req.user = payload; // assigning the payload to the request object
+
+  console.log("User set in request:", req.user);
 
   return next(); // sending the request to the next middleware
 };

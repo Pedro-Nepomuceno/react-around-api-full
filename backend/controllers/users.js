@@ -8,12 +8,17 @@ const ConflictError = require("../error/conflict-error");
 
 const NotFoundError = require("../error/not-found-error");
 
+const UnauthorizedError = require("../error/unauthorized-error");
+
 const { HTTP_SUCCESS_OK } = require("../utils/status");
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
+const logger = require("../utils/logger");
+
 const login = (req, res, next) => {
   const { email, password } = req.body;
+  logger.debug(`login user req.body ${req.body}`);
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign(
@@ -41,14 +46,33 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
+// const getCurrentUser = (req, res, next) => {
+//   if (!req.user._id) {
+//     next(new NotFoundError("User ID not found in request"));
+//   }
+//   User.findById(req.user._id)
+//     .orFail(new NotFoundError("User ID not found"))
+//     .then((user) => res.status(HTTP_SUCCESS_OK).send(user))
+//     .catch(next);
+// };
+
 const getCurrentUser = (req, res, next) => {
-  if (!req.user._id) {
-    next(new NotFoundError("User ID not found in request"));
+  logger.debug(
+    `Getting current user. User in request: ${JSON.stringify(req.user)}`
+  );
+  if (!req.user || !req.user._id) {
+    return next(new UnauthorizedError("User not found in request"));
   }
-  User.findById(req.user._id)
+  return User.findById(req.user._id)
     .orFail(new NotFoundError("User ID not found"))
-    .then((user) => res.status(HTTP_SUCCESS_OK).send(user))
-    .catch(next);
+    .then((user) => {
+      logger.debug(`trying to find user by id:${JSON.stringify(user)}`);
+      res.status(HTTP_SUCCESS_OK).send(user);
+    })
+    .catch((err) => {
+      logger.info(err);
+      next(err);
+    });
 };
 
 const getUserbyId = (req, res, next) => {
@@ -60,8 +84,7 @@ const getUserbyId = (req, res, next) => {
 
 const createUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
-  console.log(req.body);
-
+  logger.info(req.body);
   User.findOne({ email })
     .then((user) => {
       if (user) {
@@ -74,14 +97,7 @@ const createUser = (req, res, next) => {
     })
     .then((hash) => User.create({ name, about, avatar, email, password: hash }))
     .then((data) => {
-      console.error("Created user data:", data);
-      res.set({
-        "Content-Type": "application/json; charset=utf-8",
-        "Access-Control-Allow-Origin":
-          "https://react-around-api-full-rho.vercel.app",
-        "Access-Control-Allow-Methods": "GET, POST, PATCH, OPTIONS",
-        // Add other headers if needed
-      });
+      logger.debug(`This is the data after user registration: ${data}`);
       // Log response headers
       console.error(res.getHeaders());
       // Send response

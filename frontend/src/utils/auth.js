@@ -2,12 +2,15 @@ class Auth {
   constructor({ baseUrl, headers }) {
     this.baseUrl = baseUrl;
     this.headers = headers;
+    this._handleServerResponse = this._handleServerResponse.bind(this);
   }
 
-  static _handleServerResponse(res) {
-    return res.ok
-      ? res.json()
-      : Promise.reject(new Error(`Error: ${res.status}`));
+  // eslint-disable-next-line class-methods-use-this
+  _handleServerResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return res.json().then((err) => Promise.reject(err));
   }
 
   register({ email, password }) {
@@ -29,27 +32,28 @@ class Auth {
     }).then(this._handleServerResponse);
   }
 
-  checkToken(token) {
-    return fetch(`${this.baseUrl}/users/me`, {
+  async checkToken(token) {
+    const res = await fetch(`${this.baseUrl}/users/me`, {
       method: "GET",
       headers: {
         ...this.headers,
         Authorization: `Bearer ${token}`,
       },
-    }).then(this._handleServerResponse);
+    });
+    return this._handleServerResponse(res);
   }
 }
 
-// const BASE_URL =
-//   process.env.NODE_ENV === "production"
-//     ? "https://api.pedronepomuceno.students.nomoredomainssbs.ru"
-//     : "http://localhost:3000";
+const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://mysubdomain.apiaroundreact.net"
+    : "http://localhost:4000";
 
 const auth = new Auth({
-  baseUrl: "https://mysubdomain.apiaroundreact.net",
+  baseUrl: BASE_URL,
   headers: {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
+    // "Access-Control-Allow-Origin": "*",
     //    referrer: "unsafe-url",
   },
 });

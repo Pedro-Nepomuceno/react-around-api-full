@@ -5,7 +5,7 @@ module.exports = (err, req, res, next) => {
     // check the status and display a message based on it
     message:
       statusCode === 500
-        ? "An error occurred on the server 2" + message
+        ? `An error occurred on the server  + ${message}`
         : message,
   });
 };

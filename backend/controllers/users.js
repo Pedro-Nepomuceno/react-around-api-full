@@ -12,22 +12,18 @@ const UnauthorizedError = require("../error/unauthorized-error");
 
 const { HTTP_SUCCESS_OK } = require("../utils/status");
 
-const { NODE_ENV, JWT_SECRET } = process.env;
+const { JWT_SECRET } = process.env;
 
 const logger = require("../utils/logger");
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
-  logger.debug(`login user req.body ${req.body}`);
+  logger.debug(`Getting data after LOGIN: ${JSON.stringify(req.body)}`);
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign(
-        { _id: user._id },
-        NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
-        {
-          expiresIn: "7d",
-        }
-      );
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+        expiresIn: "7d",
+      });
       return res.send({
         _id: user._id,
         name: user.name,
@@ -97,7 +93,9 @@ const createUser = (req, res, next) => {
     })
     .then((hash) => User.create({ name, about, avatar, email, password: hash }))
     .then((data) => {
-      logger.debug(`This is the data after user registration: ${data}`);
+      logger.debug(
+        `Getting data after using registration: ${JSON.stringify(req.user)}`
+      );
       // Log response headers
       console.error(res.getHeaders());
       // Send response

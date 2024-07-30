@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable import/no-named-as-default-member */
 import React from "react";
 import Card from "./Card.js";
 import { LoadingSpinner } from "./LoadingSpinner.js";

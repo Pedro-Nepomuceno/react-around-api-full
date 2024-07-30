@@ -7,8 +7,6 @@ console.log("JWT_SECRET:", JWT_SECRET);
 const UnauthorizedError = require("../error/unauthorized-error");
 
 const auth = (req, res, next) => {
-  console.log("Auth middleware called");
-  console.log("JWT_SECRET in auth middleware:", JWT_SECRET);
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith("Bearer ")) {

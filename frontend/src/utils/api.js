@@ -4,52 +4,94 @@ class Api {
     this.headers = headers;
   }
 
-  async getUserInfo(token) {
-    const res = await fetch(`${this.baseUrl}/users/me`, {
-      headers: { authorization: `Bearer ${token}`, ...this.headers },
-    });
-    return this._handleServerResponse(res);
-  }
-
   // getAppInfo(token) {
   //   return Promise.all([this.getInitialCards(token), this.getUserInfo(token)]);
   // }
 
-  getAppInfo(token) {
-    return Promise.all([
-      this.getInitialCards(token).then((res) => {
-        console.log("Initial cards response:", res);
-        return res;
-      }),
-      this.getUserInfo(token).then((res) => {
-        console.log("User info response:", res);
-        return res;
-      }),
-    ]);
+  async getAppInfo(token) {
+    try {
+      const [cardsResponse, userInfoResponse] = await Promise.all([
+        this.getInitialCards(token),
+        this.getUserInfo(token),
+      ]);
+      console.log("Initial cards response:", cardsResponse);
+      console.log("User info response:", userInfoResponse);
+      return [cardsResponse, userInfoResponse];
+    } catch (error) {
+      console.error("Error in getAppInfo:", error);
+      throw error;
+    }
+  }
+
+  // getAppInfo(token) {
+  //   return Promise.all([
+  //     this.getInitialCards(token).then((res) => {
+  //       console.log("Initial cards response:", res);
+  //       return res;
+  //     }),
+  //     this.getUserInfo(token).then((res) => {
+  //       console.log("User info response:", res);
+  //       return res;
+  //     }),
+  //   ]);
+  // }
+
+  async getUserInfo(token) {
+    try {
+      const res = await fetch(`${this.baseUrl}/users/me`, {
+        headers: { authorization: `Bearer ${token}`, ...this.headers },
+      });
+      return this._handleServerResponse(res);
+    } catch (error) {
+      console.error("Error in getUserInfo:", error);
+      throw error;
+    }
+  }
+
+  // async getUserInfo(token) {
+  //   const res = await fetch(`${this.baseUrl}/users/me`, {
+  //     headers: { authorization: `Bearer ${token}`, ...this.headers },
+  //   });
+  //   return this._handleServerResponse(res);
+  // }
+
+  async getInitialCards(token) {
+    try {
+      const res = await fetch(`${this.baseUrl}/cards`, {
+        headers: { authorization: `Bearer ${token}`, ...this.headers },
+      });
+      console.log("Cards response status:", res.status);
+      return this._handleServerResponse(res);
+    } catch (error) {
+      console.error("Error in getInitialCards:", error);
+      throw error;
+    }
   }
 
   // getInitialCards(token) {
   //   return fetch(`${this.baseUrl}/cards`, {
   //     headers: { authorization: `Bearer ${token}`, ...this.headers },
-  //   }).then(this._handleServerResponse);
+  //   }).then((res) => {
+  //     console.log("Cards response status:", res.status);
+  //     return this._handleServerResponse(res);
+  //   });
   // }
 
-  getInitialCards(token) {
-    return fetch(`${this.baseUrl}/cards`, {
-      headers: { authorization: `Bearer ${token}`, ...this.headers },
-    }).then((res) => {
-      console.log("Cards response status:", res.status);
-      return this._handleServerResponse(res);
-    });
-  }
-
   // eslint-disable-next-line class-methods-use-this
-  _handleServerResponse(res) {
+  async _handleServerResponse(res) {
     if (res.ok) {
       return res.json();
     }
-    return res.json().then((err) => Promise.reject(err));
+    const errorData = await res.json();
+    // eslint-disable-next-line prefer-promise-reject-errors
+    return Promise.reject({ status: res.status, ...errorData });
   }
+  // _handleServerResponse(res) {
+  //   if (res.ok) {
+  //     return res.json();
+  //   }
+  //   return res.json().then((err) => Promise.reject(err));
+  // }
 
   async setUserProfile({ name, about }, token) {
     const res = await fetch(`${this.baseUrl}/users/me`, {

@@ -32,17 +32,42 @@ class Auth {
     }).then(this._handleServerResponse);
   }
 
+  // In your auth.js file
   async checkToken(token) {
-    const res = await fetch(`${this.baseUrl}/users/me`, {
-      method: "GET",
-      headers: {
-        ...this.headers,
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return this._handleServerResponse(res);
+    try {
+      const response = await fetch(`${this.baseUrl}/users/me`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("Check token response:", response);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Token check error:", error);
+      throw error;
+    }
   }
 }
+
+//   async checkToken(token) {
+//     const res = await fetch(`${this.baseUrl}/users/me`, {
+//       method: "GET",
+//       headers: {
+//         ...this.headers,
+//         Authorization: `Bearer ${token}`,
+//       },
+//     });
+//     return this._handleServerResponse(res);
+//   }
+//
 
 const BASE_URL =
   process.env.NODE_ENV === "production"
@@ -57,4 +82,5 @@ const auth = new Auth({
     //    referrer: "unsafe-url",
   },
 });
+
 export default auth;

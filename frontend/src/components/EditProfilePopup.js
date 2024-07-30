@@ -2,6 +2,7 @@ import React from "react";
 import { PopupWithForm } from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
+// eslint-disable-next-line react/prop-types
 export function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
@@ -13,6 +14,11 @@ export function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   });
 
   const currentUser = React.useContext(CurrentUserContext);
+  console.log(
+    "CurrentUser var from EditProfilePopup:",
+    JSON.stringify(currentUser, null, 2)
+  );
+  console.log("CurrentUserContext from EditProfilePopup:", CurrentUserContext);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -24,8 +30,10 @@ export function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   }
 
   React.useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
+    if (currentUser && currentUser.name && currentUser.about) {
+      setName(currentUser.name);
+      setDescription(currentUser.about);
+    }
   }, [currentUser]);
 
   function handleNameChange(e) {

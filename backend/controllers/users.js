@@ -56,6 +56,9 @@ const getCurrentUser = (req, res, next) => {
   logger.debug(
     `Getting current user. User in request: ${JSON.stringify(req.user)}`
   );
+  logger.debug(
+    `This is REQ.USER with  res.json(req.user);${res.json(req.user)}`
+  );
   if (!req.user || !req.user._id) {
     return next(new UnauthorizedError("User not found in request"));
   }

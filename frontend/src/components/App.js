@@ -42,6 +42,7 @@ function App() {
         console.log(err);
       });
   }
+
   React.useEffect(() => {
     const token = localStorage.getItem("jwt");
 
@@ -84,16 +85,13 @@ function App() {
         .checkToken(token)
         .then((userData) => {
           console.log("User data:", userData);
-          if (userData) {
+          if (userData && userData._id) {
             setSignUpEmail(userData.email);
             setIsLogged(true);
             setCurrentUser(userData);
-            // return api.getUserInfo(token);
+          } else {
+            throw new Error("Invalid user data");
           }
-          throw new Error("Invalid user data");
-        })
-        .then((fullUserData) => {
-          setCurrentUser(fullUserData);
         })
         .catch((err) => {
           console.error("Error checking token:", err);
@@ -106,6 +104,38 @@ function App() {
       setIsLoading(false);
     }
   }, []);
+
+  // React.useEffect(() => {
+  //   const token = localStorage.getItem("jwt");
+  //   console.log("Token from localStorage:", token);
+  //   if (token) {
+  //     setIsLoading(true);
+  //     auth
+  //       .checkToken(token)
+  //       .then((userData) => {
+  //         console.log("User data:", userData);
+  //         if (userData) {
+  //           setSignUpEmail(userData.email);
+  //           setIsLogged(true);
+  //           setCurrentUser(userData);
+  //           // return api.getUserInfo(token);
+  //         }
+  //         throw new Error("Invalid user data");
+  //       })
+  //       .then((fullUserData) => {
+  //         setCurrentUser(fullUserData);
+  //       })
+  //       .catch((err) => {
+  //         console.error("Error checking token:", err);
+  //         setIsLogged(false);
+  //         localStorage.removeItem("jwt");
+  //       })
+  //       .finally(() => setIsLoading(false));
+  //   } else {
+  //     setIsLogged(false);
+  //     setIsLoading(false);
+  //   }
+  // }, []);last
 
   // React.useEffect(() => {
   //   const token = localStorage.getItem("jwt");
@@ -123,40 +153,6 @@ function App() {
   // }, [loggedIn]);
 
   // currentUser, cards;
-
-  // React.useEffect(() => {
-  //   const token = localStorage.getItem("jwt");
-  //   console.log("Token from localStorage:", token);
-  //   if (token) {
-  //     auth
-  //       .checkToken(token)
-  //       .then(async (res) => {
-  //         console.log("Response status:", res.status);
-  //         if (res.status === 204) {
-  //           setIsLogged(false);
-  //           localStorage.removeItem("jwt"); // Clear invalid token
-  //           return;
-  //         }
-  //         if (!res.ok) {
-  //           throw new Error(`HTTP error! status: ${res.status}`);
-  //         }
-  //         if (res.status !== 204) {
-  //           const data = await res.json();
-  //           console.log("Response data:", data);
-  //           setSignUpEmail(data.email);
-  //           setIsLogged(true);
-  //           history.push("/");
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         console.error("Error checking token:", err);
-  //         setIsLogged(false);
-  //         localStorage.removeItem("jwt"); // Clear invalid token
-  //       });
-  //   } else {
-  //     setIsLogged(false);
-  //   }
-  // }, []);last
 
   function handleCardClick(card) {
     setSelectedCard(card);

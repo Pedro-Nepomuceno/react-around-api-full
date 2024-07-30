@@ -32,28 +32,19 @@ class Auth {
     }).then(this._handleServerResponse);
   }
 
-  // In your auth.js file
-  async checkToken(token) {
-    try {
-      const response = await fetch(`${this.baseUrl}/users/me`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      console.log("Check token response:", response);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+  checkToken(token) {
+    return fetch(`${this.baseUrl}/users/me`, {
+      method: "GET",
+      headers: {
+        ...this.headers,
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
       }
-
-      return await response.json();
-    } catch (error) {
-      console.error("Token check error:", error);
-      throw error;
-    }
+      throw new Error(`Error: ${res.status}`);
+    });
   }
 }
 

@@ -66,7 +66,13 @@ const getCurrentUser = (req, res, next) => {
     .orFail(new NotFoundError("User ID not found"))
     .then((user) => {
       logger.debug(`trying to find user by id:${JSON.stringify(user)}`);
-      res.status(HTTP_SUCCESS_OK).send(user);
+      res.status(HTTP_SUCCESS_OK).send({
+        _id: user._id,
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
+        email: user.email,
+      });
     })
     .catch((err) => {
       logger.info(err);
@@ -77,7 +83,15 @@ const getCurrentUser = (req, res, next) => {
 const getUserbyId = (req, res, next) => {
   User.findById(req.params.id)
     .orFail(new NotFoundError("user not found"))
-    .then((user) => res.send(user))
+    .then((user) =>
+      res.send({
+        _id: user._id,
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
+        email: user.email,
+      })
+    )
     .catch(next);
 };
 

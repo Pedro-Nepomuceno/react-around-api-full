@@ -32,6 +32,16 @@ class Auth {
     }).then(this._handleServerResponse);
   }
 
+  getUserById(userId, token) {
+    return fetch(`${this.baseUrl}/users/${userId}`, {
+      method: "GET",
+      headers: {
+        ...this.headers,
+        Authorization: `Bearer ${token}`,
+      },
+    }).then(this._handleServerResponse);
+  }
+
   checkToken(token) {
     return fetch(`${this.baseUrl}/users/me`, {
       method: "GET",

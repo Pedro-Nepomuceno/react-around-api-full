@@ -36,12 +36,27 @@ class Api {
   //   ]);
   // }
 
+  // async getUserInfo(token) {
+  //   try {
+  //     const res = await fetch(`${this.baseUrl}/users/me`, {
+  //       headers: { authorization: `Bearer ${token}`, ...this.headers },
+  //     });
+  //     return this._handleServerResponse(res);
+  //   } catch (error) {
+  //     console.error("Error in getUserInfo:", error);
+  //     throw error;
+  //   }
+  // } last
+
   async getUserInfo(token) {
     try {
       const res = await fetch(`${this.baseUrl}/users/me`, {
         headers: { authorization: `Bearer ${token}`, ...this.headers },
       });
-      return this._handleServerResponse(res);
+      console.log("User info response status:", res.status);
+      const data = await this._handleServerResponse(res);
+      console.log("Full user data from API:", data);
+      return data;
     } catch (error) {
       console.error("Error in getUserInfo:", error);
       throw error;

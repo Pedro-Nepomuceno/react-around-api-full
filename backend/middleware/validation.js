@@ -1,4 +1,4 @@
-const { Joi, celebrate, Segments } = require("celebrate");
+const { Joi, celebrate } = require("celebrate");
 const validator = require("validator");
 const { ObjectId } = require("mongoose").Types;
 

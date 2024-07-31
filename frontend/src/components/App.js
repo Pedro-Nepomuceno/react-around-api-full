@@ -78,23 +78,28 @@ function App() {
 
   React.useEffect(() => {
     const token = localStorage.getItem("jwt");
-    console.log("Token from localStorage:", token);
     if (token) {
       setIsLoading(true);
       auth
         .checkToken(token)
-        .then((userData) => {
-          console.log("User data:", userData);
-          if (userData && userData._id) {
-            setSignUpEmail(userData.email);
+        .then((tokenData) => {
+          if (tokenData && tokenData._id) {
             setIsLogged(true);
-            setCurrentUser(userData);
-          } else {
-            throw new Error("Invalid user data");
+            return auth.getUserById(tokenData._id, token);
           }
+          throw new Error("Invalid token data");
+        })
+        .then((fullUserData) => {
+          console.log("Full user data on refresh:", fullUserData);
+          setSignUpEmail(fullUserData.email);
+          setCurrentUser(fullUserData);
+          return api.getInitialCards(token);
+        })
+        .then((cardData) => {
+          setCards(cardData);
         })
         .catch((err) => {
-          console.error("Error checking token:", err);
+          console.error("Error checking token or fetching data:", err);
           setIsLogged(false);
           localStorage.removeItem("jwt");
         })
@@ -114,16 +119,13 @@ function App() {
   //       .checkToken(token)
   //       .then((userData) => {
   //         console.log("User data:", userData);
-  //         if (userData) {
+  //         if (userData && userData._id) {
   //           setSignUpEmail(userData.email);
   //           setIsLogged(true);
   //           setCurrentUser(userData);
-  //           // return api.getUserInfo(token);
+  //         } else {
+  //           throw new Error("Invalid user data");
   //         }
-  //         throw new Error("Invalid user data");
-  //       })
-  //       .then((fullUserData) => {
-  //         setCurrentUser(fullUserData);
   //       })
   //       .catch((err) => {
   //         console.error("Error checking token:", err);
@@ -135,7 +137,7 @@ function App() {
   //     setIsLogged(false);
   //     setIsLoading(false);
   //   }
-  // }, []);last
+  // }, []);
 
   // React.useEffect(() => {
   //   const token = localStorage.getItem("jwt");

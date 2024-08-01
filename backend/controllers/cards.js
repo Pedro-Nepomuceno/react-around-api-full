@@ -15,18 +15,21 @@ const getCards = (req, res, next) => {
           ...cards,
           {
             name: "Summer",
-            link: "https://avatars.mds.yandex.net/i?id=9547524796d8490ce5cb02c632de77894622645c-6377202-images-thumbs&n=13",
+            _id: "default1",
+            link: "https://unsplash.com/photos/a-hammock-hanging-from-a-palm-tree-on-a-beach-QoWDbXGnl3E",
             owner: "",
             likes: ["1"],
           },
           {
             name: "winter",
+            _id: "default2",
             link: "https://avatars.mds.yandex.net/i?id=04e4bc09d4337ef9bbcf7aa0a8df37437f018b8e-9727996-images-thumbs&n=13",
             owner: "",
             likes: ["2"],
           },
           {
             name: "Fall",
+            _id: "default3",
             link: "https://avatars.mds.yandex.net/i?id=b06ff5dd50cde73ed72b7bffcb3ba3402b1b4836-8378316-images-thumbs&n=13",
             owner: "",
             likes: [],

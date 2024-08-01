@@ -11,14 +11,14 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 2,
     maxlength: 30,
-    default: "Pedro Lima",
+    default: "Change your name",
   },
   about: {
     type: String,
     required: true,
     minlength: 2,
     maxlength: 30,
-    default: "Developer",
+    default: "And your description there 👉",
   },
   avatar: {
     type: String,

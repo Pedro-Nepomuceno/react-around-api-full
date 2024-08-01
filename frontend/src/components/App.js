@@ -218,21 +218,33 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((user) => user === currentUser._id);
-    console.log(isLiked);
 
-    api
-      .handleLikePhoto(card._id, isLiked, localStorage.getItem("jwt"))
-      .then((newCard) => {
-        console.log(`newCard:${newCard}`);
-        setCards((state) =>
-          state.map((currentCard) =>
-            currentCard._id === card._id ? newCard : currentCard
-          )
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (card._id.startsWith("default")) {
+      const newCard = { ...card };
+      if (isLiked) {
+        newCard.likes = newCard.likes.filter((id) => id !== currentUser._id);
+      } else {
+        newCard.likes = [...newCard.likes, currentUser._id];
+      }
+      setCards((state) =>
+        state.map((currentCard) =>
+          currentCard._id === card._id ? newCard : currentCard
+        )
+      );
+    } else {
+      api
+        .handleLikePhoto(card._id, isLiked, localStorage.getItem("jwt"))
+        .then((newCard) => {
+          setCards((state) =>
+            state.map((currentCard) =>
+              currentCard._id === card._id ? newCard : currentCard
+            )
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 
   async function onRegister({ email, password }) {

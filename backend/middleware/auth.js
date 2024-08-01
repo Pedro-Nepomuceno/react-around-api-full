@@ -2,8 +2,6 @@ const jwt = require("jsonwebtoken");
 
 const { JWT_SECRET } = process.env;
 
-console.log("JWT_SECRET:", JWT_SECRET);
-
 const UnauthorizedError = require("../error/unauthorized-error");
 
 const auth = (req, res, next) => {
@@ -24,11 +22,11 @@ const auth = (req, res, next) => {
     return next(new UnauthorizedError("Authorization Required"));
   }
 
-  req.user = payload; // assigning the payload to the request object
+  req.user = payload;
 
   console.log("User set in request:", req.user);
 
-  return next(); // sending the request to the next middleware
+  return next();
 };
 
 module.exports = auth;

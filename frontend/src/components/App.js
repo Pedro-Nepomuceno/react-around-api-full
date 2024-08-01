@@ -50,23 +50,14 @@ function App() {
       api
         .getAppInfo(token)
         .then(async ([CardData, userData]) => {
-          console.log("Token being sent:", localStorage.getItem("jwt"));
-
-          console.log("Raw CardData:", CardData);
-          console.log("Raw userData:", userData);
-
           const data = await CardData;
           const userInfo = await userData;
-
-          console.log("Parsed card data:", data);
-          console.log("Parsed user info:", userInfo);
 
           if (userInfo && userInfo._id) {
             setCurrentUser(userInfo);
             setCards(data);
           } else {
             console.error("Invalid user data received:", userInfo);
-            // Handle the error appropriately (e.g., log out the user, show an error message)
           }
         })
         .catch((err) => {
@@ -90,7 +81,6 @@ function App() {
           throw new Error("Invalid token data");
         })
         .then((fullUserData) => {
-          console.log("Full user data on refresh:", fullUserData);
           setSignUpEmail(fullUserData.email);
           setCurrentUser(fullUserData);
           return api.getInitialCards(token);

@@ -49,19 +49,72 @@ class Api {
   // } last
 
   async getUserInfo(token) {
-    try {
-      const res = await fetch(`${this.baseUrl}/users/me`, {
-        headers: { authorization: `Bearer ${token}`, ...this.headers },
-      });
-      console.log("User info response status:", res.status);
-      const data = await this._handleServerResponse(res);
-      console.log("Full user data from API:", data);
-      return data;
-    } catch (error) {
-      console.error("Error in getUserInfo:", error);
-      throw error;
-    }
+    const startTime = Date.now();
+    const maxExecutionTime = 20000;
+    const maxRetries = 3;
+
+    const attemptFetch = async (retryCount) => {
+      if (Date.now() - startTime > maxExecutionTime) {
+        throw new Error("getUserInfo timed out");
+      }
+
+      try {
+        const res = await fetch(`${this.baseUrl}/users/me`, {
+          headers: { authorization: `Bearer ${token}`, ...this.headers },
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await this._handleServerResponse(res);
+
+        if (!data.name || !data.email || !data.about) {
+          if (retryCount >= maxRetries) {
+            throw new Error("Max retries reached. User data incomplete.");
+          }
+          console.log(
+            `Incomplete data, retrying... (Attempt ${retryCount + 1})`
+          );
+          const delay = Math.min(1000 * 2 ** retryCount, 8000); // Exponential backoff with 8s max
+          // eslint-disable-next-line no-promise-executor-return
+          await new Promise((resolve) => setTimeout(resolve, delay));
+          return attemptFetch(retryCount + 1);
+        }
+
+        return data;
+      } catch (error) {
+        if (retryCount < maxRetries) {
+          console.error(
+            `Error in getUserInfo (Attempt ${retryCount + 1}):`,
+            error
+          );
+          const delay = Math.min(1000 * 2 ** retryCount, 8000);
+          // eslint-disable-next-line no-promise-executor-return
+          await new Promise((resolve) => setTimeout(resolve, delay));
+          return attemptFetch(retryCount + 1);
+        }
+        throw error;
+      }
+    };
+
+    return attemptFetch(0);
   }
+
+  // async getUserInfo(token) {
+  //   try {
+  //     const res = await fetch(`${this.baseUrl}/users/me`, {
+  //       headers: { authorization: `Bearer ${token}`, ...this.headers },
+  //     });
+  //     console.log("User info response status:", res.status);
+  //     const data = await this._handleServerResponse(res);
+  //     console.log("Full user data from API:", data);
+  //     return data;
+  //   } catch (error) {
+  //     console.error("Error in getUserInfo:", error);
+  //     throw error;
+  //   }
+  // }last
 
   // async getUserInfo(token) {
   //   const res = await fetch(`${this.baseUrl}/users/me`, {

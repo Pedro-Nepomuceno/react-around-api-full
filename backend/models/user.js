@@ -11,19 +11,19 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 2,
     maxlength: 30,
-    default: "Change your name",
+    default: "Pedro Lima",
   },
   about: {
     type: String,
     required: true,
     minlength: 2,
     maxlength: 30,
-    default: "And your description there 👉",
+    default: "Developer",
   },
   avatar: {
     type: String,
     default:
-      "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fHRlY2h8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+      "https://avatars.mds.yandex.net/i?id=1d8daf4388491ab273de74671423e884c8a0c6b9-7084594-images-thumbs&n=13",
     validate: {
       validator: validator.isURL,
       message: 'The "avatar" must be a valid url',

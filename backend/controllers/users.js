@@ -81,17 +81,18 @@ const getCurrentUser = (req, res, next) => {
 };
 
 const getUserbyId = (req, res, next) => {
-  User.findById(req.params.id)
+  User.findById(req.user._id)
     .orFail(new NotFoundError("user not found"))
-    .then((user) =>
+    .then((user) => {
+      logger.debug(`trying to find USer after refresh ${user}`);
       res.send({
         _id: user._id,
         name: user.name,
         about: user.about,
         avatar: user.avatar,
         email: user.email,
-      })
-    )
+      });
+    })
     .catch(next);
 };
 

@@ -11,6 +11,7 @@
   },
   "rules": {
     "import/extensions": "off",
+    "react/prop-types": "off",
     "import/prefer-default-export": "off",
     "no-duplicate-imports": "error",
     "import/no-named-as-default": "off",

@@ -10,32 +10,7 @@ const { HTTP_SUCCESS_OK } = require("../utils/status");
 const getCards = (req, res, next) => {
   Card.find({})
     .then((cards) =>
-      res.status(HTTP_SUCCESS_OK).send(
-        JSON.stringify([
-          ...cards,
-          {
-            name: "Summer",
-            _id: "default1",
-            link: "https://unsplash.com/photos/a-hammock-hanging-from-a-palm-tree-on-a-beach-QoWDbXGnl3E",
-            owner: "",
-            likes: ["1"],
-          },
-          {
-            name: "winter",
-            _id: "default2",
-            link: "https://avatars.mds.yandex.net/i?id=04e4bc09d4337ef9bbcf7aa0a8df37437f018b8e-9727996-images-thumbs&n=13",
-            owner: "",
-            likes: ["2"],
-          },
-          {
-            name: "Fall",
-            _id: "default3",
-            link: "https://avatars.mds.yandex.net/i?id=b06ff5dd50cde73ed72b7bffcb3ba3402b1b4836-8378316-images-thumbs&n=13",
-            owner: "",
-            likes: [],
-          },
-        ])
-      )
+      res.status(HTTP_SUCCESS_OK).send(JSON.stringify([...cards]))
     )
     .catch(next);
 };

@@ -53,19 +53,12 @@ const getUsers = (req, res, next) => {
 // };
 
 const getCurrentUser = (req, res, next) => {
-  logger.debug(
-    `Getting current user. User in request: ${JSON.stringify(req.user)}`
-  );
-  logger.debug(
-    `This is REQ.USER with  res.json(req.user);${res.json(req.user)}`
-  );
   if (!req.user || !req.user._id) {
     return next(new UnauthorizedError("User not found in request"));
   }
   return User.findById(req.user._id)
     .orFail(new NotFoundError("User ID not found"))
     .then((user) => {
-      logger.debug(`trying to find user by id:${JSON.stringify(user)}`);
       res.status(HTTP_SUCCESS_OK).send({
         _id: user._id,
         name: user.name,

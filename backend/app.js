@@ -72,11 +72,25 @@ const PORT = process.env.PORT || 4000;
 
 app.use(errorHandling);
 
+// Final global error handler
 app.use((err, req, res, next) => {
   console.error("Global error handler:", err);
-  res
-    .status(500)
-    .send({ message: "An error occurred on the server", error: err.message });
+
+  // If a previous middleware already started the response, don't send another one
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  if (err instanceof URIError) {
+    return res.status(400).json({ message: "Bad request" });
+  }
+
+  const status = err.statusCode || err.status || 500;
+
+  return res.status(status).json({
+    message: "An error occurred on the server",
+    error: err.message,
+  });
 });
 
 mongoose.connection.on("connected", () => {

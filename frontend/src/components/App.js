@@ -198,7 +198,7 @@ function App() {
       .deleteCard(card._id, localStorage.getItem("jwt"))
       .then(() => {
         setCards((state) =>
-          state.filter((currentCard) => currentCard._id !== card._id)
+          state.filter((currentCard) => currentCard._id !== card._id),
         );
       })
       .catch((err) => {
@@ -218,8 +218,8 @@ function App() {
       }
       setCards((state) =>
         state.map((currentCard) =>
-          currentCard._id === card._id ? newCard : currentCard
-        )
+          currentCard._id === card._id ? newCard : currentCard,
+        ),
       );
     } else {
       api
@@ -227,8 +227,8 @@ function App() {
         .then((newCard) => {
           setCards((state) =>
             state.map((currentCard) =>
-              currentCard._id === card._id ? newCard : currentCard
-            )
+              currentCard._id === card._id ? newCard : currentCard,
+            ),
           );
         })
         .catch((err) => {
@@ -297,6 +297,10 @@ function App() {
       }
     } catch (err) {
       console.error("Error occurred during login:", err);
+      console.error("Login failed:");
+      console.error("Full error:", err);
+      console.error("Error message:", err && err.message);
+      console.error("Error name:", err && err.name);
       setInfoToolTip(true);
       setStatus(false);
     }

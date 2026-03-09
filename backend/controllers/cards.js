@@ -53,7 +53,7 @@ const deleteCard = (req, res, next) => {
 
 const likeCard = (req, res, next) => {
   const currentUser = req.user._id;
-  const { id } = req.params.id;
+  const { id } = req.params;
 
   Card.findByIdAndUpdate(
     id,

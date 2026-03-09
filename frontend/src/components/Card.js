@@ -3,12 +3,23 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 export function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   const currentUser = React.useContext(CurrentUserContext);
-  const isOwn = card.owner === currentUser._id;
+  const getLikeUserId = (user) =>
+    typeof user === "string" ? user : user && user._id;
+  const isLocalCard =
+    !card._id ||
+    (typeof card._id === "string" && card._id.startsWith("default"));
+  const isOwn =
+    isLocalCard ||
+    (typeof card.owner === "string"
+      ? card.owner === currentUser._id
+      : card.owner && card.owner._id === currentUser._id);
   const cardDeleteButtonClassName = `elements__delete ${
     isOwn ? "elements__delete" : "elements__delete_hidden"
   }`;
   const isLiked =
-    card?.likes?.some((user) => user === currentUser._id) ?? false;
+    card && card.likes
+      ? card.likes.some((user) => getLikeUserId(user) === currentUser._id)
+      : false;
 
   const cardLikeButtonClassName = `elements__info-button ${
     isLiked ? "elements__info-button_active" : ""
@@ -46,7 +57,9 @@ export function Card({ card, onCardClick, onCardLike, onCardDelete }) {
             onClick={handleLikeClick}
             className={cardLikeButtonClassName}
           ></button>
-          <p className="elements__counter">{card.likes?.length || 0}</p>
+          <p className="elements__counter">
+            {card && card.likes ? card.likes.length : 0}
+          </p>{" "}
         </div>
       </div>
       <div className="popup" id="delete-popup">

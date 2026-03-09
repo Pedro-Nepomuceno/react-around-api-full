@@ -23,31 +23,6 @@ class Api {
     }
   }
 
-  // getAppInfo(token) {
-  //   return Promise.all([
-  //     this.getInitialCards(token).then((res) => {
-  //       console.log("Initial cards response:", res);
-  //       return res;
-  //     }),
-  //     this.getUserInfo(token).then((res) => {
-  //       console.log("User info response:", res);
-  //       return res;
-  //     }),
-  //   ]);
-  // }
-
-  // async getUserInfo(token) {
-  //   try {
-  //     const res = await fetch(`${this.baseUrl}/users/me`, {
-  //       headers: { authorization: `Bearer ${token}`, ...this.headers },
-  //     });
-  //     return this._handleServerResponse(res);
-  //   } catch (error) {
-  //     console.error("Error in getUserInfo:", error);
-  //     throw error;
-  //   }
-  // } last
-
   async getUserInfo(token) {
     const startTime = Date.now();
     const maxExecutionTime = 20000;
@@ -74,7 +49,7 @@ class Api {
             throw new Error("Max retries reached. User data incomplete.");
           }
           console.log(
-            `Incomplete data, retrying... (Attempt ${retryCount + 1})`
+            `Incomplete data, retrying... (Attempt ${retryCount + 1})`,
           );
           const delay = Math.min(1000 * 2 ** retryCount, 8000); // Exponential backoff with 8s max
           // eslint-disable-next-line no-promise-executor-return
@@ -87,7 +62,7 @@ class Api {
         if (retryCount < maxRetries) {
           console.error(
             `Error in getUserInfo (Attempt ${retryCount + 1}):`,
-            error
+            error,
           );
           const delay = Math.min(1000 * 2 ** retryCount, 8000);
           // eslint-disable-next-line no-promise-executor-return
@@ -101,28 +76,6 @@ class Api {
     return attemptFetch(0);
   }
 
-  // async getUserInfo(token) {
-  //   try {
-  //     const res = await fetch(`${this.baseUrl}/users/me`, {
-  //       headers: { authorization: `Bearer ${token}`, ...this.headers },
-  //     });
-  //     console.log("User info response status:", res.status);
-  //     const data = await this._handleServerResponse(res);
-  //     console.log("Full user data from API:", data);
-  //     return data;
-  //   } catch (error) {
-  //     console.error("Error in getUserInfo:", error);
-  //     throw error;
-  //   }
-  // }last
-
-  // async getUserInfo(token) {
-  //   const res = await fetch(`${this.baseUrl}/users/me`, {
-  //     headers: { authorization: `Bearer ${token}`, ...this.headers },
-  //   });
-  //   return this._handleServerResponse(res);
-  // }
-
   async getInitialCards(token) {
     try {
       const res = await fetch(`${this.baseUrl}/cards`, {
@@ -135,15 +88,6 @@ class Api {
       throw error;
     }
   }
-
-  // getInitialCards(token) {
-  //   return fetch(`${this.baseUrl}/cards`, {
-  //     headers: { authorization: `Bearer ${token}`, ...this.headers },
-  //   }).then((res) => {
-  //     console.log("Cards response status:", res.status);
-  //     return this._handleServerResponse(res);
-  //   });
-  // }
 
   // eslint-disable-next-line class-methods-use-this
   async _handleServerResponse(res) {

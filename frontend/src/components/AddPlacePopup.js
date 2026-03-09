@@ -28,7 +28,7 @@ export function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    onAddPlaceSubmit({ name, link });
+    onAddPlaceSubmit({ name: name.trim(), link: link.trim() });
   }
   React.useEffect(() => {
     setName("");
@@ -38,9 +38,7 @@ export function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit }) {
   return (
     <PopupWithForm
       name="add-photo"
-      title="Add New Place"
-      inputName="title"
-      inputDescription="URL"
+      title="Add Photo by URL"
       onClose={onClose}
       isOpen={isOpen}
       onSubmit={handleSubmit}
@@ -50,7 +48,7 @@ export function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit }) {
       <input
         name="name"
         type="text"
-        placeholder="Title"
+        placeholder="Photo title"
         className="popup__input popup__input_type_name"
         id="name"
         required
@@ -66,14 +64,15 @@ export function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit }) {
         {errorMessage.name}
       </span>
       <input
-        name="about"
+        name="link"
         type="url"
-        placeholder="Place"
+        placeholder="Image URL (https://...)"
         className="popup__input popup__input_type_description"
         id="description"
         required
         minLength="2"
         maxLength="200"
+        title="Paste a direct image URL from the internet"
         value={link || ""}
         onChange={handleLinkSubmit}
       />

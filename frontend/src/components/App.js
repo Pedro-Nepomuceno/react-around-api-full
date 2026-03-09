@@ -31,6 +31,18 @@ function App() {
 
   const history = useHistory();
 
+  function getLikeUserId(user) {
+    return typeof user === "string" ? user : user && user._id;
+  }
+
+  function isSameCard(leftCard, rightCard) {
+    if (leftCard._id && rightCard._id) {
+      return leftCard._id === rightCard._id;
+    }
+
+    return leftCard.name === rightCard.name && leftCard.link === rightCard.link;
+  }
+
   function handleAddPlaceSubmit(newCard) {
     api
       .addNewCard(newCard, localStorage.getItem("jwt"))
@@ -100,52 +112,6 @@ function App() {
     }
   }, []);
 
-  // React.useEffect(() => {
-  //   const token = localStorage.getItem("jwt");
-  //   console.log("Token from localStorage:", token);
-  //   if (token) {
-  //     setIsLoading(true);
-  //     auth
-  //       .checkToken(token)
-  //       .then((userData) => {
-  //         console.log("User data:", userData);
-  //         if (userData && userData._id) {
-  //           setSignUpEmail(userData.email);
-  //           setIsLogged(true);
-  //           setCurrentUser(userData);
-  //         } else {
-  //           throw new Error("Invalid user data");
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         console.error("Error checking token:", err);
-  //         setIsLogged(false);
-  //         localStorage.removeItem("jwt");
-  //       })
-  //       .finally(() => setIsLoading(false));
-  //   } else {
-  //     setIsLogged(false);
-  //     setIsLoading(false);
-  //   }
-  // }, []);
-
-  // React.useEffect(() => {
-  //   const token = localStorage.getItem("jwt");
-  //   if (token && loggedIn) {
-  //     api
-  //       .getAppInfo(token)
-  //       .then(async ([CardData, userData]) => {
-  //         const data = await CardData.json();
-  //         const userInfo = await userData.json();
-  //         setCurrentUser(userInfo);
-  //         setCards(data);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // }, [loggedIn]);
-
-  // currentUser, cards;
-
   function handleCardClick(card) {
     setSelectedCard(card);
   }
@@ -194,11 +160,22 @@ function App() {
   }
 
   function handleCardDelete(card) {
+    const isLocalCard =
+      !card._id ||
+      (typeof card._id === "string" && card._id.startsWith("default"));
+
+    if (isLocalCard) {
+      setCards((state) =>
+        state.filter((currentCard) => !isSameCard(currentCard, card)),
+      );
+      return;
+    }
+
     api
       .deleteCard(card._id, localStorage.getItem("jwt"))
       .then(() => {
         setCards((state) =>
-          state.filter((currentCard) => currentCard._id !== card._id),
+          state.filter((currentCard) => !isSameCard(currentCard, card)),
         );
       })
       .catch((err) => {
@@ -207,18 +184,24 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((user) => user === currentUser._id);
+    const likes = Array.isArray(card.likes) ? card.likes : [];
+    const isLiked = likes.some((user) => getLikeUserId(user) === currentUser._id);
+    const isLocalCard =
+      !card._id ||
+      (typeof card._id === "string" && card._id.startsWith("default"));
 
-    if (card._id.startsWith("default")) {
+    if (isLocalCard) {
       const newCard = { ...card };
       if (isLiked) {
-        newCard.likes = newCard.likes.filter((id) => id !== currentUser._id);
+        newCard.likes = likes.filter(
+          (user) => getLikeUserId(user) !== currentUser._id,
+        );
       } else {
-        newCard.likes = [...newCard.likes, currentUser._id];
+        newCard.likes = [...likes, currentUser._id];
       }
       setCards((state) =>
         state.map((currentCard) =>
-          currentCard._id === card._id ? newCard : currentCard,
+          isSameCard(currentCard, card) ? newCard : currentCard,
         ),
       );
     } else {
@@ -227,7 +210,7 @@ function App() {
         .then((newCard) => {
           setCards((state) =>
             state.map((currentCard) =>
-              currentCard._id === card._id ? newCard : currentCard,
+              isSameCard(currentCard, card) ? newCard : currentCard,
             ),
           );
         })
@@ -257,30 +240,6 @@ function App() {
     }
   }
 
-  // function onRegister({ email, password }) {
-  //   auth
-  //     .register({ email, password })
-  //     .then((res) => {
-  //       console.log(res);
-  //       console.log("res status", res.status);
-  //       const data = res.json();
-  //       console.log("data", data);
-  //       if (data._id) {
-  //         setInfoToolTip(true);
-  //         setStatus(true);
-  //         history.push("/signin");
-  //       } else {
-  //         setInfoToolTip(true);
-  //         setStatus(false);
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       setInfoToolTip(true);
-  //       setStatus(false);
-  //     });
-  // }
-
   async function onLogin({ email, password }) {
     try {
       const data = await auth.login({ email, password });
@@ -305,31 +264,6 @@ function App() {
       setStatus(false);
     }
   }
-
-  // function onLogin({ email: loginEmail, password }) {
-  //   auth
-  //     .login({ email: loginEmail, password })
-  //     .then(async (res) => {
-  //       console.log(`this is the data after onLogin hit ${res}`);
-  //       const data = await res.json();
-  //       console.log(
-  //         `this is the onLogin data response after being parsed to json ${data}`
-  //       );
-  //       if (data.token) {
-  //         setSignUpEmail(loginEmail);
-  //         setIsLogged(true);
-  //         localStorage.setItem("jwt", data.token);
-  //         history.push("/");
-  //       } else {
-  //         setInfoToolTip(true);
-  //         setStatus(false);
-  //       }
-  //     })
-  //     .catch(() => {
-  //       setInfoToolTip(true);
-  //       setStatus(false);
-  //     });
-  // }
 
   function onSignOut() {
     localStorage.removeItem("jwt");

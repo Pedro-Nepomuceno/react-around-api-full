@@ -8,19 +8,8 @@ class Api {
   //   return Promise.all([this.getInitialCards(token), this.getUserInfo(token)]);
   // }
 
-  async getAppInfo(token) {
-    try {
-      const [cardsResponse, userInfoResponse] = await Promise.all([
-        this.getInitialCards(token),
-        this.getUserInfo(token),
-      ]);
-      console.log("Initial cards response:", cardsResponse);
-      console.log("User info response:", userInfoResponse);
-      return [cardsResponse, userInfoResponse];
-    } catch (error) {
-      console.error("Error in getAppInfo:", error);
-      throw error;
-    }
+  getAppInfo(token) {
+    return Promise.all([this.getInitialCards(token), this.getUserInfo(token)]);
   }
 
   async getUserInfo(token) {
@@ -48,9 +37,6 @@ class Api {
           if (retryCount >= maxRetries) {
             throw new Error("Max retries reached. User data incomplete.");
           }
-          console.log(
-            `Incomplete data, retrying... (Attempt ${retryCount + 1})`,
-          );
           const delay = Math.min(1000 * 2 ** retryCount, 8000); // Exponential backoff with 8s max
           // eslint-disable-next-line no-promise-executor-return
           await new Promise((resolve) => setTimeout(resolve, delay));
@@ -60,10 +46,6 @@ class Api {
         return data;
       } catch (error) {
         if (retryCount < maxRetries) {
-          console.error(
-            `Error in getUserInfo (Attempt ${retryCount + 1}):`,
-            error,
-          );
           const delay = Math.min(1000 * 2 ** retryCount, 8000);
           // eslint-disable-next-line no-promise-executor-return
           await new Promise((resolve) => setTimeout(resolve, delay));
@@ -77,16 +59,10 @@ class Api {
   }
 
   async getInitialCards(token) {
-    try {
-      const res = await fetch(`${this.baseUrl}/cards`, {
-        headers: { authorization: `Bearer ${token}`, ...this.headers },
-      });
-      console.log("Cards response status:", res.status);
-      return this._handleServerResponse(res);
-    } catch (error) {
-      console.error("Error in getInitialCards:", error);
-      throw error;
-    }
+    const res = await fetch(`${this.baseUrl}/cards`, {
+      headers: { authorization: `Bearer ${token}`, ...this.headers },
+    });
+    return this._handleServerResponse(res);
   }
 
   // eslint-disable-next-line class-methods-use-this

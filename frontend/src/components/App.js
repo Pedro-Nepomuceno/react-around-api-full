@@ -49,9 +49,6 @@ function App() {
       .then((data) => {
         setCards([data, ...cards]);
         setIsAddPlacePopupOpen(false);
-      })
-      .catch((err) => {
-        console.log(err);
       });
   }
 
@@ -68,13 +65,7 @@ function App() {
           if (userInfo && userInfo._id) {
             setCurrentUser(userInfo);
             setCards(data);
-          } else {
-            console.error("Invalid user data received:", userInfo);
           }
-        })
-        .catch((err) => {
-          console.error("Error fetching app info:", err);
-          // Handle the error appropriately
         });
     }
   }, [loggedIn]);
@@ -100,8 +91,7 @@ function App() {
         .then((cardData) => {
           setCards(cardData);
         })
-        .catch((err) => {
-          console.error("Error checking token or fetching data:", err);
+        .catch(() => {
           setIsLogged(false);
           localStorage.removeItem("jwt");
         })
@@ -136,13 +126,8 @@ function App() {
     api
       .setUserProfile(user, localStorage.getItem("jwt"))
       .then((data) => {
-        console.log("Updated user data:", data);
-
         setCurrentUser(data);
         setEditProfilePopupOpen(false);
-      })
-      .catch((err) => {
-        console.log(err);
       });
   }
   function handleUpdateAvatar(userPicture) {
@@ -150,12 +135,8 @@ function App() {
       .editProfilePic(userPicture, localStorage.getItem("jwt"))
       .then(async (data) => {
         const profilePicture = await data;
-        console.log("Profile picture:", profilePicture);
         setCurrentUser(profilePicture);
         setIsAvatarPopupOpen(false);
-      })
-      .catch((err) => {
-        console.log(err);
       });
   }
 
@@ -177,9 +158,6 @@ function App() {
         setCards((state) =>
           state.filter((currentCard) => !isSameCard(currentCard, card)),
         );
-      })
-      .catch((err) => {
-        console.log(err);
       });
   }
 
@@ -213,9 +191,6 @@ function App() {
               isSameCard(currentCard, card) ? newCard : currentCard,
             ),
           );
-        })
-        .catch((err) => {
-          console.log(err);
         });
     }
   }
@@ -223,9 +198,7 @@ function App() {
   async function onRegister({ email, password }) {
     try {
       const res = await auth.register({ email, password });
-      console.log("Response data after onRegister hit:", res);
       if (res && res._id) {
-        // Check if data exists and has _id property
         setInfoToolTip(true);
         setStatus(true);
         history.push("/signin");
@@ -234,7 +207,6 @@ function App() {
         setStatus(false);
       }
     } catch (err) {
-      console.error("Error occurred during registration:", err);
       setInfoToolTip(true);
       setStatus(false);
     }
@@ -243,7 +215,6 @@ function App() {
   async function onLogin({ email, password }) {
     try {
       const data = await auth.login({ email, password });
-      console.log("Login response:", data);
       if (data.token) {
         setSignUpEmail(email);
         setIsLogged(true);
@@ -255,11 +226,6 @@ function App() {
         setStatus(false);
       }
     } catch (err) {
-      console.error("Error occurred during login:", err);
-      console.error("Login failed:");
-      console.error("Full error:", err);
-      console.error("Error message:", err && err.message);
-      console.error("Error name:", err && err.name);
       setInfoToolTip(true);
       setStatus(false);
     }

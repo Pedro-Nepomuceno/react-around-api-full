@@ -14,11 +14,6 @@ export function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   });
 
   const currentUser = React.useContext(CurrentUserContext);
-  console.log(
-    "CurrentUser var from EditProfilePopup:",
-    JSON.stringify(currentUser, null, 2)
-  );
-  console.log("CurrentUserContext from EditProfilePopup:", CurrentUserContext);
 
   function handleSubmit(e) {
     e.preventDefault();

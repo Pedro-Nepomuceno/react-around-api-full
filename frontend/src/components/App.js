@@ -35,14 +35,6 @@ function App() {
     return typeof user === "string" ? user : user && user._id;
   }
 
-  function isSameCard(leftCard, rightCard) {
-    if (leftCard._id && rightCard._id) {
-      return leftCard._id === rightCard._id;
-    }
-
-    return leftCard.name === rightCard.name && leftCard.link === rightCard.link;
-  }
-
   function handleAddPlaceSubmit(newCard) {
     api
       .addNewCard(newCard, localStorage.getItem("jwt"))
@@ -141,58 +133,29 @@ function App() {
   }
 
   function handleCardDelete(card) {
-    const isLocalCard =
-      !card._id ||
-      (typeof card._id === "string" && card._id.startsWith("default"));
-
-    if (isLocalCard) {
-      setCards((state) =>
-        state.filter((currentCard) => !isSameCard(currentCard, card)),
-      );
-      return;
-    }
-
     api
       .deleteCard(card._id, localStorage.getItem("jwt"))
       .then(() => {
         setCards((state) =>
-          state.filter((currentCard) => !isSameCard(currentCard, card)),
+          state.filter((currentCard) => currentCard._id !== card._id),
         );
       });
   }
 
   function handleCardLike(card) {
     const likes = Array.isArray(card.likes) ? card.likes : [];
-    const isLiked = likes.some((user) => getLikeUserId(user) === currentUser._id);
-    const isLocalCard =
-      !card._id ||
-      (typeof card._id === "string" && card._id.startsWith("default"));
+    const currentUserId = currentUser && currentUser._id;
+    const isLiked = likes.some((user) => getLikeUserId(user) === currentUserId);
 
-    if (isLocalCard) {
-      const newCard = { ...card };
-      if (isLiked) {
-        newCard.likes = likes.filter(
-          (user) => getLikeUserId(user) !== currentUser._id,
+    api
+      .handleLikePhoto(card._id, isLiked, localStorage.getItem("jwt"))
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((currentCard) =>
+            currentCard._id === card._id ? newCard : currentCard,
+          ),
         );
-      } else {
-        newCard.likes = [...likes, currentUser._id];
-      }
-      setCards((state) =>
-        state.map((currentCard) =>
-          isSameCard(currentCard, card) ? newCard : currentCard,
-        ),
-      );
-    } else {
-      api
-        .handleLikePhoto(card._id, isLiked, localStorage.getItem("jwt"))
-        .then((newCard) => {
-          setCards((state) =>
-            state.map((currentCard) =>
-              isSameCard(currentCard, card) ? newCard : currentCard,
-            ),
-          );
-        });
-    }
+      });
   }
 
   async function onRegister({ email, password }) {

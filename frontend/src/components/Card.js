@@ -5,14 +5,10 @@ export function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   const currentUser = React.useContext(CurrentUserContext);
   const getLikeUserId = (user) =>
     typeof user === "string" ? user : user && user._id;
-  const isLocalCard =
-    !card._id ||
-    (typeof card._id === "string" && card._id.startsWith("default"));
   const isOwn =
-    isLocalCard ||
-    (typeof card.owner === "string"
+    typeof card.owner === "string"
       ? card.owner === currentUser._id
-      : card.owner && card.owner._id === currentUser._id);
+      : card.owner && card.owner._id === currentUser._id;
   const cardDeleteButtonClassName = `elements__delete ${
     isOwn ? "elements__delete" : "elements__delete_hidden"
   }`;

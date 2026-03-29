@@ -22,5 +22,6 @@ This project is a web application deployed on AWS using Ubuntu as the operating 
 
 - **AWS Deployment**: The application is deployed on Amazon Web Services (AWS), utilizing cloud infrastructure for scalability and reliability.
 - **Ubuntu**: The Ubuntu operating system is used for hosting the application on AWS, providing a stable and secure environment.
-- **Nginx**: Nginx serves as the web server, handling incoming HTTP requests and proxying them to the application server.
+- **Nginx**: Nginx serves as the web server, handling incoming HTTP requests and proxying them to the application server._
+- **Nginx**: configuration files are stored in sites-available and activated through symbolic links in sites-enabled, allowing safe enable/disable of site configurations without deleting files.
 - **PM2**: PM2 is used as the process manager, ensuring that the application runs continuously and can be easily managed and monitored.

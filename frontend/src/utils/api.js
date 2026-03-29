@@ -8,11 +8,11 @@ class Api {
   //   return Promise.all([this.getInitialCards(token), this.getUserInfo(token)]);
   // }
 
-  getAppInfo(token) {
-    return Promise.all([this.getInitialCards(token), this.getUserInfo(token)]);
+  getAppInfo() {
+    return Promise.all([this.getInitialCards(), this.getUserInfo()]);
   }
 
-  async getUserInfo(token) {
+  async getUserInfo() {
     const startTime = Date.now();
     const maxExecutionTime = 20000;
     const maxRetries = 3;
@@ -24,7 +24,8 @@ class Api {
 
       try {
         const res = await fetch(`${this.baseUrl}/users/me`, {
-          headers: { authorization: `Bearer ${token}`, ...this.headers },
+          headers: { ...this.headers },
+          credentials: "include",
         });
 
         if (!res.ok) {
@@ -58,9 +59,10 @@ class Api {
     return attemptFetch(0);
   }
 
-  async getInitialCards(token) {
+  async getInitialCards() {
     const res = await fetch(`${this.baseUrl}/cards`, {
-      headers: { authorization: `Bearer ${token}`, ...this.headers },
+      headers: { ...this.headers },
+      credentials: "include",
     });
     return this._handleServerResponse(res);
   }
@@ -81,10 +83,11 @@ class Api {
   //   return res.json().then((err) => Promise.reject(err));
   // }
 
-  async setUserProfile({ name, about }, token) {
+  async setUserProfile({ name, about }) {
     const res = await fetch(`${this.baseUrl}/users/me`, {
       method: "PATCH",
-      headers: { authorization: `Bearer ${token}`, ...this.headers },
+      headers: { ...this.headers },
+      credentials: "include",
       body: JSON.stringify({
         name,
         about,
@@ -93,10 +96,11 @@ class Api {
     return this._handleServerResponse(res);
   }
 
-  addNewCard({ name, link }, token) {
+  addNewCard({ name, link }) {
     return fetch(`${this.baseUrl}/cards`, {
       method: "POST",
-      headers: { authorization: `Bearer ${token}`, ...this.headers },
+      headers: { ...this.headers },
+      credentials: "include",
       body: JSON.stringify({
         name,
         link,
@@ -104,30 +108,43 @@ class Api {
     }).then(this._handleServerResponse);
   }
 
-  deleteCard(id, token) {
+  deleteCard(id) {
     return fetch(`${this.baseUrl}/cards/${id}`, {
       method: "DELETE",
-      headers: { authorization: `Bearer ${token}`, ...this.headers },
+      headers: { ...this.headers },
+      credentials: "include",
     }).then(this._handleServerResponse);
   }
 
-  handleLikePhoto(id, like, token) {
+  handleLikePhoto(id, like) {
     return fetch(`${this.baseUrl}/cards/${id}/likes`, {
       method: like ? "DELETE" : "PUT",
-      headers: { authorization: `Bearer ${token}`, ...this.headers },
+      headers: { ...this.headers },
+      credentials: "include",
     }).then(this._handleServerResponse);
   }
 
-  editProfilePic({ avatar }, token) {
+  editProfilePic({ avatar }) {
     return fetch(`${this.baseUrl}/users/me/avatar`, {
       method: "PATCH",
-      headers: { authorization: `Bearer ${token}`, ...this.headers },
+      headers: { ...this.headers },
+      credentials: "include",
       body: JSON.stringify({
         avatar,
       }),
     }).then(this._handleServerResponse);
   }
 }
+//   editProfilePic({ avatar }, token) {
+//     return fetch(`${this.baseUrl}/users/me/avatar`, {
+//       method: "PATCH",
+//       headers: { authorization: `Bearer ${token}`, ...this.headers },
+//       body: JSON.stringify({
+//         avatar,
+//       }),
+//     }).then(this._handleServerResponse);
+//   }
+// }
 
 const BASE_URL =
   process.env.NODE_ENV === "production"

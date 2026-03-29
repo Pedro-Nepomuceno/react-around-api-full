@@ -8,19 +8,16 @@ const {
   updateAvatar,
 } = require("../controllers/users");
 
-const {
-  validateRequestAuth,
-  validateUserId,
-} = require("../middleware/validation");
+const { validateUserId } = require("../middleware/validation");
 
-router.get("/", validateRequestAuth, getUsers);
-router.get("/me", validateRequestAuth, getCurrentUser);
+router.get("/", getUsers);
+router.get("/me", getCurrentUser);
 // router.get("/me", validateRequestAuth, (req, res, next) => {
 //   console.log("GET /users/me route hit");
 //   getCurrentUser(req, res, next);
 // });
-router.get("/:id", validateRequestAuth, validateUserId, getUserbyId);
-router.patch("/me", validateRequestAuth, updateUserProfile);
-router.patch("/me/avatar", validateRequestAuth, updateAvatar);
+router.get("/:id", validateUserId, getUserbyId);
+router.patch("/me", updateUserProfile);
+router.patch("/me/avatar", updateAvatar);
 
 module.exports = router;

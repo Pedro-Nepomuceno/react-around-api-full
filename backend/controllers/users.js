@@ -18,23 +18,50 @@ const logger = require("../utils/logger");
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
-  logger.debug(`Getting data after LOGIN: ${JSON.stringify(req.body)}`);
+
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
+
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+
       return res.send({
         _id: user._id,
         name: user.name,
         about: user.about,
         avatar: user.avatar,
         email: user.email,
-        token,
       });
     })
     .catch(next);
 };
+
+// const login = (req, res, next) => {
+//   const { email, password } = req.body;
+//   logger.debug(`Getting data after LOGIN: ${JSON.stringify(req.body)}`);
+//   return User.findUserByCredentials(email, password)
+//     .then((user) => {
+//       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+//         expiresIn: "7d",
+//       });
+//       return res.send({
+//         _id: user._id,
+//         name: user.name,
+//         about: user.about,
+//         avatar: user.avatar,
+//         email: user.email,
+//         token,
+//       });
+//     })
+//     .catch(next);
+// };
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -96,7 +123,7 @@ const createUser = (req, res, next) => {
     .then((user) => {
       if (user) {
         throw new ConflictError(
-          "The user with the provided email already exists"
+          "The user with the provided email already exists",
         );
       } else {
         return bcrypt.hash(password, 10);
@@ -105,7 +132,7 @@ const createUser = (req, res, next) => {
     .then((hash) => User.create({ name, about, avatar, email, password: hash }))
     .then((data) => {
       logger.debug(
-        `Getting data after using registration: ${JSON.stringify(req.user)}`
+        `Getting data after using registration: ${JSON.stringify(req.user)}`,
       );
       // Log response headers
       console.error(res.getHeaders());
@@ -131,7 +158,7 @@ const updateUserProfile = (req, res, next) => {
     {
       new: true,
       runValidators: true,
-    }
+    },
   )
     .orFail(() => new NotFoundError("User ID not found"))
     .then((user) => res.status(HTTP_SUCCESS_OK).send(user))
@@ -148,7 +175,7 @@ const updateAvatar = (req, res, next) => {
     {
       new: true,
       runValidators: true,
-    }
+    },
   )
     .orFail(() => new NotFoundError("User ID not found"))
     .then((user) => res.status(HTTP_SUCCESS_OK).send(user))

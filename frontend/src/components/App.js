@@ -36,63 +36,97 @@ function App() {
   }
 
   function handleAddPlaceSubmit(newCard) {
-    api
-      .addNewCard(newCard, localStorage.getItem("jwt"))
-      .then((data) => {
-        setCards([data, ...cards]);
-        setIsAddPlacePopupOpen(false);
-      });
+    api.addNewCard(newCard).then((data) => {
+      setCards([data, ...cards]);
+      setIsAddPlacePopupOpen(false);
+    });
   }
+  React.useEffect(() => {
+    setIsLoading(true);
+
+    auth
+      .checkToken()
+      .then((userData) => {
+        if (userData && userData._id) {
+          setIsLogged(true);
+          setCurrentUser(userData);
+          setSignUpEmail(userData.email);
+        } else {
+          setIsLogged(false);
+        }
+      })
+      .catch(() => {
+        setIsLogged(false);
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
 
   React.useEffect(() => {
-    const token = localStorage.getItem("jwt");
-
-    if (token && loggedIn) {
-      api
-        .getAppInfo(token)
-        .then(async ([CardData, userData]) => {
-          const data = await CardData;
-          const userInfo = await userData;
-
-          if (userInfo && userInfo._id) {
-            setCurrentUser(userInfo);
-            setCards(data);
-          }
-        });
+    if (!loggedIn) {
+      return;
     }
+
+    api
+      .getAppInfo()
+      .then(([cardData, userData]) => {
+        if (userData && userData._id) {
+          setCurrentUser(userData);
+          setSignUpEmail(userData.email);
+        }
+        setCards(cardData);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, [loggedIn]);
 
-  React.useEffect(() => {
-    const token = localStorage.getItem("jwt");
-    if (token) {
-      setIsLoading(true);
-      auth
-        .checkToken(token)
-        .then((tokenData) => {
-          if (tokenData && tokenData._id) {
-            setIsLogged(true);
-            return auth.getUserById(tokenData._id, token);
-          }
-          throw new Error("Invalid token data");
-        })
-        .then((fullUserData) => {
-          setSignUpEmail(fullUserData.email);
-          setCurrentUser(fullUserData);
-          return api.getInitialCards(token);
-        })
-        .then((cardData) => {
-          setCards(cardData);
-        })
-        .catch(() => {
-          setIsLogged(false);
-          localStorage.removeItem("jwt");
-        })
-        .finally(() => setIsLoading(false));
-    } else {
-      setIsLogged(false);
-      setIsLoading(false);
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   const token = localStorage.getItem("jwt");
+
+  //   if (token && loggedIn) {
+  //     api.getAppInfo(token).then(async ([CardData, userData]) => {
+  //       const data = await CardData;
+  //       const userInfo = await userData;
+
+  //       if (userInfo && userInfo._id) {
+  //         setCurrentUser(userInfo);
+  //         setCards(data);
+  //       }
+  //     });
+  //   }
+  // }, [loggedIn]);
+
+  // React.useEffect(() => {
+  //   const token = localStorage.getItem("jwt");
+  //   if (token) {
+  //     setIsLoading(true);
+  //     auth
+  //       .checkToken(token)
+  //       .then((tokenData) => {
+  //         if (tokenData && tokenData._id) {
+  //           setIsLogged(true);
+  //           return auth.getUserById(tokenData._id, token);
+  //         }
+  //         throw new Error("Invalid token data");
+  //       })
+  //       .then((fullUserData) => {
+  //         setSignUpEmail(fullUserData.email);
+  //         setCurrentUser(fullUserData);
+  //         return api.getInitialCards(token);
+  //       })
+  //       .then((cardData) => {
+  //         setCards(cardData);
+  //       })
+  //       .catch(() => {
+  //         setIsLogged(false);
+  //         localStorage.removeItem("jwt");
+  //       })
+  //       .finally(() => setIsLoading(false));
+  //   } else {
+  //     setIsLogged(false);
+  //     setIsLoading(false);
+  //   }
+  // }, []);
 
   function handleCardClick(card) {
     setSelectedCard(card);
@@ -115,31 +149,25 @@ function App() {
     setInfoToolTip(false);
   }
   function handleUpdateUser(user) {
-    api
-      .setUserProfile(user, localStorage.getItem("jwt"))
-      .then((data) => {
-        setCurrentUser(data);
-        setEditProfilePopupOpen(false);
-      });
+    api.setUserProfile(user).then((data) => {
+      setCurrentUser(data);
+      setEditProfilePopupOpen(false);
+    });
   }
   function handleUpdateAvatar(userPicture) {
-    api
-      .editProfilePic(userPicture, localStorage.getItem("jwt"))
-      .then(async (data) => {
-        const profilePicture = await data;
-        setCurrentUser(profilePicture);
-        setIsAvatarPopupOpen(false);
-      });
+    api.editProfilePic(userPicture).then(async (data) => {
+      const profilePicture = await data;
+      setCurrentUser(profilePicture);
+      setIsAvatarPopupOpen(false);
+    });
   }
 
   function handleCardDelete(card) {
-    api
-      .deleteCard(card._id, localStorage.getItem("jwt"))
-      .then(() => {
-        setCards((state) =>
-          state.filter((currentCard) => currentCard._id !== card._id),
-        );
-      });
+    api.deleteCard(card._id).then(() => {
+      setCards((state) =>
+        state.filter((currentCard) => currentCard._id !== card._id),
+      );
+    });
   }
 
   function handleCardLike(card) {
@@ -147,15 +175,13 @@ function App() {
     const currentUserId = currentUser && currentUser._id;
     const isLiked = likes.some((user) => getLikeUserId(user) === currentUserId);
 
-    api
-      .handleLikePhoto(card._id, isLiked, localStorage.getItem("jwt"))
-      .then((newCard) => {
-        setCards((state) =>
-          state.map((currentCard) =>
-            currentCard._id === card._id ? newCard : currentCard,
-          ),
-        );
-      });
+    api.handleLikePhoto(card._id, isLiked).then((newCard) => {
+      setCards((state) =>
+        state.map((currentCard) =>
+          currentCard._id === card._id ? newCard : currentCard,
+        ),
+      );
+    });
   }
 
   async function onRegister({ email, password }) {
@@ -174,15 +200,14 @@ function App() {
       setStatus(false);
     }
   }
-
   async function onLogin({ email, password }) {
     try {
       const data = await auth.login({ email, password });
-      if (data.token) {
-        setSignUpEmail(email);
-        setIsLogged(true);
-        localStorage.setItem("jwt", data.token);
+
+      if (data && data._id) {
+        setSignUpEmail(data.email);
         setCurrentUser(data);
+        setIsLogged(true);
         history.push("/");
       } else {
         setInfoToolTip(true);
@@ -193,6 +218,25 @@ function App() {
       setStatus(false);
     }
   }
+
+  // async function onLogin({ email, password }) {
+  //   try {
+  //     const data = await auth.login({ email, password });
+  //     if (data.token) {
+  //       setSignUpEmail(email);
+  //       setIsLogged(true);
+  //       localStorage.setItem("jwt", data.token);
+  //       setCurrentUser(data);
+  //       history.push("/");
+  //     } else {
+  //       setInfoToolTip(true);
+  //       setStatus(false);
+  //     }
+  //   } catch (err) {
+  //     setInfoToolTip(true);
+  //     setStatus(false);
+  //   }
+  // }
 
   function onSignOut() {
     localStorage.removeItem("jwt");

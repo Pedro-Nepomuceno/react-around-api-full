@@ -84,20 +84,19 @@ const validateCard = celebrate({
   }),
 });
 
-const validateRequestAuth = celebrate({
-  headers: Joi.object()
-    .keys({
-      authorization: Joi.string().required().messages({
-        "string.empty": "Authorization required",
-      }),
-    })
-    .unknown(true),
-});
+// const validateRequestAuth = celebrate({
+//   headers: Joi.object()
+//     .keys({
+//       authorization: Joi.string().required().messages({
+//         "string.empty": "Authorization required",
+//       }),
+//     })
+//     .unknown(true),
+// });
 
 module.exports = {
   validateLogin,
   validateUser,
-  validateRequestAuth,
   validateUserId,
   validateCardId,
   validateCard,

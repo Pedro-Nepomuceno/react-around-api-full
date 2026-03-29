@@ -1,5 +1,7 @@
 const express = require("express");
 
+const cookieParser = require("cookie-parser");
+
 const cors = require("cors");
 
 const app = express();
@@ -14,19 +16,42 @@ const { errors } = require("celebrate");
 
 const errorHandling = require("./middleware/errorHandling");
 
-app.use(
-  cors({
-    origin: "*",
-    allowedHeaders: "*",
-  })
-);
+// app.use(
+//   cors({
+//     origin: "*",
+//     allowedHeaders: "*",
+//   }),
+// );
 
-app.options("*", cors());
+// app.options("*", cors());
+
+const allowedOrigins = ["http://localhost:3000", "https://apiaroundreact.net"];
+
+const corsOptions = {
+  origin(origin, callback) {
+    // Allow requests with no origin like curl/postman or same-origin server calls
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use((req, res, next) => {
   console.log("CORS headers:", res.getHeaders());
   next();
 });
+
+app.use(cookieParser());
 
 const routes = require("./routes/index");
 

@@ -16,6 +16,7 @@ class Auth {
   register({ email, password }) {
     return fetch(`${this.baseUrl}/signup`, {
       method: "POST",
+      credentials: "include",
       headers: this.headers,
       body: JSON.stringify({
         email: String(email),
@@ -27,27 +28,28 @@ class Auth {
   login({ email, password }) {
     return fetch(`${this.baseUrl}/signin`, {
       method: "POST",
+      credentials: "include",
       headers: this.headers,
       body: JSON.stringify({ password, email }),
     }).then(this._handleServerResponse);
   }
 
-  getUserById(userId, token) {
+  getUserById(userId) {
     return fetch(`${this.baseUrl}/users/${userId}`, {
       method: "GET",
+      credentials: "include",
       headers: {
         ...this.headers,
-        Authorization: `Bearer ${token}`,
       },
     }).then(this._handleServerResponse);
   }
 
-  checkToken(token) {
+  checkToken() {
     return fetch(`${this.baseUrl}/users/me`, {
       method: "GET",
+      credentials: "include",
       headers: {
         ...this.headers,
-        Authorization: `Bearer ${token}`,
       },
     }).then((res) => {
       if (res.ok) {
@@ -56,6 +58,31 @@ class Auth {
       throw new Error(`Error: ${res.status}`);
     });
   }
+
+  // getUserById(userId, token) {
+  //   return fetch(`${this.baseUrl}/users/${userId}`, {
+  //     method: "GET",
+  //     headers: {
+  //       ...this.headers,
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   }).then(this._handleServerResponse);
+  // }
+
+  // checkToken(token) {
+  //   return fetch(`${this.baseUrl}/users/me`, {
+  //     method: "GET",
+  //     headers: {
+  //       ...this.headers,
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   }).then((res) => {
+  //     if (res.ok) {
+  //       return res.json();
+  //     }
+  //     throw new Error(`Error: ${res.status}`);
+  //   });
+  // }
 }
 
 //   async checkToken(token) {

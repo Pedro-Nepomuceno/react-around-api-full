@@ -75,8 +75,8 @@ function App() {
         }
         setCards(cardData);
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
+        setCards([]);
       });
   }, [loggedIn]);
 
